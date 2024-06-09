@@ -1,12 +1,10 @@
-const loginCheck = (req, res, next) => {
-  if (req.user) {
-    next();
-  } else {
-    res.status(401).send('Unauthorized');
-  }
+const hasPermission= (req,res,next) => {
+  console.log('has permission middleware');
+  next();
 }
 
 
 
-
-module.exports = {loginCheck};
+module.exports = {
+  hasPermission 
+}

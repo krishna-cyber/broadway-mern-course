@@ -1,5 +1,7 @@
 const router = require('express').Router();
 const { userCreateDTO } = require('./user.request');
+const { loginCheck } = require('../../middlewares/auth.middleware');
+const { hasPermission } = require('../../middlewares/rbac.miiddleware');
 
 // importing user controller object
 const userController = require('./user.controller');
@@ -7,18 +9,11 @@ const { bodyValidator } = require('../../middlewares/validator.middleware');
 
 
 
-// creating middlewares for user 
-const loginCheck = (req,res,next) => {
-    console.log('login check middleware');
-    next();
-}
 
 
 
-const hasPermission= (req,res,next) => {
-    console.log('has permission middleware');
-    next();
-}
+
+
 
 
 
