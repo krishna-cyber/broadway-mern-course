@@ -1,5 +1,6 @@
 const express = require ('express');
 const app = express();
+var morgan = require('morgan')
 
 
 // importing router config
@@ -8,6 +9,7 @@ const router = require('./router.config');
 
 
 app.use(express.json());
+app.use(morgan('dev'));
 app.use(express.urlencoded({extended:true}));
 app.use(express.static('public'));
 app.use(express.static('uploads'));
