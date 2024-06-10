@@ -1,4 +1,5 @@
 const bcrypt = require('bcryptjs');
+const mailService = require('../../services/mail.service');
 
 class UserController{
 //    get all users 
@@ -10,8 +11,10 @@ class UserController{
     });
  }
 // create a new user
-userCreate = (req,res,nest)=>{
-const data = req.body;   // name , email, password,confirmpassword, address, phone
+userCreate = async (req,res,next)=>{
+
+    try {
+        const data = req.body;   // name , email, password,confirmpassword, address, phone
 
 
 
@@ -32,11 +35,22 @@ if(req.files)    // [{},{},{}]
     data.images = req.files.map(file => file.filename);
 }
 
+await mailService.sendMail({
+    to: "24.student.Tiwari@broadwayinfosys.edu.np@gmail.com",
+    sub: 'User Created',
+    message:'<h1>User Created Successfully</h1>'
+});
+
+
 res.status(200).json ({
     result: data,
     message:"User Created Successfully",
     meta: null
 })
+    } catch (error) {
+        next(error);
+    }
+
 }
 
 /**
