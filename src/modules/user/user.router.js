@@ -3,6 +3,9 @@ const { userCreateDTO } = require('./user.request');
 const { loginCheck } = require('../../middlewares/auth.middleware');
 const { hasPermission } = require('../../middlewares/rbac.miiddleware');
 
+// set path middleware
+const { setPath } = require('../../middlewares/uploader.middleware');
+
 // importing user controller object
 const userController = require('./user.controller');
 const { bodyValidator } = require('../../middlewares/validator.middleware');
@@ -26,7 +29,7 @@ router.use(loginCheck);
 
 
     router.route('/')
-    .get(hasPermission,userController.userLists)
+    .get(hasPermission,setPath('user'),userController.userLists)
     .post(hasPermission,bodyValidator(userCreateDTO),userController.userCreate);
 
   router.route('/:id')

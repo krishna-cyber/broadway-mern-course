@@ -1,5 +1,7 @@
 const bcrypt = require('bcryptjs');
 const mailService = require('../../services/mail.service');
+const { randomStringGenerator } = require('../../utils/helper');
+const userService = require('./user.service');
 
 class UserController{
 //    get all users 
@@ -35,10 +37,27 @@ if(req.files)    // [{},{},{}]
     data.images = req.files.map(file => file.filename);
 }
 
+
+
+// send confirmation email and other verification process
+data.activateToken = randomStringGenerator(20);
+data.status = 'inactive';
+
 await mailService.sendMail({
     to: "24.student.Tiwari@broadwayinfosys.edu.np@gmail.com",
     sub: 'User Created',
-    message:'<h1>User Created Successfully</h1>'
+    message:`
+    Dear ${data.name},<br>
+    Your account has been created successfully. Please click the link below to activate your account.<br>
+    <a href="${process.env.FRONTEND_URL}/activate/${data.activateToken}">Activate Now</a>
+    <p>
+    <small>This is an auto generated email. Please do not reply to this email.</small>
+    </p>
+    <p>
+    Regards,<br>
+    Team
+    </p>
+    `
 });
 
 
