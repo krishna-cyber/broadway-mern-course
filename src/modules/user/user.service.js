@@ -37,15 +37,15 @@ transformUserCreate = (req)=>{
     return data;
 }
 
-sendActivationEmail = async ({name,email,token})=>{
+sendActivationEmail = async ({name,email,activateToken})=>{
     try {
         await mailService.sendMail({
             to: "24.student.Tiwari@broadwayinfosys.edu.np@gmail.com",
             sub: 'User Created',
             message:`
-            Dear ${data.name},<br>
+            Dear ${name},<br>
             Your account has been created successfully. Please click the link below to activate your account.<br>
-            <a href="${process.env.FRONTEND_URL}/activate/${data.activateToken}">Activate Now</a>
+            <a href="${process.env.FRONTEND_URL}/activate/${activateToken}">Activate Now</a>
             <p>
             <small>This is an auto generated email. Please do not reply to this email.</small>
             </p>

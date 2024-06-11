@@ -9,10 +9,10 @@ const bodyValidator =(schema)=>{
     return  async (req,res,next)=>{
         try {
             const data = req.body;
-
+            console.log(data);
             //single file
             if(req.file){
-                data[req.file.field] = req.file.filename;   // dynamic key value pair
+                data[req.file.fieldname] = req.file.filename;   // dynamic key value pair
             }else if (req.files)  //multiple files
                 {       
                 // [{},{},{}]
