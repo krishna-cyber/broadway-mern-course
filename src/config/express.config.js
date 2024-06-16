@@ -3,6 +3,9 @@ const app = express();
 var morgan = require('morgan')
 
 
+// import database connection
+require('./db.config');
+
 // importing router config
 const router = require('./router.config');
 
