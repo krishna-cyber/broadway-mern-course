@@ -1,7 +1,7 @@
-const router = require('express').Router();
+const authRouter = require('express').Router();
 
 
-router.post('/login',(req,res,next)=>{
+authRouter.post('/login',(req,res,next)=>{
     const {userName,password}= req.body;
     res.status(200).json({
         result:{userName,password},
@@ -10,5 +10,7 @@ router.post('/login',(req,res,next)=>{
     })
 })
 
+authRouter.get('/activate/:token',(req,res,next)=>{})
 
-module.exports = router;
+
+module.exports = authRouter;

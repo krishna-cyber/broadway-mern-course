@@ -1,5 +1,25 @@
 const mongoose = require('mongoose');
 const { userRoles } = require('../../config/constants.config');
+const { number } = require('joi');
+const { string } = require('joi');
+
+const AddressSchema = new mongoose.Schema({
+    proviance:{
+        type: String,
+        enum: ['gandaki', 'karnali', 'lumbini', 'sudurpaschim', 'bagmati', 'narayani', 'janakpur', 'sagarmatha', 'koshi', 'mechi']
+    },
+    district:{
+        type: String,
+        
+    },
+    muncipality:{
+        type: String,
+        
+    
+    },
+    wardNumber:Number,
+    houseAddress:String
+});
 
 const UserSchema = new mongoose.Schema({
     name:{
@@ -21,8 +41,11 @@ const UserSchema = new mongoose.Schema({
     },
     activationToken:String,
     activatedFor:Date,
-    phone:String,
-    address:String,
+    phone:[String],
+    address:{
+        permanentAddress:AddressSchema,
+        temporaryAddress:AddressSchema
+    },
     forgotToken:String,
     forgotFor:Date,
     image:String,
@@ -36,4 +59,6 @@ const UserSchema = new mongoose.Schema({
 
 
 
-const UserModel = mongoose.model('User', UserSchema);
+const UserModel = mongoose.model('User', UserSchema, );
+
+module.exports = UserModel;
