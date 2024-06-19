@@ -2,7 +2,7 @@ const bcrypt = require('bcryptjs');
 const mailService = require('../../services/mail.service');
 const { randomStringGenerator } = require('../../utils/helper');
 const userService = require('./user.service');
-const UserModel = require('./user.model');
+
 
 class UserController{
 //    get all users 
@@ -23,8 +23,7 @@ try {
  const data = userService.transformUserCreate(req);
  
  //Database store
-    const user = new UserModel(data);
-    await user.save();
+   const user = await userService.createUser(data)
 
 //  sending mail service
 

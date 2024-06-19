@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs');
 const mailService = require('../../services/mail.service');
 const { randomStringGenerator } = require('../../utils/helper');
+const UserModel = require('./user.model');
 
 
 class UserService {
@@ -61,6 +62,23 @@ sendActivationEmail = async ({name,email,activateToken})=>{
         
     }
 }
+
+//user register function
+createUser = async (data)=>{
+    try {
+
+        //create an instance of the user model
+        const user = new UserModel(data);
+        //save the user
+        await user.save();
+    } catch (error) {
+        console.log(error);
+        
+        
+        throw error;
+    }
+}
+
 
 }
 
