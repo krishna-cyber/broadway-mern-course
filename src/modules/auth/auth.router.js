@@ -11,14 +11,7 @@ const authRouter = require('express').Router();
 authRouter.post('/register',setPath(`user`),uploadFile().single('profile'),authcontroller.registerUser)
 
 
-authRouter.post('/login',(req,res,next)=>{
-    const {userName,password}= req.body;
-    res.status(200).json({
-        result:{userName,password},
-        message:"User login successfully",
-        meta:null
-    })
-})
+authRouter.post('/login',authcontroller.loginUser);
 
 
 
