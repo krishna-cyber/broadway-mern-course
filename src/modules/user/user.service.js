@@ -1,6 +1,6 @@
 const bcrypt = require('bcryptjs');
 const mailService = require('../../services/mail.service');
-const { randomStringGenerator } = require('../../utils/helper');
+const { randomStringGenerator, deleteFile } = require('../../utils/helper');
 const UserModel = require('./user.model');
 
 
@@ -8,7 +8,8 @@ class UserService {
 
 transformUserCreate = (req)=>{
     const data = req.body;   // name , email, password,confirmpassword, address, phone
-
+    console.log(data);
+    console.log(req.uploadPath);
 
 
     // hash the password
@@ -18,14 +19,16 @@ transformUserCreate = (req)=>{
     // if single files
     if(req.file)   // {}
         {
-        data.image = req.file.filename;
+            console.log(req.file);
+        data.image = `${req.uploadPath}/${req.file.filename}`;
     
     }
     
     // if multiple files
     if(req.files)    // [{},{},{}]
         {
-        data.images = req.files.map(file => file.filename);
+            console.log(req.files);
+        data.images = req.files.map(file =>`${req.uploadPath}/${file.filename}`);
     }
     
     
@@ -66,6 +69,7 @@ sendActivationEmail = async ({name,email,activateToken})=>{
 //user register function
 createUser = async (data)=>{
     try {
+        console.log(data);
 
         //create an instance of the user model
         const user = new UserModel(data);
@@ -73,9 +77,26 @@ createUser = async (data)=>{
         await user.save();
     } catch (error) {
         console.log(error);
-        
+        //image delete
+        if(data.image){
+            console.log(`./public/uploads/${data.image}`)
+            deleteFile(`./public/uploads/${data.image}`);
+        }
         
         throw error;
+    }
+}
+
+getSingleUserByFilter = async (filter)=>{
+    try {
+        const userDetail =await UserModel.findOne(filter);
+        if (userDetail) {
+            return userDetail;
+        } else {
+            throw {statusCode:422,message:"Unable to process the request"};
+        }
+    } catch (exception) {
+        throw exception;
     }
 }
 

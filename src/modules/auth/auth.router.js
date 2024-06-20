@@ -1,17 +1,14 @@
 const { hasPermission } = require('../../middlewares/rbac.miiddleware');
+const { uploadFile } = require('../../middlewares/uploader.middleware');
+const authcontroller = require('./auth.controller');
+const {setPath} = require('../../middlewares/uploader.middleware')
+
 
 const authRouter = require('express').Router();
 
 
 //register user route
-authRouter.post('/register',(req,res,next)=>{
-    const {userName,password,email}= req.body;
-    res.status(200).json({
-        result:{userName,password,email},
-        message:"User registered successfully",
-        meta:null
-    })
-})
+authRouter.post('/register',setPath(`user`),uploadFile().single('profile'),authcontroller.registerUser)
 
 
 authRouter.post('/login',(req,res,next)=>{
