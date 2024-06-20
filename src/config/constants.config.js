@@ -11,7 +11,13 @@ const userRoles = {
     SELLER: 'seller',
 }
 
+const statusType ={
+    ACTIVE:'active',
+    INACTIVE:'inactive'
+}
+
 module.exports = {
     fileFilterType,
-    userRoles
+    userRoles,
+    statusType
 }

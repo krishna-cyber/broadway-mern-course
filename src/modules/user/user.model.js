@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { userRoles } = require('../../config/constants.config');
+const { userRoles,statusType } = require('../../config/constants.config');
 const { number } = require('joi');
 const { string } = require('joi');
 
@@ -49,6 +49,11 @@ const UserSchema = new mongoose.Schema({
     },
     forgotToken:String,
     forgotFor:Date,
+    status:{
+        type:String,
+       enum: [...Object.values(statusType)],
+       default : statusType.INACTIVE
+    },
     image:String,
     createdBy:{
         type: mongoose.Schema.Types.ObjectId,
