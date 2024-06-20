@@ -10,28 +10,41 @@ class AuthController{
     loginUser = async (req,res,next)=>{
 
         try {
-            const {email,password} = req.body;
-            
-
-            //access user 
-            const user = await getSingleUserByFilter({email})
-
-            if (bcrypt.compareSync(user.password,password)) {
+            const {email,password} =  req.body;
+                console.log(email,password);
+            // access user 
+            const user = await userService.getSingleUserByFilter({email})
+                console.log(user);
+            if (bcrypt.compareSync(password,user.password)==true) {
                 if(user.status==statusType.ACTIVE){
                     const token = jwt.sign({sub:user._id}
                     ,process.env.JWT_SECRET,
                     // {expiresIn:'1 day',algorithm:}
                       );
 
-                      
-                }else{
+                      res.json({
+                        result:{
+                            userDetail:{
+                                _id:user._id,
+                               name:user.name,
+                               email:user.email,
+                               role:user.role,  
+                            },
+                            token
+                            },
+                            message:"Login Success",
+                            meta:null
+                        });
+                      }
+                else{
                     throw {statusCode:422,message:`Your account has not been activated yet`}
                 }
             } else {
-                throw{statusCode:422,message:`Credentials do not match`}
+                throw {statusCode:422,message:`Credentials do not match`}
             }
         } catch (exception) {
             console.log(exception)
+            next(exception);
         }
     }
 
@@ -54,7 +67,7 @@ class AuthController{
         
         // sending response
         res.status(200).json ({
-            result: data,
+            result: user,
             message:"User Created Successfully",
             meta: null
         })
@@ -71,7 +84,7 @@ class AuthController{
             if (activationToken.length !== 20){
                throw {statusCode: 422, message: 'Invalid activationToken'}
             }else{
-                userService.getSingleUserByFilter({activationToken})
+              await  userService.getSingleUserByFilter({activationToken})
             }
         } catch (exception) {
             console.log(exception)

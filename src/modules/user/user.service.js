@@ -75,6 +75,7 @@ createUser = async (data)=>{
         const user = new UserModel(data);
         //save the user
         await user.save();
+
     } catch (error) {
         console.log(error);
         //image delete
@@ -89,6 +90,7 @@ createUser = async (data)=>{
 
 getSingleUserByFilter = async (filter)=>{
     try {
+        console.log(filter)
         const userDetail =await UserModel.findOne(filter);
         if (userDetail) {
             return userDetail;

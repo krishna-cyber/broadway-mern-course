@@ -32,7 +32,7 @@ await userService.sendActivationEmail(data);
 
 // sending response
 res.status(200).json ({
-    result: data,
+    result: user,
     message:"User Created Successfully",
     meta: null
 })
