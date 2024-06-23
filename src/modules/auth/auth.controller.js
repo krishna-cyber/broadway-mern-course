@@ -77,21 +77,63 @@ class AuthController{
             }
         
         }
+    getUser =   async (req,res,next)=>{
+        try {
+           
+            
+        } catch (exception) {
+            console.log(exception);
+            next(exception);
+        }
+    }
 
     activateUser = async (req,res,next)=>{
         try {
             const {activationToken} = req.params;
             if (activationToken.length !== 20){
                throw {statusCode: 422, message: 'Invalid activationToken'}
-            }else{
-              await  userService.getSingleUserByFilter({activationToken})
             }
+             const user =  await  userService.getSingleUserByFilter({activationToken});
+            
+            const today = Date.now();
+            const activateFor = user.activatedFor.getTime();
+
+            if (today > activateFor){
+                throw {statusCode: 422, message: 'Token Expired'}
+            }
+
         } catch (exception) {
             console.log(exception)
         }
     }
 
+resendActivationToken = async (req,res,next)=>{
+    try {
+        const {token} = req.params;
+        const user = await userService.getSingleUserByFilter({token});
 
+         user = userService.generateUserActivationToken(user);
+
+         await user.save();  //insert or update
+        await userService.sendActivationEmail({
+            email: user.email,
+            activationToken: user.activationToken,
+            name: user.name,
+            sub: 'User activation token'
+        });
+
+        res.json({
+            result: null,
+            message: 'Activation token sent successfully',
+            meta: null
+        });
+
+
+
+    } catch (exception) {
+      next(exception);
+    }
+}
 
 }
 
