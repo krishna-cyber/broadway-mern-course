@@ -12,7 +12,7 @@ class BannerService{
     listData = async ({skip =0, filter = {}})=>{
         try {
             const count = await BannerModel.countDocuments(filter);
-            const data = await BannerModel.find(filter).populate('createdBy',["_id,"name","email","role"]).skip(skip).sort({_id:'desc'})
+            const data = await BannerModel.find(filter).populate('createdBy',["_id","name","email","role"]).skip(skip).sort({_id:'desc'})
         } catch (exception) {
             throw exception;
         }
