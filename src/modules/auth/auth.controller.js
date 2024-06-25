@@ -67,8 +67,8 @@ class AuthController{
         
         // sending response
         res.status(200).json ({
-            result: user,
-            message:"User Created Successfully",
+            result: user|| null,
+            message:"User registered successfull. Activation token sent successfull",
             meta: null
         })
             } catch (error) {
@@ -89,11 +89,12 @@ class AuthController{
 
     activateUser = async (req,res,next)=>{
         try {
-            const {activationToken} = req.params;
-            if (activationToken.length !== 20){
+            const {token} = req.params;
+            console.log(token);
+            if (token.length !== 20){
                throw {statusCode: 422, message: 'Invalid activationToken'}
             }
-             const user =  await  userService.getSingleUserByFilter({activationToken});
+             const user =  await  userService.getSingleUserByFilter(token);
             
             const today = Date.now();
             const activateFor = user.activatedFor.getTime();

@@ -1,3 +1,5 @@
+const BannerModel = require("./banner.model");
+
 class BannerService{
 
     crateBanner= async (data)=>{
@@ -17,4 +19,31 @@ class BannerService{
             throw exception;
         }
     }
+    getDetailByFilter = async (filter)=>{
+        try {
+            const bannerDetail = await BannerModel.findOne(filter);
+            if(!bannerDetail){
+                throw {statusCode:404,message:"Banner not found"};
+            }
+            return bannerDetail;
+        } catch (exception) {
+            throw exception;
+        }
+    }
+
+    deleteById = async (id)=>{
+        try {
+        const response = await BannerModel.findByIdAndDelete(id);
+        if(!response){
+            throw {statusCode:404,message:"Banner not found"};
+        }
+        return response;
+        } catch (exception) {
+            throw exception;
+        }
+    }
 }
+
+const bannerService = new BannerService();
+
+module.exports = bannerService;

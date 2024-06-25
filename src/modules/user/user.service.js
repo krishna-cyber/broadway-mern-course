@@ -8,13 +8,16 @@ class UserService {
 
     generateUserActivationToken= (data)=>{
         // send confirmation email and other verification process
+        console.log(data);
     data.activateToken = randomStringGenerator(20);
-    data.activateFor = new Date(Date.now()+24*60*60*1000);  // 24 hours
+    // set activatedFor date time 3 hours
+
+    data.activatedFor = new Date(new Date().getTime() + 3*60*60*1000);
     return data;
     }
 
 transformUserCreate = (req)=>{
-    const data = req.body;   // name , email, password,confirmpassword, address, phone
+    let data = req.body;   // name , email, password,confirmpassword, address, phone
     console.log(data);
     console.log(req.uploadPath);
 
@@ -98,7 +101,8 @@ createUser = async (data)=>{
 getSingleUserByFilter = async (filter)=>{
     try {
         console.log(filter)
-        const userDetail =await UserModel.findOne(filter);
+        const userDetail =await UserModel.findOne({activationToken:filter.token});
+        console.log(userDetail);
         if (userDetail) {
             return userDetail;
         } else {
