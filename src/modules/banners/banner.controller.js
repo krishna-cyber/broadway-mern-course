@@ -12,8 +12,14 @@ class BannerController{
                         const imageUrl = await uploadImage(`./public/uploads/banner/${image.filename}`);
                         data.image = imageUrl;
                         deleteFile(`./public/uploads/banner/${image.filename}`);
+
+                        const response = await bannerService.crateBanner(data);
                         console.log(response);
-                        
+                        res.json({
+                                result:response,
+                                message:"Banner created successfully",
+                                meta:null
+                        });
                 } catch (exception) {
                         next(exception);
                 }
