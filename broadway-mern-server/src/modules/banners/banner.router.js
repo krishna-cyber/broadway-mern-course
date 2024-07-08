@@ -10,7 +10,7 @@ const router = require('express').Router();
 
 
 // public routes
-router.get('/list-home', bannerController.listHome);
+router.get('/list-home', bannerController.listForHome);
 
 router.route('/')
     .get(loginCheck,hasPermission(['admin']))

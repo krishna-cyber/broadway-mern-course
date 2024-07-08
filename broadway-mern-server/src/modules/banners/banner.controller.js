@@ -78,7 +78,24 @@ class BannerController{
         edit = async (req,res,next)=>{
                 // get banner by id , validate and update banner details
                 try {
-                        
+                        const id = req.params.id;
+                        if(!id){
+                                throw {statusCode:400,message:"Id is required"};
+                        }
+                        const data = req.body;
+                        const image = req.file;
+                       
+                        if(image){
+                                const imageUrl = await uploadImage(`./public/uploads/banner/${image.filename}`);
+                                data.image = imageUrl;
+                                deleteFile(`./public/uploads/banner/${image.filename}`);
+                        }
+                        const response = await bannerService.updateById(id,data);
+                        res.json({
+                                result:response,
+                                message:"Banner updated successfully",
+                                meta:null
+                        });
                 } catch (exception) {
                         
                 }
@@ -105,4 +122,7 @@ class BannerController{
         }
 }
 
-module.exports = new BannerController();
+// create object of BannerController
+const bannerController = new BannerController();
+
+module.exports = bannerController;

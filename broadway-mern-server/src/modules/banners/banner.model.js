@@ -1,5 +1,6 @@
 const { ref } = require('joi');
 const mongoose = require('mongoose');
+const statusType = require('../../config/constants.config');
 
 
 const BannerSchema = new mongoose.Schema({
@@ -19,7 +20,7 @@ const BannerSchema = new mongoose.Schema({
     },
     status:{
         type:String,
-        enum: Object.values(...statusType),
+        enum: [statusType.ACTIVE,statusType.INACTIVE],
         default: statusType.ACTIVE
     },
     createdBy:{

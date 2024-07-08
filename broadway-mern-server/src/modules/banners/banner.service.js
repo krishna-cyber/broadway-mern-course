@@ -42,6 +42,17 @@ class BannerService{
             throw exception;
         }
     }
+    updateById = async (id,data)=>{
+        try {
+            const response = await BannerModel.findByIdAndUpdate(id,data,{new:true});
+            if(!response){
+                throw {statusCode:404,message:"Banner not found"};
+            }
+            return response;
+        } catch (exception) {
+            throw exception;
+        }
+    }
 }
 
 const bannerService = new BannerService();

@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken');
 
 const loginCheck = (req,res,next) => {
     try {
-        const token = req.headers['authorization'] || null;
+        let token = req.headers['authorization'] || null;
         if (!token) {
             throw {
                 statusCode: 401,

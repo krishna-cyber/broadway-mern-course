@@ -22,6 +22,8 @@ class AuthController{
                     // {expiresIn:'1 day',algorithm:}
                       );
 
+                      //refresh token
+
                       res.json({
                         result:{
                             userDetail:{
@@ -52,9 +54,9 @@ class AuthController{
 
         try {
         
-        
+        const data = req.body;
         // data transformation
-         const data = userService.transformUserCreate(req);
+          data = userService.transformUserCreate(req);
 
          console.log(data);
          //Database store
@@ -79,7 +81,14 @@ class AuthController{
         }
     getUser =   async (req,res,next)=>{
         try {
-           
+            let token = req.headers['authorization'] || null;
+            if(!token){
+                throw {statusCode: 401, message: 'Token required'}
+            }
+            token = token.split(' ')[1];
+            //token refresh token
+           const user = await userService.getSingleUserByFilter({_id:sub});
+
             
         } catch (exception) {
             console.log(exception);
