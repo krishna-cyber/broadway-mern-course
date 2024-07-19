@@ -7,8 +7,11 @@ const RouterConfig = () => {
         <>
         <BrowserRouter>
         <Routes>
-            <Route path="/" element={<LandingPage/>}/>
-            <Route path="/register" element={<LandingPage/>}/>
+            <Route path="/" element={<LandingPage/>}>
+                <Route path="/register" element={<>Register page</>}/>
+                <Route path="/login" element={<>Login page</>}/>
+            </Route>
+
 
 
             {/* 404 page */}
