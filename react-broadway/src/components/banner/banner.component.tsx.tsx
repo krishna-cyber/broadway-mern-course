@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import {SliderComponent} from "../common/slider"
+import {SliderComponent} from "../common/slider/slider.component"
 
 export const BannerComponent = () => {
     const[bannerData,setBannerData] = useState([]);
@@ -19,7 +19,10 @@ export const BannerComponent = () => {
 
     })
   return (
-   <SliderComponent data = {bannerData} />
+   <div >
+    <SliderComponent data={bannerData}/>
+   </div>
+
   )
 }
 
