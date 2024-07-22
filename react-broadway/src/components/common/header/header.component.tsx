@@ -6,13 +6,17 @@ import { Avatar, Dropdown, Navbar } from "flowbite-react";
 
 const Header = () => {
   return (
-    <Navbar fluid rounded>
-    <Navbar.Brand href="https://flowbite-react.com">
+    <Navbar fluid rounded className=' p-4 shadow-2xl'>
+    <Navbar.Brand href="#">
       <img src={logo_full} className="mr-3 h-6 sm:h-9" alt="Flowbite React Logo" />
 
     </Navbar.Brand>
     <div className="flex md:order-2">
-      <Dropdown
+      <Navbar.Collapse>
+        <Navbar.Link href='/register'>Register</Navbar.Link>
+        <Navbar.Link href='/login'>Login</Navbar.Link>
+      </Navbar.Collapse>
+      {/* <Dropdown
         arrowIcon={false}
         inline
         label={
@@ -28,17 +32,16 @@ const Header = () => {
         <Dropdown.Item>Earnings</Dropdown.Item>
         <Dropdown.Divider />
         <Dropdown.Item>Sign out</Dropdown.Item>
-      </Dropdown>
+      </Dropdown> */}
       <Navbar.Toggle />
     </div>
     <Navbar.Collapse>
       <Navbar.Link href="#" active>
         Home
       </Navbar.Link>
-      <Navbar.Link href="#">About</Navbar.Link>
-      <Navbar.Link href="#">Services</Navbar.Link>
-      <Navbar.Link href="#">Pricing</Navbar.Link>
-      <Navbar.Link href="#">Contact</Navbar.Link>
+      <Navbar.Link href="/categories">Categories</Navbar.Link>
+      <Navbar.Link href="/products">All products</Navbar.Link>
+      <Navbar.Link href="/contact">Contact</Navbar.Link>
     </Navbar.Collapse>
   </Navbar>
   )

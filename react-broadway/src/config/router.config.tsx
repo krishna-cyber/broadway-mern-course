@@ -1,5 +1,7 @@
 import { BrowserRouter, Routes,Route } from "react-router-dom"
 import LandingPage from "../pages/landing/landing.page"
+import { RegisterPage,LoginPage } from "../pages/auth/auth.page"
+import { HomePageLayout } from "../pages/layout/homepage.layout"
 
 const RouterConfig = () => {
 
@@ -7,11 +9,12 @@ const RouterConfig = () => {
         <>
         <BrowserRouter>
         <Routes>
-            <Route path="/" element={<LandingPage/>}>
-                <Route path="/register" element={<>Register page</>}/>
-                <Route path="/login" element={<>Login page</>}/>
+            <Route path="/" element={<HomePageLayout/>}>
+            <Route index element = {<LandingPage/>}/>
+            <Route path="/register" element={<RegisterPage/>}/>
+            <Route path="/login" element={<LoginPage/>}/>
             </Route>
-
+           
 
 
             {/* 404 page */}
