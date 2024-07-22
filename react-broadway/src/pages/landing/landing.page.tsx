@@ -5,6 +5,7 @@ import {
   ImageWithTitleCard,
   SingleCardItem,
 } from "../../components/common/card/single-card.component.tsx";
+import { Link, NavLink } from "react-router-dom";
 
 const LandingPage = () => {
   return (
@@ -14,9 +15,9 @@ const LandingPage = () => {
 
       <div className="flex justify-between mx-10 sm:mx-20 mt-3 border-b border-solid border-teal-500/50 pb-2">
         <h3>Category List</h3>
-        <a href="/category">
+        <Link to="/categories">
           <Button gradientDuoTone="cyanToBlue">View all &rarr;</Button>
-        </a>
+        </Link>
       </div>
       <div className=" mx-10 mt-2 grid gap-3 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6 flex-wrap">
         <ImageWithTitleCard

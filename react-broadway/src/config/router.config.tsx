@@ -13,6 +13,7 @@ const RouterConfig = () => {
             <Route index element = {<LandingPage/>}/>
             <Route path="/register" element={<RegisterPage/>}/>
             <Route path="/login" element={<LoginPage/>}/>
+            <Route path="/categories" element={<div>category</div>}/>
             </Route>
            
 
