@@ -1,20 +1,29 @@
 import { HiShoppingBag } from "react-icons/hi";
 import cart from "../../assets/images/e-commerce cart.jpg";
 import { useForm } from "react-hook-form";
-import { TextInputComponent } from "../../components/common/form/input.component";
+import { TextAreaComponent, TextInputComponent } from "../../components/common/form/form.components";
+import { NavLink } from "react-router-dom";
 export const RegisterPage = () => {
   type Inputs = {
-    firstName:string,
-    lastName:string,
-    email:string,
-    phone:string,
-    password:string,
-    confirmPassword:string,
+    firstName: string;
+    lastName: string;
+    email: string;
+    phone: string;
+    password: string;
+    confirmPassword: string;
+    address:string
+    image:object
   };
+
+  const onSubmit = (data:any)=>{
+    console.log(data)
+  }
+
   const {
     control,
     handleSubmit,
     watch,
+    setValue,
     formState: { errors },
   } = useForm<Inputs>();
 
@@ -45,7 +54,7 @@ export const RegisterPage = () => {
               Registration for the e-commerce website.
             </p>
 
-            <form className="mt-8 grid grid-cols-6 gap-6">
+            <form onSubmit={handleSubmit(onSubmit)} className="mt-8 grid grid-cols-6 gap-6">
               <div className="col-span-6 sm:col-span-3">
                 <label
                   htmlFor="FirstName"
@@ -89,7 +98,7 @@ export const RegisterPage = () => {
                 <TextInputComponent
                   control={control}
                   type={"email"}
-                  name="lastName"
+                  name="email"
                   errMsg={errors?.email?.message}
                   required={true}
                 />
@@ -106,7 +115,7 @@ export const RegisterPage = () => {
                 <TextInputComponent
                   control={control}
                   type={"text"}
-                  name="lastName"
+                  name="phone"
                   errMsg={errors?.phone?.message}
                   required={true}
                 />
@@ -159,23 +168,18 @@ export const RegisterPage = () => {
                   className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
                   id="file_input"
                   type="file"
+                  onChange={(e:any)=>{
+                    e.preventDefault();
+                    const image = e.target.files['0'];
+                    setValue('image',image)
+                  }}
                 />
               </div>
 
               {/* address */}
               <div className="col-span-6 sm:col-span-3">
-                <label
-                  htmlFor="message"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                >
-                  Address
-                </label>
-                <textarea
-                  id="message"
-                  rows={4}
-                  className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="Enter your address details..."
-                ></textarea>
+               
+                <TextAreaComponent control={control} name="address" errMsg={errors?.address?.message} />
               </div>
 
               {/* <div className="col-span-6">
@@ -216,9 +220,11 @@ export const RegisterPage = () => {
 
                 <p className="mt-4 text-sm text-gray-500 sm:mt-0">
                   Already have an account?
-                  <a href="#" className="text-gray-700 underline">
-                    Log in
-                  </a>
+                 
+                  <NavLink to={"/login"} className="text-gray-700 underline ">
+                    {" "}
+                  Log in
+                  </NavLink>
                   .
                 </p>
               </div>
