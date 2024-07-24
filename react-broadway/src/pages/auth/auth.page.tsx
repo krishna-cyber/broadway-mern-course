@@ -3,7 +3,25 @@ import cart from "../../assets/images/e-commerce cart.jpg";
 import { useForm } from "react-hook-form";
 import { TextAreaComponent, TextInputComponent } from "../../components/common/form/form.components";
 import { NavLink } from "react-router-dom";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+import {instance} from '../../config/axios.config'
+
+
 export const RegisterPage = () => {
+
+const RegisterDTO = yup.object({
+    firstName: yup.string().required('firstName is required'),
+    lastName: yup.string().required('lastName is required'),
+    phone:yup.string(),
+    address: yup.string().required('Address is required'),
+    email: yup.string().email().required('Email is required'),
+   password:yup.string().matches(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/, 'Password must contain at least 8 characters, including one letter and one number').required('Password is required'),
+   confirmPassword: yup.string().oneOf([yup.ref('password')], 'Password and Confirm password must match').required('Confirm Password is required'), 
+  role:yup.string().default('customer'),
+  image : yup.mixed().required('Image is required'),
+})
+
   type Inputs = {
     firstName: string;
     lastName: string;
@@ -12,20 +30,35 @@ export const RegisterPage = () => {
     password: string;
     confirmPassword: string;
     address:string
-    image:object
+    image?:object | null
   };
 
-  const onSubmit = (data:any)=>{
-    console.log(data)
-  }
+  const onSubmit =async  (data:any)=>{
+    // console.log(data)
+    
+    //submitting form data to the server
+    try {
+      const response = await instance.post('/auth/register',data,{
+        headers:{
+          'Content-Type':'multipart/form-data'
+        }
+      })
+      console.log("success submission of form data",response.data)
+    } catch (error) {
+      console.log(error)
+    }
 
+  }
+  //ignore typescript
+     
   const {
     control,
     handleSubmit,
-    watch,
     setValue,
     formState: { errors },
-  } = useForm<Inputs>();
+  } = useForm<Inputs>({
+    resolver: yupResolver(RegisterDTO),
+  });
 
   return (
     <section className="bg-white">
