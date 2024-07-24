@@ -2,16 +2,20 @@ import { Avatar, Dropdown, Navbar,Badge, Sidebar } from "flowbite-react";
 import logo from '../../assets/images/logo/logo-only.png'
 import { HiBell, HiCurrencyDollar, HiLogout, HiArrowSmRight, HiChartPie, HiInbox, HiShoppingBag, HiTable, HiUser, HiViewBoards } from "react-icons/hi";
 import { HiCircleStack, HiSquare3Stack3D, HiSquaresPlus } from "react-icons/hi2";
+import { useState } from "react";
 
 
 export const AdminPanel = ()=>{
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   return(
 <div className="antialiased bg-gray-50 dark:bg-gray-900">
 <Navbar fluid rounded className="bg-white border-b border-gray-200 px-4 py-2.5 dark:bg-gray-800 dark:border-gray-700 fixed left-0 right-0 top-0 z-50">
       <Navbar.Brand href="https://flowbite-react.com">
         <img src={logo} className="mr-3 h-6 sm:h-9" alt="Broadway logo" />
         <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">Broadway E-commerce</span>
-        <Navbar.Toggle />
+        <Navbar.Toggle onClick={()=>{
+          setSidebarOpen(!sidebarOpen)
+        }} />
       </Navbar.Brand>
      
       <div className="flex gap-4 md:order-2">
@@ -73,7 +77,7 @@ export const AdminPanel = ()=>{
         </Dropdown>
         
       </div>
-      <Navbar.Collapse>
+      {/* <Navbar.Collapse>
         <Navbar.Link href="#" active>
           Home
         </Navbar.Link>
@@ -81,9 +85,12 @@ export const AdminPanel = ()=>{
         <Navbar.Link href="#">Services</Navbar.Link>
         <Navbar.Link href="#">Pricing</Navbar.Link>
         <Navbar.Link href="#">Contact</Navbar.Link>
-      </Navbar.Collapse>
+      </Navbar.Collapse> */}
     </Navbar>
-    <Sidebar className="fixed top-0 left-0 z-40 w-64 h-screen pt-14 transition-transform -translate-x-full bg-white border-r border-gray-200 md:translate-x-0 dark:bg-gray-800 dark:border-gray-700" aria-label="Sidebar with call to action button example">
+    <Sidebar className="fixed top-0 left-0 z-40 w-64 h-screen pt-14 transition-transform -translate-x-full bg-white border-r border-gray-200 md:translate-x-0 dark:bg-gray-800 dark:border-gray-700" aria-label="Sidebar Menu">
+      
+    
+        
       <Sidebar.Items>
         <Sidebar.ItemGroup>
           <Sidebar.Item href="#" icon={HiChartPie}>
@@ -143,6 +150,8 @@ export const AdminPanel = ()=>{
           Turn new navigation off
         </a>
       </Sidebar.CTA>
+   
+      
     </Sidebar>
        <main className="p-4 md:ml-64 h-auto pt-20">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
