@@ -19,7 +19,7 @@ const RegisterDTO = yup.object({
    password:yup.string().matches(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/, 'Password must contain at least 8 characters, including one letter and one number').required('Password is required'),
    confirmPassword: yup.string().oneOf([yup.ref('password')], 'Password and Confirm password must match').required('Confirm Password is required'), 
   role:yup.string().default('customer'),
-  image : yup.mixed().required('Image is required'),
+  profile : yup.mixed().required('Image is required'),
 })
 
   type Inputs = {
@@ -30,7 +30,7 @@ const RegisterDTO = yup.object({
     password: string;
     confirmPassword: string;
     address:string
-    image?:object | null
+    profile?:object | null
   };
 
   const onSubmit =async  (data:any)=>{
@@ -204,7 +204,7 @@ const RegisterDTO = yup.object({
                   onChange={(e:any)=>{
                     e.preventDefault();
                     const image = e.target.files['0'];
-                    setValue('image',image)
+                    setValue('profile',image)
                   }}
                 />
               </div>
