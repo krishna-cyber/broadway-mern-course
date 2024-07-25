@@ -5,6 +5,7 @@ import { HomePageLayout } from "../pages/layout/homepage.layout"
 import {AdminPanel} from "../pages/layout/dashboard.layout"
 import { CategoryDetail } from "../pages/category/category-detail.page"
 import { ErrorPage } from "../pages/error/error.page"
+import UserActivate from "../pages/auth/activate-user.page"
 
 const RouterConfig = () => {
 
@@ -21,7 +22,7 @@ const RouterConfig = () => {
             </Route>
             <Route path="/admin" element={<AdminPanel/>}/>
 
-
+            <Route path="/activate/:token" element={<UserActivate/>}/>
             {/* 404 page */}
             <Route path="*" element={<ErrorPage url="/" label="Back to Homepage"/>}/>
         </Routes>

@@ -16,11 +16,15 @@ const instance = axios.create({
 //   interceptors
 
 instance.interceptors.response.use((response:AxiosResponse) => {
-   console.log("success:" +response);
-    return response
+   console.log("success:intercept" +response);
+    return response.data
 },(error:AxiosError) => {
-    console.log("Error axios call:"+error)
-    throw error
+    if(error.code === "ERR_BAD_REQUEST"){
+        console.log("Bad Request");
+        throw error.response
+    }else{
+        //Manipulation of error
+    }
 })
 
 

@@ -6,6 +6,46 @@ import { useState } from "react";
 
 
 export const AdminPanel = ()=>{
+
+  const sideBarMenuLinks = [
+    {
+      menu : "Home",
+      icon:HiArrowSmRight,
+      link:"/"
+    },
+    {
+      menu:"Dashboard",
+      icon:HiChartPie,
+      link:"/admin/dashboard"
+    },
+    {
+      menu:"Banner Management",
+      icon:HiViewBoards,
+      link:"/admin/banner"
+    },{
+      menu:"Category Management",
+      icon:HiInbox,
+      link:"/admin/category"
+    },
+    {
+      menu:"Product Management",
+      icon:HiShoppingBag,
+      link:"/admin/product"
+    },
+    {
+      menu:"User Management",
+      icon:HiUser,
+      link:"/admin/user"
+    },
+    {
+      menu:"Order Management",
+      icon:HiTable,
+      link:"/admin/order"
+    },
+    
+  ]
+
+
   const [sidebarOpen, setSidebarOpen] = useState(false);
   return(
 <div className="antialiased bg-gray-50 dark:bg-gray-900">
@@ -93,7 +133,17 @@ export const AdminPanel = ()=>{
         
       <Sidebar.Items>
         <Sidebar.ItemGroup>
-          <Sidebar.Item href="#" icon={HiChartPie}>
+          {
+            sideBarMenuLinks && sideBarMenuLinks.map((menu,index)=>{
+              return(
+                <Sidebar.Item key={index} href={menu.link} icon={menu.icon}>
+                  {menu.menu}
+                </Sidebar.Item>
+              )
+            })
+
+          }
+          {/* <Sidebar.Item href="#" icon={HiChartPie}>
             Dashboard
           </Sidebar.Item>
           <Sidebar.Item href="#" icon={HiViewBoards}>
@@ -113,7 +163,7 @@ export const AdminPanel = ()=>{
           </Sidebar.Item>
           <Sidebar.Item href="#" icon={HiTable}>
             Sign Up
-          </Sidebar.Item>
+          </Sidebar.Item> */}
         </Sidebar.ItemGroup>
       </Sidebar.Items>
       <Sidebar.CTA>

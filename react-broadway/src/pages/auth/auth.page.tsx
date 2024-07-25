@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { HiShoppingBag } from "react-icons/hi";
 import cart from "../../assets/images/e-commerce cart.jpg";
 import { useForm } from "react-hook-form";
@@ -6,10 +7,14 @@ import { NavLink } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup"
 import authServiceInstance from "./auth.service";
+import { toast } from "react-toastify";
+import { Button } from "flowbite-react";
+import { AiOutlineLoading } from "react-icons/ai";
 
 
 
 export const RegisterPage = () => {
+  const [loading,setLoading ] = useState(false);
 
 const RegisterDTO = yup.object({
    fullName: yup.string().required('Name is required'),
@@ -29,11 +34,16 @@ const RegisterDTO = yup.object({
      
     //submitting form data to the server
     try {
+      setLoading(true);
       const response = await authServiceInstance.postRequest('/auth/register',data,{file:true})
 
       console.log("success submission of form data",response.data)
+      toast.info('Registration success ! Please check your email to verify your account');
     } catch (error) {
-      console.log(error)
+      console.log("submit form exception:"+error)
+      //error during the submission of form data
+    }finally{
+      setLoading(false);
     }
 
   }
@@ -206,9 +216,10 @@ const RegisterDTO = yup.object({
               </div>
 
               <div className="col-span-6 sm:flex sm:items-center sm:gap-4">
-                <button className="inline-block shrink-0 rounded-md border border-blue-600 bg-blue-600 px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-blue-600 focus:outline-none focus:ring active:text-blue-500">
+                <Button type="submit" isProcessing={loading}  processingSpinner={<AiOutlineLoading className="h-6 w-6 animate-spin" />} disabled={loading} className=" w-[40%]">Create an account</Button>
+                {/* <button className="inline-block shrink-0 rounded-md border border-blue-600 bg-blue-600 px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-blue-600 focus:outline-none focus:ring active:text-blue-500">
                   Create an account
-                </button>
+                </button> */}
 
                 <p className="mt-4 text-sm text-gray-500 sm:mt-0">
                   Already have an account?

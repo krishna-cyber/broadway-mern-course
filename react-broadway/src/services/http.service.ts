@@ -34,10 +34,22 @@ abstract class HttpService {
             console.log("success post request",response);
             return response;
         } catch (error) {
-            console.log(error);
             throw error;
         }
     }
+    getRequest = async (url:string,config:any=null)=>{
+        try {
+            this.#setHeaders(config);
+
+            //TODO params for get request
+            const response = await instance.get(url,{
+                headers:{...this.headers}
+            });
+            return response;
+        } catch (error) {
+            console.log("get request error",error);
+        }
+    };
 }
 
 
