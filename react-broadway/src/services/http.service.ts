@@ -22,8 +22,8 @@ abstract class HttpService {
             }
         }
     }
-    postRequest = async (url:string,data:any = {},config:any=null)=>{
-        
+     postRequest = async (url:string,data:any = {},config:any=null)=>{
+        console.log("post request httprequest",url,data,config);
         
         try {
             this.#setHeaders(config);

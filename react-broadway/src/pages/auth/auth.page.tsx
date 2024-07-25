@@ -3,16 +3,16 @@ import cart from "../../assets/images/e-commerce cart.jpg";
 import { useForm } from "react-hook-form";
 import { TextAreaComponent, TextInputComponent } from "../../components/common/form/form.components";
 import { NavLink } from "react-router-dom";
-import * as yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
-import {instance} from '../../config/axios.config'
+import { yupResolver } from "@hookform/resolvers/yup"
+import * as yup from "yup"
+import authServiceInstance from "./auth.service";
+
 
 
 export const RegisterPage = () => {
 
 const RegisterDTO = yup.object({
-    firstName: yup.string().required('firstName is required'),
-    lastName: yup.string().required('lastName is required'),
+   fullName: yup.string().required('Name is required'),
     phone:yup.string(),
     address: yup.string().required('Address is required'),
     email: yup.string().email().required('Email is required'),
@@ -20,29 +20,17 @@ const RegisterDTO = yup.object({
    confirmPassword: yup.string().oneOf([yup.ref('password')], 'Password and Confirm password must match').required('Confirm Password is required'), 
   role:yup.string().default('customer'),
   profile : yup.mixed().required('Image is required'),
-})
+}).required()
 
-  type Inputs = {
-    firstName: string;
-    lastName: string;
-    email: string;
-    phone: string;
-    password: string;
-    confirmPassword: string;
-    address:string
-    profile?:object | null
-  };
+  
 
   const onSubmit =async  (data:any)=>{
     // console.log(data)
-    
+     
     //submitting form data to the server
     try {
-      const response = await instance.post('/auth/register',data,{
-        headers:{
-          'Content-Type':'multipart/form-data'
-        }
-      })
+      const response = await authServiceInstance.postRequest('/auth/register',data,{file:true})
+
       console.log("success submission of form data",response.data)
     } catch (error) {
       console.log(error)
@@ -56,7 +44,7 @@ const RegisterDTO = yup.object({
     handleSubmit,
     setValue,
     formState: { errors },
-  } = useForm<Inputs>({
+  } = useForm({
     resolver: yupResolver(RegisterDTO),
   });
 
@@ -88,7 +76,7 @@ const RegisterDTO = yup.object({
             </p>
 
             <form onSubmit={handleSubmit(onSubmit)} className="mt-8 grid grid-cols-6 gap-6">
-              <div className="col-span-6 sm:col-span-3">
+              <div className="col-span-6 sm:col-span-6">
                 <label
                   htmlFor="FirstName"
                   className="block text-sm font-medium text-gray-700"
@@ -97,27 +85,13 @@ const RegisterDTO = yup.object({
                 </label>
                 <TextInputComponent
                   control={control}
-                  name="firstName"
-                  errMsg={errors?.firstName?.message}
+                  name="fullName"
+                  errMsg={errors?.fullName?.message}
                   required={true}
                 />
               </div>
 
-              <div className="col-span-6 sm:col-span-3">
-                <label
-                  htmlFor="LastName"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Last Name
-                </label>
-
-                <TextInputComponent
-                  control={control}
-                  name="lastName"
-                  errMsg={errors?.lastName?.message}
-                  required={true}
-                />
-              </div>
+             
 
               <div className="col-span-6">
                 <label
@@ -215,21 +189,6 @@ const RegisterDTO = yup.object({
                 <TextAreaComponent control={control} name="address" errMsg={errors?.address?.message} />
               </div>
 
-              {/* <div className="col-span-6">
-                <label htmlFor="MarketingAccept" className="flex gap-4">
-                  <input
-                    type="checkbox"
-                    id="MarketingAccept"
-                    name="marketing_accept"
-                    className="size-5 rounded-md border-gray-200 bg-white shadow-sm"
-                  />
-
-                  <span className="text-sm text-gray-700">
-                    I want to receive emails about events, product updates and
-                    company announcements.
-                  </span>
-                </label>
-              </div> */}
 
               <div className="col-span-6">
                 <p className="text-sm text-gray-500">
@@ -268,6 +227,10 @@ const RegisterDTO = yup.object({
     </section>
   );
 };
+
+
+
+// Login page
 export const LoginPage = () => {
   return <div>LoginPage</div>;
 };
