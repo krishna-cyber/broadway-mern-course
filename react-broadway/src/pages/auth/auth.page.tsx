@@ -15,6 +15,7 @@ import { AiOutlineLoading } from "react-icons/ai";
 
 export const RegisterPage = () => {
   const [loading,setLoading ] = useState(false);
+ 
 
 const RegisterDTO = yup.object({
    fullName: yup.string().required('Name is required'),
@@ -27,7 +28,15 @@ const RegisterDTO = yup.object({
   profile : yup.mixed().required('Image is required'),
 }).required()
 
-  
+const {
+  control,
+  handleSubmit,
+  setValue,
+  setError,
+  formState: { errors },
+} = useForm({
+  resolver: yupResolver(RegisterDTO),
+});
 
   const onSubmit =async  (data:any)=>{
     // console.log(data)
@@ -39,24 +48,24 @@ const RegisterDTO = yup.object({
 
       console.log("success submission of form data",response.data)
       toast.info('Registration success ! Please check your email to verify your account');
-    } catch (error) {
-      console.log("submit form exception:"+error)
+    } catch (error:any) {
+      console.log("submit form exception:"+error.data.result)
       //error during the submission of form data
+      // seperating the result from the error object based on validation error field
+     
+      if(error.status===400){
+        //setting error for fields by server
+        Object.keys(error.data.result).map((field:any)=>{
+          setError(field,{message:error.data.result[field]})
+        })
+      }
     }finally{
       setLoading(false);
     }
 
   }
-  //ignore typescript
-     
-  const {
-    control,
-    handleSubmit,
-    setValue,
-    formState: { errors },
-  } = useForm({
-    resolver: yupResolver(RegisterDTO),
-  });
+
+ 
 
   return (
     <section className="bg-white">

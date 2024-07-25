@@ -20,7 +20,7 @@ instance.interceptors.response.use((response:AxiosResponse) => {
     return response.data
 },(error:AxiosError) => {
     if(error.code === "ERR_BAD_REQUEST"){
-        console.log("Bad Request");
+        console.log("Bad Request",error);
         throw error.response
     }else{
         //Manipulation of error
