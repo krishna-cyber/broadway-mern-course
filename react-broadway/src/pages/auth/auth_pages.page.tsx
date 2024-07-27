@@ -1,16 +1,19 @@
-import { useState } from "react";
+import { useState,useEffect} from "react";
 import { HiShoppingBag } from "react-icons/hi";
 import cart from "../../assets/images/e-commerce cart.jpg";
 import { useForm } from "react-hook-form";
 import { TextAreaComponent, TextInputComponent } from "../../components/common/form/form.components";
-import { NavLink } from "react-router-dom";
+import { NavLink,useNavigate, useParams } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup"
 import authServiceInstance from "./auth.service";
 import { toast } from "react-toastify";
-import { Button } from "flowbite-react";
+import { Button,Modal,HR } from "flowbite-react";
 import { AiOutlineLoading } from "react-icons/ai";
-
+import { HiLogin, HiOutlineExclamationCircle } from "react-icons/hi";
+import { MessageConstants } from "../../config/constants";
+import logo from "../../assets/images/logo/logo-only.png"
+import { FaFacebook, FaGoogle } from "react-icons/fa";
 
 
 export const RegisterPage = () => {
@@ -249,8 +252,183 @@ const {
 };
 
 
+export const UserActivate = () => {
+  const params = useParams<{ token: string }>();
+  const [loading, setLoading] = useState(true);
+  const [msg, setMsg] = useState("");
+  const [openModal, setOpenModal] = useState(false);
+  const navigate = useNavigate();
+
+  // activate user function
+  const activateUser = async () => {
+    try {
+      const response = await authServiceInstance.getRequest(
+        `/auth/activate/${params.token}`
+      );
+      setMsg(
+        ` User has been activated successfully. You can now login to your account.`);
+      console.log(response);
+    } catch (error:any) {
+      console.log(error)
+      if(+error.status===422 && error.data.message === MessageConstants.INVALID_TOKEN){
+        //ask user to resend activation token
+        setMsg(MessageConstants.INVALID_TOKEN);
+        // popup message to resend activation token
+        setOpenModal(!openModal);
+      }
+
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    // activate user function call
+    activateUser();
+
+  }, []);
+
+  return (
+    <section className="bg-white dark:bg-gray-900">
+      <div className="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6">
+        <div className="mx-auto max-w-screen-sm lg:mt-24 text-center ">
+          <h1 className="mb-4 text-2xl tracking-tight font-extrabold lg:text-7xl text-primary-600 dark:text-primary-500">
+            {msg}
+          </h1>
+          <p className="mb-4 text-lg font-light text-gray-500 dark:text-gray-400">
+            User has been activated successfully. You can now login to your
+            account.
+          </p>
+          <NavLink to="/login">
+            <Button
+              className=" mx-auto  items-center"
+              gradientDuoTone="greenToBlue"
+            >
+              Back to Login
+              <HiLogin className="ml-2 h-5 w-5" />
+            </Button>
+          </NavLink>
+        </div>
+      </div>
+
+
+      {/* Modal if token exired and model for resend activation Token */}
+      <Modal show={openModal} size="md" onClose={() => setOpenModal(false)} popup>
+        <Modal.Header></Modal.Header>
+        <Modal.Body>
+          <div className="text-center">
+            <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200" />
+            <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+              {msg}
+            </h3>
+            <div className="flex justify-center gap-4">
+              {/* <Button color="failure" onClick={() => setOpenModal(false)}>
+                {"Yes, I'm sure"}
+              </Button>
+              <Button color="gray" onClick={() => setOpenModal(false)}>
+                No, cancel
+              </Button> */}
+              <small className="text-gray-500 dark:text-gray-400">
+               It seems your activation token has expired. Please click on the button below to resend the activation token.
+              </small>
+            </div>
+          </div>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button color={"failure"} onClick={() => setOpenModal(false)}>Resend Token</Button>
+          <Button color="light" onClick={() => setOpenModal(false)}>
+            Decline
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    </section>
+  );
+};
+
+
+
 
 // Login page
 export const LoginPage = () => {
-  return <div>LoginPage</div>;
+
+  const LoginDTO = yup.object({
+    email: yup.string().email().required('Email is required'),
+    password: yup.string().required('Password is required')
+  })
+
+
+  interface LoginProps {
+    email: string;
+    password: string
+  }
+  
+  const {
+    control,
+    handleSubmit,
+    setValue,
+    setError,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(LoginDTO),
+  });
+
+
+  const onSubmit = async (data:LoginProps)=>{
+    console.log(data)
+  }
+  return (
+    <section className="bg-gray-50 dark:bg-gray-900">
+  <div className="flex flex-col items-center justify-center px-1 py-4 mx-auto ">
+      <a href="#" className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
+          <img className="w-8 h-8 mr-2" src={logo} alt="logo"/>
+         Broadway 
+      </a>
+      <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+          <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
+              <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
+                  Sign in to your account
+              </h1>
+              <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 md:space-y-6" action="#">
+                  <div>
+                      <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your email</label>
+                     <TextInputComponent control={control} name="email" errMsg={errors?.email?.message} required={true} placeholder="user@mail.com"/>
+                  </div>
+                  <div>
+                      <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
+                      <TextInputComponent control={control} name="password" errMsg={errors?.password?.message} required={true} placeholder="••••••••"/>
+                  </div>
+                  <div className="flex items-center justify-between">
+                      <div className="flex items-start">
+                          <div className="flex items-center h-5">
+                            <input id="remember" aria-describedby="remember" type="checkbox" className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800" />
+                          </div>
+                          <div className="ml-3 text-sm">
+                            <label htmlFor="remember" className="text-gray-500 dark:text-gray-300">Remember me</label>
+                          </div>
+                      </div>
+                      <NavLink to={'forgot-password'} className="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500">Forgot password?</NavLink>
+                  </div>
+                  <button type="submit" className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Sign in</button>
+                   
+                  <p className="text-sm font-light text-gray-500 dark:text-gray-400 ">
+                      Don’t have an account yet? <NavLink to="/register" className="font-medium text-primary-600 hover:underline dark:text-primary-500">Sign up</NavLink>
+                  </p>
+                  <HR  />
+                  <div className=" flex flex-nowrap">
+                  <button type="button" className="text-white bg-[#3b5998] hover:bg-[#3b5998]/90 focus:ring-4 focus:outline-none focus:ring-[#3b5998]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#3b5998]/55 me-2 ">
+ <FaFacebook/>
+Sign in with Facebook
+</button>
+<button type="button" className="text-white bg-[#4285F4] hover:bg-[#4285F4]/90 focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#4285F4]/55 me-2 ">
+<FaGoogle/>
+Sign in with Google
+</button>
+                  </div>
+                 
+                  
+              </form>
+          </div>
+      </div>
+  </div>
+</section>
+  )
 };

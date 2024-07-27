@@ -1,11 +1,10 @@
 import { BrowserRouter, Routes,Route } from "react-router-dom"
 import LandingPage from "../pages/landing/landing.page"
-import { RegisterPage,LoginPage } from "../pages/auth/auth.page"
+import { RegisterPage,LoginPage,UserActivate } from "../pages/auth/auth_pages.page"
 import { HomePageLayout } from "../pages/layout/homepage.layout"
 import {AdminPanel} from "../pages/layout/dashboard.layout"
 import { CategoryDetail } from "../pages/category/category-detail.page"
 import { ErrorPage } from "../pages/error/error.page"
-import UserActivate from "../pages/auth/activate-user.page"
 
 const RouterConfig = () => {
 

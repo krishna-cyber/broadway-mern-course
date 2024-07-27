@@ -9,6 +9,7 @@ export interface TextInputInterface {
   errMsg?: string | null;
   type?: string;
   rows?: number;
+  placeholder?:string;
 }
 
 export const TextInputComponent = ({
@@ -16,21 +17,19 @@ export const TextInputComponent = ({
   type = "text",
   name,
   defaultValue = "",
-  required = false,
+  placeholder="",
   errMsg = null,
 }: TextInputInterface) => {
   const { field } = useController({
     control: control,
     name: name,
     defaultValue: defaultValue,
-    rules: {
-      required: required,
-    },
   });
   return (
     <>
       <input
         type={type}
+        placeholder={placeholder}
         {...field}
         className={`mt-1 w-full rounded-md ${
           errMsg
@@ -55,9 +54,6 @@ export const TextAreaComponent = ({
     control: control,
     name: name,
     defaultValue: defaultValue,
-    rules: {
-      required: required,
-    },
   });
 
   return (
