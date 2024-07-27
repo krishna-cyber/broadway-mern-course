@@ -6,7 +6,7 @@ import {
   TextAreaComponent,
   TextInputComponent,
 } from "../../components/common/form/form.components";
-import { NavLink, useNavigate, useParams } from "react-router-dom";
+import { Navigate, NavLink, useNavigate, useParams } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import authServiceInstance from "./auth.service";
@@ -260,9 +260,6 @@ export const RegisterPage = () => {
                 >
                   Create an account
                 </Button>
-                {/* <button className="inline-block shrink-0 rounded-md border border-blue-600 bg-blue-600 px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-blue-600 focus:outline-none focus:ring active:text-blue-500">
-                  Create an account
-                </button> */}
 
                 <p className="mt-4 text-sm text-gray-500 sm:mt-0">
                   Already have an account?
@@ -385,6 +382,9 @@ export const UserActivate = () => {
 
 // Login page
 export const LoginPage = () => {
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
   const LoginDTO = yup.object({
     email: yup.string().email().required("Email is required"),
     password: yup.string().required("Password is required"),
@@ -406,7 +406,21 @@ export const LoginPage = () => {
   });
 
   const onSubmit = async (data: LoginProps) => {
-    console.log(data);
+    try {
+      console.log(data);
+      setLoading(true);
+      const response:any = await authServiceInstance.postRequest(
+        "/auth/login",
+        data
+      );
+      toast.success("User logged in successfully");
+      navigate(`/${response?.result?.userDetail?.role}`);
+    } catch (error:any) {
+      console.log(`error from signin page`, error);
+      toast.error(error?.data?.message)
+    } finally {
+      setLoading(false);
+    }
   };
   return (
     <section className="bg-gray-50 dark:bg-gray-900">
@@ -477,12 +491,19 @@ export const LoginPage = () => {
                   Forgot password?
                 </NavLink>
               </div>
-              <button
+              <Button
+                disabled={loading}
+                isProcessing={loading}
+                processingSpinner={
+                  <AiOutlineLoading className="h-6 w-6 animate-spin" />
+                }
+                size={"xm"}
+                color={"null"}
                 type="submit"
                 className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
               >
                 Sign in
-              </button>
+              </Button>
 
               <p className="text-sm font-light text-gray-500 dark:text-gray-400 ">
                 Don’t have an account yet?{" "}
@@ -495,20 +516,24 @@ export const LoginPage = () => {
               </p>
               <HR />
               <div className=" flex flex-nowrap">
-                <button
-                  type="button"
+                <Button
                   className="text-white bg-[#3b5998] hover:bg-[#3b5998]/90 focus:ring-4 focus:outline-none focus:ring-[#3b5998]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#3b5998]/55 me-2 "
+                  as={"button"}
+                  size={"xs"}
+                  color={"blue"}
                 >
-                  <FaFacebook />
+                  <FaFacebook className="mr-2 h-5 w-5" />
                   Sign in with Facebook
-                </button>
-                <button
-                  type="button"
-                  className="text-white bg-[#4285F4] hover:bg-[#4285F4]/90 focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#4285F4]/55 me-2 "
+                </Button>
+                <Button
+                  color={"null"}
+                  className="text-white bg-[#3b5998] hover:bg-[#3b5998]/90 focus:ring-4 focus:outline-none focus:ring-[#3b5998]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#3b5998]/55 me-2 "
+                  as={"button"}
+                  size={"xs"}
                 >
-                  <FaGoogle />
+                  <FaGoogle className="mr-2 h-5 w-5" />
                   Sign in with Google
-                </button>
+                </Button>
               </div>
             </form>
           </div>
