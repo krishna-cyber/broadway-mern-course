@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { HiShoppingBag } from "react-icons/hi";
 import cart from "../../assets/images/e-commerce cart.jpg";
 import { useForm } from "react-hook-form";
@@ -17,6 +17,7 @@ import { HiLogin, HiOutlineExclamationCircle } from "react-icons/hi";
 import { MessageConstants } from "../../config/constants";
 import logo from "../../assets/images/logo/logo-only.png";
 import { FaFacebook, FaGoogle } from "react-icons/fa";
+import AuthContext from "../../context/auth.context";
 
 export const RegisterPage = () => {
   const [loading, setLoading] = useState(false);
@@ -383,7 +384,11 @@ export const UserActivate = () => {
 // Login page
 export const LoginPage = () => {
   const [loading, setLoading] = useState(false);
+  const loggedInUser : any = useContext(AuthContext);
   const navigate = useNavigate();
+  
+
+
 
   const LoginDTO = yup.object({
     email: yup.string().email().required("Email is required"),
@@ -409,23 +414,32 @@ export const LoginPage = () => {
     try {
       console.log(data);
       setLoading(true);
-      const response:any = await authServiceInstance.postRequest(
+      const response: any = await authServiceInstance.postRequest(
         "/auth/login",
         data
       );
+      localStorage.setItem("_at", response?.result?.token);
       toast.success("User logged in successfully");
       navigate(`/${response?.result?.userDetail?.role}`);
-    } catch (error:any) {
+    } catch (error: any) {
       console.log(`error from signin page`, error);
-      toast.error(error?.data?.message)
+      toast.error(error?.data?.message);
     } finally {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    if(loggedInUser){
+      toast.success("User has already logged in");
+      navigate(`/${loggedInUser?.role}/dashboard`);
+    }
+  }, [loggedInUser]);
+
   return (
     <section className="bg-gray-50 dark:bg-gray-900">
       <div className="flex flex-col items-center justify-center px-1 py-4 mx-auto ">
-        <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+        <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-lg xl:p-0 dark:bg-gray-800 dark:border-gray-700">
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
             <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
               Sign in to your account
@@ -433,7 +447,6 @@ export const LoginPage = () => {
             <form
               onSubmit={handleSubmit(onSubmit)}
               className="space-y-4 md:space-y-6"
-              action="#"
             >
               <div>
                 <label
@@ -458,6 +471,7 @@ export const LoginPage = () => {
                   Password
                 </label>
                 <TextInputComponent
+                type="password"
                   control={control}
                   name="password"
                   errMsg={errors?.password?.message}
@@ -514,20 +528,20 @@ export const LoginPage = () => {
                   Sign up
                 </NavLink>
               </p>
-              <HR />
-              <div className=" flex flex-nowrap">
+              <HR.Text className="m-0" text="or" />
+              <div className=" flex justify-between flex-nowrap">
                 <Button
-                  className="text-white bg-[#3b5998] hover:bg-[#3b5998]/90 focus:ring-4 focus:outline-none focus:ring-[#3b5998]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#3b5998]/55 me-2 "
+                  className="text-white bg-[#3b5998] hover:bg-[#3b5998]/90 focus:ring-4 focus:outline-none focus:ring-[#3b5998]/50 font-medium rounded-lg text-xs px-5 py-2text-center inline-flex items-center dark:focus:ring-[#3b5998]/55 me-2 "
                   as={"button"}
                   size={"xs"}
-                  color={"blue"}
+                  color={"null"}
                 >
                   <FaFacebook className="mr-2 h-5 w-5" />
                   Sign in with Facebook
                 </Button>
                 <Button
                   color={"null"}
-                  className="text-white bg-[#3b5998] hover:bg-[#3b5998]/90 focus:ring-4 focus:outline-none focus:ring-[#3b5998]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#3b5998]/55 me-2 "
+                  className="text-white bg-[#4285F4] hover:bg-[#4285F4]/90 focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-xs px-5 py-2 text-center inline-flex items-center dark:focus:ring-[#4285F4]/55 me-2 "
                   as={"button"}
                   size={"xs"}
                 >

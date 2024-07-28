@@ -1,8 +1,12 @@
 import { NavLink } from "react-router-dom";
 import logo_full from "./../../../../src/assets/images/logo/logo-full.png";
 import { Avatar, Dropdown, Navbar } from "flowbite-react";
+import { useContext } from "react";
+import AuthContext from "../../../context/auth.context";
 
 const Header = () => {
+  let loggedInUser:any = useContext(AuthContext);
+  console.log("loggedInUser", loggedInUser);
   return (
     <Navbar fluid rounded className=" p-4 shadow-2xl">
       <Navbar.Brand href="#">
@@ -14,7 +18,24 @@ const Header = () => {
       </Navbar.Brand>
       <div className="flex md:order-2">
         <Navbar.Collapse>
+        
+          {/* Navbar user profile and logout options  */}
+          {loggedInUser && loggedInUser ? (<>  <NavLink
+            className={({ isActive }) =>
+              isActive ? "activeLink" : "text-gray-900"
+            }
+            to={`/${loggedInUser?.role}/dashboard`}
+          >
+            {loggedInUser?.name}
+          </NavLink>
           <NavLink
+            className={({ isActive }) =>
+              isActive ? "activeLink" : "text-gray-900"
+            }
+            to={"/login"}
+          >
+            Logout
+          </NavLink></>):(<>  <NavLink
             className={({ isActive }) =>
               isActive ? "activeLink" : "text-gray-900"
             }
@@ -29,7 +50,7 @@ const Header = () => {
             to={"/login"}
           >
             Login
-          </NavLink>
+          </NavLink></>) }
         </Navbar.Collapse>
         {/* <Dropdown
         arrowIcon={false}

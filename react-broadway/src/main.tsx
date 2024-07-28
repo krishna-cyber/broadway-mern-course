@@ -10,6 +10,7 @@ import RouterConfig from "./config/router.config";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <StrictMode>
+    
     <ToastContainer autoClose={1000} limit={2} transition={Slide} />
     <RouterConfig />
   </StrictMode>
