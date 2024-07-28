@@ -6,7 +6,6 @@ import AuthContext from "../../../context/auth.context";
 
 const Header = () => {
   let loggedInUser:any = useContext(AuthContext);
-  console.log("loggedInUser", loggedInUser);
   return (
     <Navbar fluid rounded className=" p-4 shadow-2xl">
       <Navbar.Brand href="#">

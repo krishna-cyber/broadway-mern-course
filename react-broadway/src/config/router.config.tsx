@@ -2,13 +2,15 @@ import { BrowserRouter, Routes,Route } from "react-router-dom"
 import LandingPage from "../pages/landing/landing.page"
 import { RegisterPage,LoginPage,UserActivate } from "../pages/auth/auth_pages.page"
 import { HomePageLayout } from "../pages/layout/homepage.layout"
-import {AdminPanel} from "../pages/layout/dashboard.layout"
+import { AdminPanelLayout} from "../pages/layout/dashboard.layout"
 import { CategoryDetail } from "../pages/category/category-detail.page"
 import { ErrorPage } from "../pages/error/error.page"
 import AuthContext from "../context/auth.context"
 import { useEffect, useState } from "react"
 import authServiceInstance from "../pages/auth/auth.service"
 import AdminDashboard from "../pages/dashboard/admin.dashboard.page"
+import { CheckPermission } from "./rbac.config"
+import { UserRoles } from "./constants"
 
 const RouterConfig = () => {
     const [loggedInUser, setLoggedInUser] = useState(null)
@@ -44,7 +46,7 @@ const RouterConfig = () => {
             </Route>
             
             {/* Admin dashboard routes */}
-            <Route path="/admin" element={<AdminPanel/>}>
+            <Route path="/admin"  element={<CheckPermission allowedBy={UserRoles.ADMIN }><AdminPanelLayout/></CheckPermission>}>
             <Route index element= {<AdminDashboard/>}/>
             </Route>
 

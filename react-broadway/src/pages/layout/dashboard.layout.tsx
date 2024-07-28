@@ -6,7 +6,8 @@ import { useState } from "react";
 import { Outlet } from "react-router-dom";
 
 
-export const AdminPanel = ()=>{
+export const AdminPanelLayout
+ = ()=>{
 
   const sideBarMenuLinks = [
     {
@@ -118,15 +119,7 @@ export const AdminPanel = ()=>{
         </Dropdown>
         
       </div>
-      {/* <Navbar.Collapse>
-        <Navbar.Link href="#" active>
-          Home
-        </Navbar.Link>
-        <Navbar.Link href="#">About</Navbar.Link>
-        <Navbar.Link href="#">Services</Navbar.Link>
-        <Navbar.Link href="#">Pricing</Navbar.Link>
-        <Navbar.Link href="#">Contact</Navbar.Link>
-      </Navbar.Collapse> */}
+     
     </Navbar>
     <Sidebar className="fixed top-0 left-0 z-40 w-64 h-screen pt-14 transition-transform -translate-x-full bg-white border-r border-gray-200 md:translate-x-0 dark:bg-gray-800 dark:border-gray-700" aria-label="Sidebar Menu">
       
@@ -144,27 +137,7 @@ export const AdminPanel = ()=>{
             })
 
           }
-          {/* <Sidebar.Item href="#" icon={HiChartPie}>
-            Dashboard
-          </Sidebar.Item>
-          <Sidebar.Item href="#" icon={HiViewBoards}>
-            Kanban
-          </Sidebar.Item>
-          <Sidebar.Item href="#" icon={HiInbox} label="3" labelColor="green">
-            Inbox
-          </Sidebar.Item>
-          <Sidebar.Item href="#" icon={HiUser} label="500" labelColor="pink">
-            Users
-          </Sidebar.Item>
-          <Sidebar.Item href="#" icon={HiShoppingBag} label={"25256"} labelColor="purple">
-            Products
-          </Sidebar.Item>
-          <Sidebar.Item href="#" icon={HiArrowSmRight}>
-            Sign In
-          </Sidebar.Item>
-          <Sidebar.Item href="#" icon={HiTable}>
-            Sign Up
-          </Sidebar.Item> */}
+         
         </Sidebar.ItemGroup>
       </Sidebar.Items>
       <Sidebar.CTA>
