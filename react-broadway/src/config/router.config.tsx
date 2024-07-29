@@ -1,8 +1,8 @@
-import { BrowserRouter, Routes,Route } from "react-router-dom"
+import { BrowserRouter, Routes,Route, Outlet } from "react-router-dom"
 import LandingPage from "../pages/landing/landing.page"
 import { RegisterPage,LoginPage,UserActivate } from "../pages/auth/auth_pages.page"
 import { HomePageLayout } from "../pages/layout/homepage.layout"
-import { AdminPanelLayout} from "../pages/layout/dashboard.layout"
+import { AdminDashboardLayout} from "../pages/layout/admin.layout"
 import { CategoryDetail } from "../pages/category/category-detail.page"
 import { ErrorPage } from "../pages/error/error.page"
 import AuthContext from "../context/auth.context"
@@ -46,8 +46,19 @@ const RouterConfig = () => {
             </Route>
             
             {/* Admin dashboard routes */}
-            <Route path="/admin"  element={<CheckPermission allowedBy={UserRoles.ADMIN }><AdminPanelLayout/></CheckPermission>}>
+            <Route path="/admin"  element={<CheckPermission allowedBy={UserRoles.ADMIN }><AdminDashboardLayout/></CheckPermission>}>
             <Route index element= {<AdminDashboard/>}/>
+            </Route>
+
+
+            {/* seller dashboard routes */}
+            <Route path="/seller"  element={<>seller layout <Outlet/></>}>
+            <Route index element= {<>Seller dashboard component</>}/>
+            </Route>
+
+              {/* seller dashboard routes */}
+              <Route path="/customer"  element={<>customer layout <Outlet/></>}>
+            <Route index element= {<>customer dashboard component</>}/>
             </Route>
 
             <Route path="/activate/:token" element={<UserActivate/>}/>

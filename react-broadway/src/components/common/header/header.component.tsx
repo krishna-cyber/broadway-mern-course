@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 import logo_full from "./../../../../src/assets/images/logo/logo-full.png";
-import { Avatar, Dropdown, Navbar } from "flowbite-react";
+import {  Navbar } from "flowbite-react";
 import { useContext } from "react";
 import AuthContext from "../../../context/auth.context";
 
