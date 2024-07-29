@@ -384,11 +384,8 @@ export const UserActivate = () => {
 // Login page
 export const LoginPage = () => {
   const [loading, setLoading] = useState(false);
-  const loggedInUser : any = useContext(AuthContext);
+  const { loggedInUser, setLoggedInUser }: any = useContext(AuthContext);
   const navigate = useNavigate();
-  
-
-
 
   const LoginDTO = yup.object({
     email: yup.string().email().required("Email is required"),
@@ -418,7 +415,9 @@ export const LoginPage = () => {
         "/auth/login",
         data
       );
+      setLoggedInUser(response?.result?.userDetail);
       localStorage.setItem("_at", response?.result?.token);
+      localStorage.setItem("_rt", response?.result?.refreshToken);
       toast.success("User logged in successfully");
       navigate(`/${response?.result?.userDetail?.role}`);
     } catch (error: any) {
@@ -430,7 +429,7 @@ export const LoginPage = () => {
   };
 
   useEffect(() => {
-    if(loggedInUser){
+    if (loggedInUser) {
       toast.success("User has already logged in");
       navigate(`/${loggedInUser?.role}/dashboard`);
     }
@@ -471,7 +470,7 @@ export const LoginPage = () => {
                   Password
                 </label>
                 <TextInputComponent
-                type="password"
+                  type="password"
                   control={control}
                   name="password"
                   errMsg={errors?.password?.message}

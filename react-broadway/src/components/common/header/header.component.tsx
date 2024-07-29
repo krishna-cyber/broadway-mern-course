@@ -5,7 +5,7 @@ import { useContext } from "react";
 import AuthContext from "../../../context/auth.context";
 
 const Header = () => {
-  let loggedInUser:any = useContext(AuthContext);
+  let {loggedInUser}:any = useContext(AuthContext);
   return (
     <Navbar fluid rounded className=" p-4 shadow-2xl">
       <Navbar.Brand href="#">

@@ -6,8 +6,8 @@ import { UserRoles } from "./constants";
 
 
 export const CheckPermission = ({allowedBy,children}:{allowedBy:string,children:any})=>{
-        const loggedInUser : any = useContext(AuthContext);
-
+        const {loggedInUser} : any = useContext(AuthContext);
+    
         if(loggedInUser){
             if(loggedInUser?.role === UserRoles.ADMIN){
                 return children;
