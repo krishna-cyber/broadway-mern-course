@@ -1,6 +1,4 @@
-
 import {
-
   HiArrowSmRight,
   HiChartPie,
   HiInbox,
@@ -9,10 +7,9 @@ import {
   HiUser,
   HiViewBoards,
   HiX,
-
 } from "react-icons/hi";
 
-import { Outlet } from "react-router-dom";
+import { NavLink, Outlet } from "react-router-dom";
 import AdminDashboardNavbar from "../../components/dashboard/dashboard-navbar.component";
 import DashboardSidebar from "../../components/dashboard/admin-dashboard-sidebar.component";
 import { Badge, Sidebar } from "flowbite-react";
@@ -27,12 +24,12 @@ export const AdminDashboardLayout = () => {
     {
       menu: "Dashboard",
       icon: HiChartPie,
-      link: "/admin/dashboard",
+      link: "/admin",
     },
     {
       menu: "Banner Management",
       icon: HiViewBoards,
-      link: "/admin/banner",
+      link: "/admin/banner-lists",
     },
     {
       menu: "Category Management",
@@ -58,9 +55,9 @@ export const AdminDashboardLayout = () => {
 
   return (
     <div className="antialiased bg-gray-50 dark:bg-gray-900">
-      <AdminDashboardNavbar/>
-      <Sidebar
-      aria-label="Sidebar Menu"
+      <AdminDashboardNavbar />
+      {/* <Sidebar
+        aria-label="Sidebar Menu"
         className="fixed top-0 left-0 z-40 w-64 h-screen pt-14 transition-transform -translate-x-full bg-white border-r border-gray-200 md:translate-x-0 dark:bg-gray-800 dark:border-gray-700"
       >
         <Sidebar.Items>
@@ -68,9 +65,9 @@ export const AdminDashboardLayout = () => {
             {sideBarMenuLinks &&
               sideBarMenuLinks.map((menu, index) => {
                 return (
-                  <Sidebar.Item key={index} href={menu.link} icon={menu.icon}>
-                    {menu.menu}
-                  </Sidebar.Item>
+                  <NavLink to={`/admin/${menu.link}`}>
+                    <Sidebar.Item key={index} icon={menu.icon}></Sidebar.Item>
+                  </NavLink>
                 );
               })}
           </Sidebar.ItemGroup>
@@ -97,15 +94,12 @@ export const AdminDashboardLayout = () => {
             Turn new navigation off
           </a>
         </Sidebar.CTA>
-      </Sidebar>
+      </Sidebar> */}
       <DashboardSidebar sideBarMenuLinks={sideBarMenuLinks} />
-   
-      <main className="p-4 md:ml-64 h-auto pt-20">
-      
-      <Outlet />
-     
-    </main>
 
+      <main className="p-4 md:ml-64 h-auto pt-20">
+        <Outlet />
+      </main>
     </div>
   );
 };

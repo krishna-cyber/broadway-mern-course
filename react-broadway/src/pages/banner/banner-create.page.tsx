@@ -1,8 +1,13 @@
-import { Button, Label,FileInput, Select, TextInput } from "flowbite-react";
-import { TextAreaComponent, TextInputComponent } from "../../components/common/form/form.components";
+import { Button, Label, FileInput, Select } from "flowbite-react";
+import {
+  TextAreaComponent,
+  TextInputComponent,
+} from "../../components/common/form/form.components";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { GrSend } from "react-icons/gr";
+import { DateTime } from "luxon";
 
 const BannerCreate = () => {
   const BannerCreateDTO = yup.object({
@@ -18,6 +23,7 @@ const BannerCreate = () => {
   });
   const {
     control,
+    register,
     handleSubmit,
     watch,
     formState: { errors },
@@ -25,7 +31,17 @@ const BannerCreate = () => {
     resolver: yupResolver(BannerCreateDTO),
   });
 
-  const onSubmit = (data: any) => console.log(data);
+  const onSubmit = (data: any) => {
+    try {
+        let date = DateTime.now().toISODate();
+        console.log(date);
+        console.log("Banner create data:",data);
+    } catch (error) {
+        console.log(error);
+    }finally{
+        // Todo
+    }
+  }
   return (
     <section className="bg-white dark:bg-gray-900">
       <div className="py-8 px-4 max-w-2xl lg:py-8">
@@ -56,7 +72,7 @@ const BannerCreate = () => {
               >
                 Link
               </Label>
-              
+
               <TextInputComponent
                 name="link"
                 control={control}
@@ -64,7 +80,7 @@ const BannerCreate = () => {
                 errMsg={errors.link?.message}
               />
             </div>
-           
+
             <div>
               <Label
                 htmlFor="category"
@@ -73,19 +89,22 @@ const BannerCreate = () => {
                 Active Status
               </Label>
               <div className="max-w-md">
-      
-      <Select name="status" id="status" required>
-        <option>active</option>
-        <option>inactive</option>
-      </Select>
-    </div>
+                <Select {...register("status")} id="status" required>
+                  <option>active</option>
+                  <option>inactive</option>
+                </Select>
+              </div>
             </div>
             <div>
-      <div>
-        <Label htmlFor="image" value="Upload file" />
-      </div>
-      <FileInput name="image" id="image" helperText="SVG, PNG, JPG or GIF (MAX. 800x400px)." />
-    </div>
+              <div>
+                <Label htmlFor="image" value="Upload file" />
+              </div>
+              <FileInput
+              {...register("image")}
+                id="image"
+                helperText="SVG, PNG, JPG or GIF (MAX. 800x400px)."
+              />
+            </div>
 
             <div className="sm:col-span-2">
               <Label
@@ -94,8 +113,12 @@ const BannerCreate = () => {
               >
                 Description
               </Label>
-             
-              <TextAreaComponent name="description" control={control} errMsg={errors.description?.message} />
+
+              <TextAreaComponent
+                name="description"
+                control={control}
+                errMsg={errors.description?.message}
+              />
             </div>
           </div>
           <Button
@@ -104,6 +127,7 @@ const BannerCreate = () => {
             size={"xs"}
             className="inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-primary-700 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800"
           >
+              <GrSend className="mr-2 h-5 w-5" />
             Create Banner
           </Button>
         </form>
