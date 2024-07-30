@@ -1,4 +1,4 @@
-import { Label, Textarea } from "flowbite-react";
+import { Textarea } from "flowbite-react";
 import { useController } from "react-hook-form";
 
 export interface TextInputInterface {
@@ -58,9 +58,7 @@ export const TextAreaComponent = ({
 
   return (
     <div className="max-w-md">
-      <div className="mb-2 block">
-        <Label htmlFor={name} value={name.charAt(0).toUpperCase() + name.slice(1)} />
-      </div>
+      
       <Textarea
         {...field}
         placeholder="Enter your address details here..."

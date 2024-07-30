@@ -26,6 +26,7 @@ import {
 } from "../pages/dashboard";
 import LoadingPage from "../pages/loading/loading.page";
 import BannerList from "../pages/banner/banner-list.page";
+import BannerCreate from "../pages/banner/banner-create.page";
 
 const RouterConfig = () => {
   const [loggedInUser, setLoggedInUser] = useState(null);
@@ -81,7 +82,11 @@ const RouterConfig = () => {
               {/* for testing admin dashboard */}
               <Route path="/admin" element={<AdminDashboardLayout />}>
                 <Route index element={<AdminDashboard />} />
-                <Route path="/admin/banner-lists" element={<BannerList />} />
+                <Route
+                  path="/admin/banner-lists"
+                  element={<BannerList />}
+                />{" "}
+                <Route path="/admin/banner-create" element={<BannerCreate />} />
                 <Route
                   path="*"
                   element={<ErrorPage url="/admin" label="Back to Dashboard" />}
