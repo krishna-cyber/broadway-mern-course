@@ -1,8 +1,9 @@
 // create http server and mount the app
-require('dotenv').config();
+
 const http = require('http');
 const app = require('./src/config/express.config');
 const server = http.createServer(app);
+const cors = require('cors');
 
 
 

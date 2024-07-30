@@ -1,16 +1,17 @@
 const jwt = require('jsonwebtoken');
+const userService = require('../modules/user/user.service');
 
 
 // creating middlewares for user 
 
 
-const loginCheck = (req,res,next) => {
+const loginCheck = async (req,res,next) => {
     try {
         let token = req.headers['authorization'] || null;
         if (!token) {
             throw {
                 statusCode: 401,
-                message: 'Unauthorized',
+                message: 'Unauthorized,Plese login first',
                 detail: null
             }
         }else{
@@ -19,21 +20,22 @@ const loginCheck = (req,res,next) => {
                 //token verification    
                 const data = jwt.verify(token, process.env.JWT_SECRET);  // got userid from the token
 
-
+                    console.log("Token data after verification login check",data);
                 //data fetch from database 
                 //TODO
+                let user = await userService.getSingleUserByFilter({id:data.sub});
 
-
+                console.log("User data after verification login check",user);
 
                 req.authUser = {
-                    _id : data._id,
-                    email: data.email,
-                    role: data.role,
-                    status: data.status,
-                    address: data.address,
-                    phone: data.phone,
-                    image: data.image,
-                }
+                    id:user._id,
+                    email:user.email,
+                    role:user.role,
+                    status:user.status,
+                    name:user?.name || null,
+                    profile:user?.image || null,
+                    phone: user?.phone || null,
+                };
             next();
            
         }

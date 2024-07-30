@@ -1,6 +1,9 @@
+require('dotenv').config();
 const express = require ('express');
 const app = express();
 var morgan = require('morgan')
+const cors = require('cors');
+app.use(cors());
 
 
 // import database connection
@@ -48,6 +51,8 @@ app.use((err, req, res, next) => {
        statusCode = 400;
         
     }
+
+    console.log("error handling middleware",err);
 
 
 

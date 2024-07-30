@@ -81,10 +81,16 @@ createUser = async (data)=>{
     try {
         console.log(data);
 
+        
+
         //create an instance of the user model
         const user = new UserModel(data);
         //save the user
         await user.save();
+
+        console.log("user after user.save", user)
+
+        return user;
 
     } catch (error) {
         console.log(error);
@@ -102,7 +108,7 @@ getSingleUserByFilter = async (filter)=>{
     try {
         console.log(filter)
         const userDetail =await UserModel.findOne({activationToken:filter.token});
-        console.log(userDetail);
+        console.log('userdetails at getsingle user by filter service',userDetail);
         if (userDetail) {
             return userDetail;
         } else {

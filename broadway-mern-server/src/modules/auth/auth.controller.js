@@ -54,7 +54,7 @@ class AuthController{
 
         try {
         
-        const data = req.body;
+        let data = req.body;
         // data transformation
           data = userService.transformUserCreate(req);
 
@@ -79,19 +79,17 @@ class AuthController{
             }
         
         }
-    getUser =   async (req,res,next)=>{
+    getLoggedInUser =   async (req,res,next)=>{
         try {
-            let token = req.headers['authorization'] || null;
-            if(!token){
-                throw {statusCode: 401, message: 'Token required'}
-            }
-            token = token.split(' ')[1];
-            //token refresh token
-           const user = await userService.getSingleUserByFilter({_id:sub});
-
+           
+            res.json({
+                result: req.authUser,
+                message: 'User fetched successfully',
+                meta: null
+            })
             
         } catch (exception) {
-            console.log(exception);
+            console.log('at getLoggedInUser authcontroller', exception);
             next(exception);
         }
     }
@@ -124,7 +122,8 @@ class AuthController{
 
 
         } catch (exception) {
-            console.log(exception)
+            console.log(exception);
+            next(exception);
         }
     }
 

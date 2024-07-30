@@ -3,7 +3,7 @@ const Joi = require("joi");
 
 // data tramsfer object
 const userCreateDTO = Joi.object({
-name:Joi.string().min(3).max(50).required(),
+fullName:Joi.string().min(3).max(50).required(),
 email:Joi.string().email().required().messages({
     'string.email': 'Email must be a valid email',
     'any.required': 'Email is required',

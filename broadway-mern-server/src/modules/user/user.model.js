@@ -1,7 +1,5 @@
 const mongoose = require('mongoose');
 const { userRoles,statusType } = require('../../config/constants.config');
-const { number } = require('joi');
-const { string } = require('joi');
 
 const AddressSchema = new mongoose.Schema({
     proviance:{
@@ -22,8 +20,9 @@ const AddressSchema = new mongoose.Schema({
 });
 
 const UserSchema = new mongoose.Schema({
-    name:{
+    fullName:{
         type: String,
+        required: true
         
     },
     email:{

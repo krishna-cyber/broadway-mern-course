@@ -1,4 +1,4 @@
-const BannerModel = require("./banner.model");
+const BannerModel = require("./category.model");
 
 class BannerService{
 

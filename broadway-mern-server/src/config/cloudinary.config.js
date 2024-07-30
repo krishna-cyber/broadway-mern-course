@@ -29,6 +29,7 @@ const uploadImage = async (imagePath) => {
       return result.url;
     } catch (error) {
       console.error(error);
+      // if successfully uploaded delete from the local storage
     }
 };
 
