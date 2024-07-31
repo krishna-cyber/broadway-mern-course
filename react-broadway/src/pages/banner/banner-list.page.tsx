@@ -1,13 +1,14 @@
-import  { useState } from "react";
+import { useEffect, useState } from "react";
 import BannerTable from "../../components/banner/banner-table.component";
 import { FaFileExport, FaLongArrowAltDown, FaPlus } from "react-icons/fa";
 import { Button, Pagination } from "flowbite-react";
 import { Link } from "react-router-dom";
 
-const BannerList = () => {
-  const [currentPage, setCurrentPage] = useState(1);
 
-  const onPageChange = (page: number) => setCurrentPage(page);
+
+
+const BannerList = () => {
+ 
   return (
     <section className="bg-gray-50 dark:bg-gray-900 py-3 sm:py-5">
       <div className="px-4 mx-auto max-w-screen-2xl lg:px-12">
@@ -57,28 +58,7 @@ const BannerList = () => {
             </div>
           </div>
           <BannerTable />
-          <nav
-            className="flex flex-col items-start justify-between p-4 space-y-3 md:flex-row md:items-center md:space-y-0"
-            aria-label="Table navigation"
-          >
-            <span className="text-sm font-normal text-gray-500 dark:text-gray-400">
-              Showing
-              <span className="font-semibold mx-2 text-gray-900 dark:text-white">
-                1-10
-              </span>
-              of
-              <span className="font-semibold mx-2 text-gray-900 dark:text-white">
-                1000
-              </span>
-            </span>
-
-            <Pagination
-              currentPage={currentPage}
-              totalPages={100}
-              onPageChange={onPageChange}
-              showIcons
-            />
-          </nav>
+         
         </div>
       </div>
     </section>
@@ -86,4 +66,3 @@ const BannerList = () => {
 };
 
 export default BannerList;
-

@@ -1,12 +1,15 @@
 import { instance } from "../config/axios.config";
+import { SearchParams } from "../config/constants";
 
 interface HeaderConfigProps {
   auth?: boolean;
   file?: boolean;
+  params?:SearchParams
 }
 
 abstract class HttpService {
   private headers = {};
+  private params = {};
 
   #setHeaders = (config: HeaderConfigProps) => {
     // if config null set headers to default application/json
@@ -34,7 +37,12 @@ abstract class HttpService {
         "Content-Type": "multipart/form-data",
       };
     }
+
+    // if config is auth and set params
+    if (config && config.params) {
+     this.params = {...config.params}
   };
+}
   postRequest = async (url: string, data: any = {}, config: any = null) => {
     console.log("post request httprequest", url, data, config);
 
@@ -42,6 +50,7 @@ abstract class HttpService {
       this.#setHeaders(config);
       const response = await instance.post(url, data, {
         headers: { ...this.headers },
+        params: { ...this.params },
       });
 
       console.log("success post request", response);
@@ -58,13 +67,32 @@ abstract class HttpService {
       //TODO params for get request
       const response = await instance.get(url, {
         headers: { ...this.headers },
+        params: { ...this.params },
       });
 
       console.log("success get request http service", response);
       return response;
-    } catch (error) {
+    } catch (error:any) {
       console.log("get request error", error);
-      throw error;
+      throw error?.data;
+    }
+  };
+  deleteRequest = async (url: string, config: any = null) => {
+    try {
+      console.log("delete request http service", url, config);
+      this.#setHeaders(config);
+
+      //TODO params for delete request
+      const response = await instance.delete(url, {
+        headers: { ...this.headers },
+        params: { ...this.params },
+      });
+
+      console.log("success delete request http service", response);
+      return response;
+    } catch (error:any) {
+      console.log("delete request error", error);
+      throw error?.data;
     }
   };
 }

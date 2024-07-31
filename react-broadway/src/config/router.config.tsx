@@ -68,7 +68,7 @@ const RouterConfig = () => {
               </Route>
 
               {/* Admin dashboard routes */}
-              {/* <Route
+              <Route
                 path="/admin"
                 element={
                   <CheckPermission allowedBy={UserRoles.ADMIN}>
@@ -76,11 +76,6 @@ const RouterConfig = () => {
                   </CheckPermission>
                 }
               >
-                <Route index element={<AdminDashboard />} />
-              </Route> */}
-
-              {/* for testing admin dashboard */}
-              <Route path="/admin" element={<AdminDashboardLayout />}>
                 <Route index element={<AdminDashboard />} />
                 <Route
                   path="/admin/banner-lists"
@@ -92,6 +87,20 @@ const RouterConfig = () => {
                   element={<ErrorPage url="/admin" label="Back to Dashboard" />}
                 />
               </Route>
+
+              {/* for testing admin dashboard */}
+              {/* <Route path="/admin" element={<AdminDashboardLayout />}>
+                <Route index element={<AdminDashboard />} />
+                <Route
+                  path="/admin/banner-lists"
+                  element={<BannerList />}
+                />{" "}
+                <Route path="/admin/banner-create" element={<BannerCreate />} />
+                <Route
+                  path="*"
+                  element={<ErrorPage url="/admin" label="Back to Dashboard" />}
+                />
+              </Route> */}
 
               {/* seller dashboard routes */}
               <Route

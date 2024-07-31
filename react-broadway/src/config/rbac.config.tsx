@@ -9,7 +9,7 @@ export const CheckPermission = ({allowedBy,children}:{allowedBy:string,children:
         const {loggedInUser} : any = useContext(AuthContext);
     
         if(loggedInUser){
-            if(loggedInUser?.role === UserRoles.ADMIN){
+            if(loggedInUser?.role === allowedBy){
                 return children;
             }else{
                 toast.warn("You are not authorized to access this page");

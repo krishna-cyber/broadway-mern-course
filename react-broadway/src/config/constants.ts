@@ -9,3 +9,12 @@ export const UserRoles = {
   CUSTOMER : "customer",
   SELLER : "seller"
 };
+
+
+export type SearchParams = {
+  page?: number;
+  limit?: number;
+  search?: string;
+  sort?: string;
+  order?: string;
+}
