@@ -101,7 +101,7 @@ const BannerCreate = () => {
                 <Label htmlFor="image" value="Upload file" />
               </div>
               <FileInput
-              {...register("image")}
+              onChange={(e:any) => setValue("image", e.target.files[0])}
                 id="image"
                 helperText="SVG, PNG, JPG or GIF (MAX. 800x400px)."
               />

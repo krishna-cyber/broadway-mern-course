@@ -24,7 +24,7 @@ const bodyValidator = (schema) => {
     } catch (error) {
       let detail = {};
       error.details.map((err) => {
-        console.log(err);
+        console.log(`error at validation middleware`);
         detail[err["path"][0]] = err.message;
       });
 

@@ -17,7 +17,8 @@ const deleteFile = async (path) => {
         fs.unlinkSync(path);
     }
     catch (error) {
-        console.log(error);
+
+        console.log(`Error in deleting file`, error);
     }
 }
 

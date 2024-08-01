@@ -4,7 +4,7 @@ import { SearchParams } from "../config/constants";
 interface HeaderConfigProps {
   auth?: boolean;
   file?: boolean;
-  params?:SearchParams
+  params?: SearchParams;
 }
 
 abstract class HttpService {
@@ -14,13 +14,11 @@ abstract class HttpService {
   #setHeaders = (config: HeaderConfigProps) => {
     // if config null set headers to default application/json
 
-    console.log("config at setheader function", config.file);
     if (!config) {
       this.headers = {
         ...this.headers,
         "Content-Type": "application/json",
       };
-      return;
     }
     // if config is auth config set headers to bearer token
     if (config && config.auth) {
@@ -29,7 +27,7 @@ abstract class HttpService {
       const accessToken = localStorage.getItem("_at");
       this.headers = {
         ...this.headers,
-        'Authorization': `Bearer ${accessToken}`
+        Authorization: `Bearer ${accessToken}`,
       };
     }
     // if config is file config set headers to multipart/form-data
@@ -42,20 +40,15 @@ abstract class HttpService {
 
     // if config is auth and set params
     if (config && config.params) {
-     this.params = {...config.params}
-
-    };
-    console.log(`header set `,this.headers)
-
-}
+      this.params = { ...config.params };
+    }
+    console.log(`header set `, this.headers);
+  };
   postRequest = async (url: string, data: any = {}, config: any = null) => {
-    console.log("post request httprequest", url, data, config);
-
     try {
       this.#setHeaders(config);
       const response = await instance.post(url, data, {
         headers: { ...this.headers },
-   
       });
 
       console.log("success post request", response);
@@ -77,7 +70,7 @@ abstract class HttpService {
 
       console.log("success get request http service", response);
       return response;
-    } catch (error:any) {
+    } catch (error: any) {
       console.log("get request error", error);
       throw error?.data;
     }
@@ -95,7 +88,7 @@ abstract class HttpService {
 
       console.log("success delete request http service", response);
       return response;
-    } catch (error:any) {
+    } catch (error: any) {
       console.log("delete request error", error);
       throw error?.data;
     }

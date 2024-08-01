@@ -9,9 +9,9 @@ class BannerController{
                         const data = req.body;
                         const image = req.file;
                         //uploadimage and more
-                        const imageUrl = await uploadImage(`./public/uploads/banner/${image.filename}`);
+                        const imageUrl = await uploadImage(`./public/uploads/banners/${data[req.file.fieldname]}`);
                         data.image = imageUrl;
-                        deleteFile(`./public/uploads/banner/${image.filename}`);
+                        deleteFile(`./public/uploads/banners/${data[req.file.fieldname]}`); //delete file from local storage
 
                         const response = await bannerService.crateBanner(data);
                         console.log(response);
@@ -21,7 +21,7 @@ class BannerController{
                                 meta:null
                         });
                 } catch (exception) {
-                        console.log(`Error in creating banner controller`,exception);
+                        console.log(`Error in creating banner`,exception);
                         next(exception);
                 }
         }
@@ -51,7 +51,7 @@ class BannerController{
                                         limit: 10
                                 }
                         });
-                } catch (error) {
+                } catch (exception) {
                         next(exception);
                         
                 }
