@@ -15,7 +15,7 @@ import TableActionButtons from "../common/table/table-action-buttons.component";
 const BannerTable = () => {
   const [bannerData, setBannerData] = useState([
     {
-      _id: "",
+      _id: "someid",
       title: "Banner Image",
       image:
         "https://icms-image.slatic.net/images/ims-web/d01caa71-9c68-4c12-a35e-f6c10c53e73d.jpg",
@@ -39,7 +39,7 @@ const BannerTable = () => {
           auth: true,
           params: { page: page, limit: limit, search: search },
         });
-        setBannerData(banners?.data?.result);
+        // setBannerData(banners?.data?.result);
         console.log({ page, limit, search });
         console.log("Banners: ", banners);
       } catch (error: any) {
@@ -117,7 +117,7 @@ const BannerTable = () => {
                       )}{" "}
                     </Table.Cell>
                     <Table.Cell className=" flex gap-3">
-                      <TableActionButtons editUrl={`/admin/banner-edit/${data._id}`} deleteAction={deleteBanner} rowId={data._id} />
+                      <TableActionButtons editUrl={`/admin/banner/edit/${data._id}`} deleteAction={deleteBanner} rowId={data._id} />
                       {/* <NavLink
                         
                         to={`/admin/banner-edit/${data._id}`}

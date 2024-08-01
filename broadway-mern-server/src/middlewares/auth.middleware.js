@@ -8,6 +8,9 @@ const userService = require('../modules/user/user.service');
 const loginCheck = async (req,res,next) => {
     try {
         let token = req.headers['authorization'] || null;
+       
+
+    
         if (!token) {
             throw {
                 statusCode: 401,
@@ -20,12 +23,10 @@ const loginCheck = async (req,res,next) => {
                 //token verification    
                 const data = jwt.verify(token, process.env.JWT_SECRET);  // got userid from the token
 
-                    console.log("Token data after verification login check",data);
-                //data fetch from database 
+              
                 //TODO
                 let user = await userService.getSingleUserByFilter({id:data.sub});
 
-                console.log("User data after verification login check",user);
 
                 req.authUser = {
                     id:user._id,
@@ -41,7 +42,7 @@ const loginCheck = async (req,res,next) => {
         }
 
     } catch (exception) {
-        console.log(exception);
+        console.log('Exception in login check middleware', exception);
         next({
             statusCode: 401,
             message: exception.message || 'Unauthorized',

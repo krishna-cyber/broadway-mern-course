@@ -24,7 +24,8 @@ const hasPermission= (accessedBy) => {
         }
       }
     } catch (exception) {
-      
+      console.log('Exception in hasPermission middleware', exception);
+      throw exception;
     }
   }
 }

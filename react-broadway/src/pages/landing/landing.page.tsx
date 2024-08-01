@@ -1,11 +1,10 @@
 import { Button } from "flowbite-react";
-import { BannerComponent } from "../../components/banner/banner.component.tsx";
-import Header from "../../components/common/header/header.component";
+import { BannerComponent } from "../../components/banner/banne-slider.component.tsx.tsx";
 import {
   ImageWithTitleCard,
   SingleCardItem,
 } from "../../components/common/card/single-card.component.tsx";
-import { Link, NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const LandingPage = () => {
   return (

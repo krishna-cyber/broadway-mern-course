@@ -2,8 +2,8 @@ const mongoose = require('mongoose');
 
 
 
-mongoose.connect(process.env.MONGODB_URl, {
-    dbName: process.env.DB_NAME,
+mongoose.connect(process.env.MONGODB_URl|| "mongodb://localhost:27017/broadway", {
+    dbName: process.env.DB_NAME || "broadway",
     autoCreate: true,
     autoIndex: true,
 }).then(() => {

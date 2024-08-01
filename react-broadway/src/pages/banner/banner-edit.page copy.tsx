@@ -8,10 +8,15 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { GrSend } from "react-icons/gr";
 import { DateTime } from "luxon";
-import authServiceInstance from "../auth/auth.service";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { toast } from "react-toastify";
+import LoadingPage from "../loading/loading.page";
 
-const BannerCreate = () => {
-  const BannerCreateDTO = yup.object({
+const BannerEdit = () => {
+  const params = useParams();
+  const [loading,setLoading]  = useState(true);
+  const BannerEditDTO = yup.object({
     title: yup
       .string()
       .min(3, "Title must be at least 3 charactes.")
@@ -22,34 +27,51 @@ const BannerCreate = () => {
     status: yup.string().oneOf(["active", "inactive"]).required(),
     image: yup.mixed().required(),
   });
+  
   const {
     control,
     register,
     handleSubmit,
-    setValue,
+    watch,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(BannerCreateDTO),
+    resolver: yupResolver(BannerEditDTO),
   });
 
-  const onSubmit =async  (data: any) => {
+  const getDetailsOfBanner = async (id: string) => {
+
     try {
-      console.log("Banner create data:",data);
-     const response = await authServiceInstance.postRequest("/banner",data, {auth:true,file:true});
-        console.log("Banner create response:",response);
+      
+    } catch (error) {
+      toast.error("Error fetching banner details");
+      console.log("Error fetching banner details", error);
+    }
+
+  };
+
+  const onSubmit = (data: any) => {
+    try {
+        let date = DateTime.now().toISODate();
+        console.log(date);
+        console.log("Banner create data:",data);
     } catch (error) {
         console.log(error);
     }finally{
         // Todo
     }
   }
+
+  useEffect(() => {
+    console.log("Banner edit params", params);
+  }, [params]);
   return (
     <section className="bg-white dark:bg-gray-900">
       <div className="py-8 px-4 max-w-2xl lg:py-8">
         <h2 className="mb-4 text-xl font-bold text-gray-900 dark:text-white">
-          Create new Banner
+         Update Banner Details
         </h2>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        {loading ? 
+        <LoadingPage/>: <form onSubmit={handleSubmit(onSubmit)}>
           <div className="grid gap-4 sm:grid-cols-2 sm:gap-6">
             <div className="sm:col-span-2">
               <Label
@@ -129,12 +151,13 @@ const BannerCreate = () => {
             className="inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-primary-700 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800"
           >
               <GrSend className="mr-2 h-5 w-5" />
-            Create Banner
+           Update Banner
           </Button>
-        </form>
+        </form>}
+       
       </div>
     </section>
   );
 };
 
-export default BannerCreate;
+export default BannerEdit;

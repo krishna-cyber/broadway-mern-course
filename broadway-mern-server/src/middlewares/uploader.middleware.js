@@ -21,7 +21,7 @@ const storage = multer.diskStorage({
     filename: function (req, file, cb) {
       let fileExt = file.originalname.split('.').pop();  //returns an array of the file name and the extension and pop() returns the last element of the array
       let filename = `${randomStringGenerator(10)}-${Date.now()}.${fileExt}`;
-      console.log(filename);
+      console.log(`File name is ${filename}`);
       cb(null,filename )
     }
   })

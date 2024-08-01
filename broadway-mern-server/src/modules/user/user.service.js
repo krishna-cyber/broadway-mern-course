@@ -8,7 +8,6 @@ class UserService {
 
     generateUserActivationToken= (data)=>{
         // send confirmation email and other verification process
-        console.log(data);
     data.activateToken = randomStringGenerator(20);
     // set activatedFor date time 3 hours
 
@@ -88,7 +87,6 @@ createUser = async (data)=>{
         //save the user
         await user.save();
 
-        console.log("user after user.save", user)
 
         return user;
 
@@ -106,9 +104,7 @@ createUser = async (data)=>{
 
 getSingleUserByFilter = async (filter)=>{
     try {
-        console.log(filter)
         const userDetail =await UserModel.findOne({activationToken:filter.token});
-        console.log('userdetails at getsingle user by filter service',userDetail);
         if (userDetail) {
             return userDetail;
         } else {

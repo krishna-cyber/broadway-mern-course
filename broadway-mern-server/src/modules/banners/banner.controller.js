@@ -21,6 +21,7 @@ class BannerController{
                                 meta:null
                         });
                 } catch (exception) {
+                        console.log(`Error in creating banner controller`,exception);
                         next(exception);
                 }
         }
@@ -34,6 +35,25 @@ class BannerController{
                         next();
                 } catch (exception) {
                         next(exception);
+                }
+        }
+        getAllBanners = async (req,res,next)=>{
+                try {
+                        const list = await bannerService.listData({});
+                        console.log(list);
+
+                        res.json({
+                                result: list.data,
+                                message: "List of banners",
+                                meta: {
+                                        total: list.count,
+                                        pages: 1,
+                                        limit: 10
+                                }
+                        });
+                } catch (error) {
+                        next(exception);
+                        
                 }
         }
         index = async (req,res,next)=>{
@@ -55,7 +75,7 @@ class BannerController{
                 next(exception);
         }
         }
-        view = async (req,res,next)=>{
+        getSingleBannerById = async (req,res,next)=>{
                 try {
                         const id = req.params.id;
                         if(!id){
@@ -75,7 +95,7 @@ class BannerController{
                         next(exception);
                 }
         }
-        edit = async (req,res,next)=>{
+        updateSingleBannerById = async (req,res,next)=>{
                 // get banner by id , validate and update banner details
                 try {
                         const id = req.params.id;

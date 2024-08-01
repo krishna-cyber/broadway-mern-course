@@ -25,8 +25,7 @@ import {
   SellerDashboard,
 } from "../pages/dashboard";
 import LoadingPage from "../pages/loading/loading.page";
-import BannerList from "../pages/banner/banner-list.page";
-import BannerCreate from "../pages/banner/banner-create.page";
+import {BannerEdit,BannerCreate,BannerList} from "../pages/banner"
 
 const RouterConfig = () => {
   const [loggedInUser, setLoggedInUser] = useState(null);
@@ -82,6 +81,7 @@ const RouterConfig = () => {
                   element={<BannerList />}
                 />{" "}
                 <Route path="/admin/banner-create" element={<BannerCreate />} />
+                <Route path="/admin/banner/edit/:id" element={<BannerEdit />} />
                 <Route
                   path="*"
                   element={<ErrorPage url="/admin" label="Back to Dashboard" />}

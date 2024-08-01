@@ -220,7 +220,7 @@ export const RegisterPage = () => {
                   onChange={(e: any) => {
                     e.preventDefault();
                     const image = e.target.files["0"];
-                    setValue("profile", image);
+                    setValue("image", image);
                   }}
                 />
               </div>

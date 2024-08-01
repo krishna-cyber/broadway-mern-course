@@ -13,11 +13,12 @@ const router = require('express').Router();
 router.get('/list-home', bannerController.listForHome);
 
 router.route('/')
-    .get(loginCheck,hasPermission(['admin']))
+.get(loginCheck,hasPermission(['admin']),bannerController.getAllBanners)
+    // .get(bannerController.getAllBanners)
     .post(loginCheck,hasPermission(['admin']), setPath('banners'),uploadFile().single('image'),bodyValidator(BannerCreateDTO),bannerController.create);
 
     router.route('/:id')
-    .get(loginCheck,hasPermission(['admin']))
-    .put(loginCheck,hasPermission(['admin']), setPath('banners'),bodyValidator(BannerUpdateDTO),bannerController.edit)
+    .get(loginCheck,hasPermission(['admin']),bannerController.getSingleBannerById)
+    .put(loginCheck,hasPermission(['admin']), setPath('banners'),bodyValidator(BannerUpdateDTO),bannerController.updateSingleBannerById)
 
 module.exports = router;

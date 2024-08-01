@@ -13,6 +13,8 @@ abstract class HttpService {
 
   #setHeaders = (config: HeaderConfigProps) => {
     // if config null set headers to default application/json
+
+    console.log("config at setheader function", config.file);
     if (!config) {
       this.headers = {
         ...this.headers,
@@ -41,7 +43,10 @@ abstract class HttpService {
     // if config is auth and set params
     if (config && config.params) {
      this.params = {...config.params}
-  };
+
+    };
+    console.log(`header set `,this.headers)
+
 }
   postRequest = async (url: string, data: any = {}, config: any = null) => {
     console.log("post request httprequest", url, data, config);
@@ -50,7 +55,7 @@ abstract class HttpService {
       this.#setHeaders(config);
       const response = await instance.post(url, data, {
         headers: { ...this.headers },
-        params: { ...this.params },
+   
       });
 
       console.log("success post request", response);
@@ -93,6 +98,22 @@ abstract class HttpService {
     } catch (error:any) {
       console.log("delete request error", error);
       throw error?.data;
+    }
+  };
+  patchRequest = async (url: string, data: any = {}, config: any = null) => {
+    console.log("post request httprequest", url, data, config);
+
+    try {
+      this.#setHeaders(config);
+      const response = await instance.patch(url, data, {
+        headers: { ...this.headers },
+        params: { ...this.params },
+      });
+
+      console.log("success post request", response);
+      return response;
+    } catch (error) {
+      throw error;
     }
   };
 }
