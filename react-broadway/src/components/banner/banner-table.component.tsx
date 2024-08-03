@@ -11,6 +11,7 @@ import authServiceInstance from "../../pages/auth/auth.service";
 import { SearchParams } from "../../config/constants";
 
 import TableActionButtons from "../common/table/table-action-buttons.component";
+import { NavLink } from "react-router-dom";
 
 const BannerTable = () => {
   const [bannerData, setBannerData] = useState([
@@ -35,11 +36,11 @@ const BannerTable = () => {
     async ({ page = 1, limit = 10, search = "" }: SearchParams) => {
       setLoading(true);
       try {
-        const banners = await authServiceInstance.getRequest("/banner", {
+        const banners:any = await authServiceInstance.getRequest("/banner", {
           auth: true,
           params: { page: page, limit: limit, search: search },
         });
-        // setBannerData(banners?.data?.result);
+        setBannerData(banners?.result);
         console.log({ page, limit, search });
         console.log("Banners: ", banners);
       } catch (error: any) {
@@ -103,7 +104,9 @@ const BannerTable = () => {
                     </Table.Cell>
                     <Table.Cell>{data.link || `No link avilable`}</Table.Cell>
                     <Table.Cell>
-                      <img className=" w-40 " src={data.image} />
+                      <NavLink to={data.image} target="_data.image">
+                      <img className=" w-40 h-16 " src={data.image} />
+                      </NavLink>
                     </Table.Cell>
                     <Table.Cell>
                       {data.status === "active" ? (
@@ -118,17 +121,7 @@ const BannerTable = () => {
                     </Table.Cell>
                     <Table.Cell className=" flex gap-3">
                       <TableActionButtons editUrl={`/admin/banner/edit/${data._id}`} deleteAction={deleteBanner} rowId={data._id} />
-                      {/* <NavLink
-                        
-                        to={`/admin/banner-edit/${data._id}`}
-                      >
-                    <Button color={"green"} className=" bg-green-600 text-white hover:text-black" >
-                        <HiPencil className=" h-4 w-4" />
-                        </Button>
-                      </NavLink>
-                      <Button className=" bg-red-700 text-white hover:text-black" color={"red"} onClick={()=>{setOpenModal(true)}}>
-                        <HiArchive className=" h-4 w-4" />
-                      </Button> */}
+                    
                     </Table.Cell>
                   </Table.Row>
                 ))

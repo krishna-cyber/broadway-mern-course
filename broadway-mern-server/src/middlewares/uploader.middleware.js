@@ -41,7 +41,7 @@ const uploadFile = (fileType = fileFilterType.IMAGE) => {
         cb({ code: 400, message: `file format not allowed` }, false);
       }
     },
-    limits: { fileSize: 1024 * 1024 * 5 }, //5MB
+    // limits: { fileSize: 1024 * 1024 * 5 }, //5MB
   });
 };
 

@@ -7,10 +7,14 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { GrSend } from "react-icons/gr";
-import { DateTime } from "luxon";
 import authServiceInstance from "../auth/auth.service";
+import { toast } from "react-toastify";
+import { useState } from "react";
+import {  useNavigate } from "react-router-dom";
 
 const BannerCreate = () => {
+  const [loading,setLoading] = useState(false);
+  const navigate = useNavigate();
   const BannerCreateDTO = yup.object({
     title: yup
       .string()
@@ -33,14 +37,16 @@ const BannerCreate = () => {
   });
 
   const onSubmit =async  (data: any) => {
+    setLoading(true);
     try {
       console.log("Banner create data:",data);
-     const response = await authServiceInstance.postRequest("/banner",data, {auth:true,file:true});
-        console.log("Banner create response:",response);
+     const response:any = await authServiceInstance.postRequest("/banner",data, {auth:true,file:true});
+     toast.success(response?.message);
     } catch (error) {
         console.log(error);
     }finally{
-        // Todo
+        setLoading(false);
+        navigate("/admin/banner-lists");
     }
   }
   return (
@@ -123,6 +129,8 @@ const BannerCreate = () => {
             </div>
           </div>
           <Button
+          isProcessing={loading}
+          disabled={loading}
             type="submit"
             color={""}
             size={"xs"}

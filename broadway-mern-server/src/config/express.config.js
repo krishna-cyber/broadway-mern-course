@@ -6,6 +6,9 @@ const cors = require('cors');
 app.use(cors());
 
 
+// caching disabled
+// app.disable('etag');
+
 // import database connection
 require('./db.config');
 

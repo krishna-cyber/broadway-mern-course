@@ -1,6 +1,6 @@
-const { ref } = require('joi');
 const mongoose = require('mongoose');
 const statusType = require('../../config/constants.config');
+const UserModel = require('../user/user.model');
 
 
 const BannerSchema = new mongoose.Schema({
@@ -26,12 +26,11 @@ const BannerSchema = new mongoose.Schema({
     description:{
 
         type: String,
-        
+
     },
     createdBy:{
         type: mongoose.Types.ObjectId,
-        ref: 'Users',
-        default: null
+        ref: 'User',
     }
 },
     {

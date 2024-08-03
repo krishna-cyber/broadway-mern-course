@@ -7,11 +7,13 @@ import {
   HiSquare3Stack3D,
   HiSquaresPlus,
 } from "react-icons/hi2";
-import AuthContext from "../../context/auth.context";
+// import AuthContext from "../../context/auth.context";
+import { useSelector } from "react-redux";
 
 const AdminDashboardNavbar = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const {loggedInUser}:any = useContext(AuthContext);
+  // const {loggedInUser}:any = useContext(AuthContext);
+  const { loggedInUser } = useSelector((state: any) => state.user);
   return (
     <Navbar
       fluid
@@ -74,23 +76,19 @@ const AdminDashboardNavbar = () => {
           arrowIcon={false}
           inline
           label={
-            // <Avatar
-            //   alt="User settings"
-            //   img="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
-            //   rounded
-            // />
-            loggedInUser.image ? <>
-             <Avatar
-              alt="User settings"
-              img={loggedInUser.image}
-              rounded
-            />
-            </>:<>
-            <Avatar
-              alt="User settings"
-              rounded
-            />
-            </>
+            loggedInUser?.profile ? (
+              <>
+                <Avatar
+                  alt="User settings"
+                  img={loggedInUser.profile}
+                  rounded
+                />
+              </>
+            ) : (
+              <>
+                <Avatar alt="User settings" rounded />
+              </>
+            )
           }
         >
           <Dropdown.Header>
@@ -107,6 +105,7 @@ const AdminDashboardNavbar = () => {
         </Dropdown>
       </div>
     </Navbar>
+    
   );
 };
 

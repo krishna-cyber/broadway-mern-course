@@ -1,35 +1,48 @@
-import { ActionReducerMapBuilder,createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice, Slice } from '@reduxjs/toolkit'
+import authServiceInstance from '../../pages/auth/auth.service';
 
 
 
-const getLoggedInUserForRedux = createAsyncThunk(
+export const getLoggedInUserForRedux :any = createAsyncThunk(
   'User/getLoggedInUserForRedux',
-  async (userId: number, thunkAPI) => {
+  async (data) => {
     try {
-      const response = await userAPI.fetchById(userId)
-      return response.data
+      const response: any = await authServiceInstance.getRequest("/auth/me", {
+        auth: true,
+      });
+      return response.result
     } catch (error) {
       console.log(error)
-      
+      throw error;
     }
-  },
+  }
 )
 
 const initialState = {
   loggedInUser: null,
 }
 
-export const userSlice = createSlice({
+export const userSlice :Slice= createSlice({
   name: 'User',
   initialState,
   reducers: {
     setLoggedInUserForRedux: (state, action) => {
+      console.log("Action payload: ", action.payload);
       state.loggedInUser = action.payload;
     }
   },
-  extraReducers:(builder:ActionReducerMapBuilder<any>)=>{
-
+  extraReducers:(builder)=>{
+    builder.addCase(getLoggedInUserForRedux.fulfilled, (state, action) => {
+      // Add user to the state array
+      state.loggedInUser = action.payload
+    })
+    builder.addCase(getLoggedInUserForRedux.rejected, (state) => {
+      // Add user to the state array
+      state.loggedInUser = null
+    })
   }
+
+  
 })
 
 // Action creators are generated for each case reducer function

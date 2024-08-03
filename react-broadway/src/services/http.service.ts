@@ -1,3 +1,4 @@
+import { AxiosResponse } from "axios";
 import { instance } from "../config/axios.config";
 import { SearchParams } from "../config/constants";
 
@@ -81,9 +82,9 @@ abstract class HttpService {
       this.#setHeaders(config);
 
       //TODO params for delete request
-      const response = await instance.delete(url, {
+      const response : AxiosResponse = await instance.delete(url, {
         headers: { ...this.headers },
-        params: { ...this.params },
+       
       });
 
       console.log("success delete request http service", response);

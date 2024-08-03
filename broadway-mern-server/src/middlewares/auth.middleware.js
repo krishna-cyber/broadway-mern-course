@@ -33,7 +33,7 @@ const loginCheck = async (req,res,next) => {
                     email:user.email,
                     role:user.role,
                     status:user.status,
-                    name:user?.name || null,
+                    fullName:user?.fullName || null,
                     profile:user?.image || null,
                     phone: user?.phone || null,
                 };

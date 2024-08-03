@@ -12,7 +12,7 @@ class BannerController{
                         const imageUrl = await uploadImage(`./public/uploads/banners/${data[req.file.fieldname]}`);
                         data.image = imageUrl;
                         deleteFile(`./public/uploads/banners/${data[req.file.fieldname]}`); //delete file from local storage
-
+                        data.createdBy = req.authUser.id;
                         const response = await bannerService.crateBanner(data);
                         console.log(response);
                         res.json({
@@ -40,8 +40,7 @@ class BannerController{
         getAllBanners = async (req,res,next)=>{
                 try {
                         const list = await bannerService.listData({});
-                        console.log(list);
-
+                        
                         res.json({
                                 result: list.data,
                                 message: "List of banners",
@@ -120,10 +119,19 @@ class BannerController{
                         
                 }
         }
-        delete = async (req,res,next)=>{
-            //delete banner by id 
-            //also delete image from cloudinary
-            //response result response meta null messge banner deleted successfully
+        deleteSingleBannerById = async (req,res,next)=>{
+            try {
+
+                const {id} = req.params;
+                bannerService.deleteById(id);
+                return res.json({
+                        result: null,
+                        message: "Banner deleted successfully",
+                        meta: null
+                });
+            } catch (error) {
+                next(error);
+            }
         }
         listForHome = async(req,res,next)=>{
                 try {

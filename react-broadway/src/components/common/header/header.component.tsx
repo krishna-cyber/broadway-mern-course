@@ -1,11 +1,15 @@
 import { NavLink } from "react-router-dom";
 import logo_full from "./../../../../src/assets/images/logo/logo-full.png";
 import {  Navbar } from "flowbite-react";
-import { useContext } from "react";
-import AuthContext from "../../../context/auth.context";
+// import { useContext } from "react";
+// import AuthContext from "../../../context/auth.context";
+import { useSelector } from "react-redux";
 
 const Header = () => {
-  let {loggedInUser}:any = useContext(AuthContext);
+  
+  const {loggedInUser} = useSelector((state: any) => state.user);
+  console.log({loggedInUser});
+  // let {loggedInUser}:any = useContext(AuthContext);
   return (
     <Navbar fluid rounded className=" p-4 shadow-2xl">
       <Navbar.Brand href="#">
@@ -23,9 +27,9 @@ const Header = () => {
             className={({ isActive }) =>
               isActive ? "activeLink" : "text-gray-900"
             }
-            to={`/${loggedInUser?.role}/dashboard`}
+            to={`/${loggedInUser?.role}`}
           >
-            {loggedInUser?.name}
+            {loggedInUser?.fullName}
           </NavLink>
           <NavLink
             className={({ isActive }) =>
@@ -102,6 +106,14 @@ const Header = () => {
           to="/contact"
         >
           Contact
+        </NavLink>
+        <NavLink
+          to="/chat"
+          className={({ isActive }) =>
+            isActive ? "activeLink" : "text-gray-900"
+          }
+        >
+        Chat
         </NavLink>
       </Navbar.Collapse>
     </Navbar>

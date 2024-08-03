@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import { HiShoppingBag } from "react-icons/hi";
 import cart from "../../assets/images/e-commerce cart.jpg";
 import { useForm } from "react-hook-form";
@@ -6,7 +6,7 @@ import {
   TextAreaComponent,
   TextInputComponent,
 } from "../../components/common/form/form.components";
-import { Navigate, NavLink, useNavigate, useParams } from "react-router-dom";
+import {  NavLink, useNavigate, useParams } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import authServiceInstance from "./auth.service";
@@ -15,12 +15,14 @@ import { Button, Modal, HR } from "flowbite-react";
 import { AiOutlineLoading } from "react-icons/ai";
 import { HiLogin, HiOutlineExclamationCircle } from "react-icons/hi";
 import { MessageConstants } from "../../config/constants";
-import logo from "../../assets/images/logo/logo-only.png";
 import { FaFacebook, FaGoogle } from "react-icons/fa";
-import AuthContext from "../../context/auth.context";
+import { useSelector } from "react-redux";
 
 export const RegisterPage = () => {
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
+  const {loggedInUser}= useSelector((state: any) => state.user);
 
   const RegisterDTO = yup
     .object({
@@ -88,7 +90,12 @@ export const RegisterPage = () => {
       setLoading(false);
     }
   };
-
+  useEffect(() => {
+    if(loggedInUser){
+      toast.success("User has already logged in")
+      navigate(`/${loggedInUser?.role}`)
+    }
+  }, []);
   return (
     <section className="bg-white">
       <div className="lg:grid lg:min-h-screen lg:grid-cols-12">
@@ -219,8 +226,8 @@ export const RegisterPage = () => {
                   type="file"
                   onChange={(e: any) => {
                     e.preventDefault();
-                    const image = e.target.files["0"];
-                    setValue("image", image);
+                     const image = e.target.files["0"];
+                    setValue("profile", image);
                   }}
                 />
               </div>
@@ -281,7 +288,6 @@ export const RegisterPage = () => {
 
 export const UserActivate = () => {
   const params = useParams<{ token: string }>();
-  const [loading, setLoading] = useState(true);
   const [msg, setMsg] = useState("");
   const [openModal, setOpenModal] = useState(false);
   const navigate = useNavigate();
@@ -384,7 +390,8 @@ export const UserActivate = () => {
 // Login page
 export const LoginPage = () => {
   const [loading, setLoading] = useState(false);
-  const { loggedInUser, setLoggedInUser }: any = useContext(AuthContext);
+  const {loggedInUser} = useSelector((state: any) => state.user);
+  // const { loggedInUser, setLoggedInUser }: any = useContext(AuthContext);
   const navigate = useNavigate();
 
   const LoginDTO = yup.object({
@@ -415,7 +422,7 @@ export const LoginPage = () => {
         "/auth/login",
         data
       );
-      setLoggedInUser(response?.result?.userDetail);
+      // setLoggedInUser(response?.result?.userDetail);
       localStorage.setItem("_at", response?.result?.token);
       localStorage.setItem("_rt", response?.result?.refreshToken);
       toast.success("User logged in successfully");
@@ -431,7 +438,7 @@ export const LoginPage = () => {
   useEffect(() => {
     if (loggedInUser) {
       toast.success("User has already logged in");
-      navigate(`/${loggedInUser?.role}/dashboard`);
+      navigate(`/${loggedInUser?.role}`);
     }
   }, [loggedInUser]);
 

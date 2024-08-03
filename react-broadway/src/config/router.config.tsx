@@ -27,18 +27,22 @@ import {
 import LoadingPage from "../pages/loading/loading.page";
 import {BannerEdit,BannerCreate,BannerList} from "../pages/banner"
 
+import { useDispatch } from "react-redux";
+import { getLoggedInUserForRedux } from "../store/reducer/user.reducer";
+import { ChatPageLayout } from "../pages/layout/chat.layout";
+
+
 const RouterConfig = () => {
-  const [loggedInUser, setLoggedInUser] = useState(null);
+  // const [loggedInUser, setLoggedInUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const dispatch = useDispatch()
 
   // function to retrive loggedin user through token
   const getLoggedInUser = async () => {
     try {
-      const response: any = await authServiceInstance.getRequest("/auth/me", {
-        auth: true,
-      });
-      console.log(response);
-      setLoggedInUser(response?.result);
+     dispatch(getLoggedInUserForRedux())
+      // dispatch(setLoggedInUserForRedux(response?.result));
+      // setLoggedInUser(response?.result);
     } catch (error) {
       console.log(error);
     } finally {
@@ -52,7 +56,9 @@ const RouterConfig = () => {
   }, []);
   return (
     <>
-      <AuthContext.Provider value={{ loggedInUser, setLoggedInUser }}>
+ {/* <Provider store={store}> */}
+
+      {/* <AuthContext.Provider value={{ loggedInUser, setLoggedInUser }}> */}
         {loading ? (
           <LoadingPage />
         ) : (
@@ -74,33 +80,33 @@ const RouterConfig = () => {
                     <AdminDashboardLayout />
                   </CheckPermission>
                 }
-              >
+                >
                 <Route index element={<AdminDashboard />} />
                 <Route
                   path="/admin/banner-lists"
                   element={<BannerList />}
-                />{" "}
+                  />{" "}
                 <Route path="/admin/banner-create" element={<BannerCreate />} />
                 <Route path="/admin/banner/edit/:id" element={<BannerEdit />} />
                 <Route
                   path="*"
                   element={<ErrorPage url="/admin" label="Back to Dashboard" />}
-                />
+                  />
               </Route>
 
               {/* for testing admin dashboard */}
               {/* <Route path="/admin" element={<AdminDashboardLayout />}>
                 <Route index element={<AdminDashboard />} />
                 <Route
-                  path="/admin/banner-lists"
-                  element={<BannerList />}
+                path="/admin/banner-lists"
+                element={<BannerList />}
                 />{" "}
                 <Route path="/admin/banner-create" element={<BannerCreate />} />
                 <Route
-                  path="*"
-                  element={<ErrorPage url="/admin" label="Back to Dashboard" />}
+                path="*"
+                element={<ErrorPage url="/admin" label="Back to Dashboard" />}
                 />
-              </Route> */}
+                </Route> */}
 
               {/* seller dashboard routes */}
               <Route
@@ -110,7 +116,7 @@ const RouterConfig = () => {
                     <SellerDashboardLayout /> <Outlet />
                   </>
                 }
-              >
+                >
                 <Route
                   index
                   element={
@@ -118,13 +124,13 @@ const RouterConfig = () => {
                       <SellerDashboard />
                     </>
                   }
-                />
+                  />
                 <Route
                   path="*"
                   element={
                     <ErrorPage url="/seller" label="Back to Dashboard" />
                   }
-                />
+                  />
               </Route>
 
               {/* seller dashboard routes */}
@@ -135,7 +141,7 @@ const RouterConfig = () => {
                     <CustomerDashboardLayout />
                   </CheckPermission>
                 }
-              >
+                >
                 <Route
                   index
                   element={
@@ -143,7 +149,7 @@ const RouterConfig = () => {
                       <CustomerDashboard />
                     </>
                   }
-                />
+                  />
                 <Route
                   path="*"
                   element={
@@ -153,15 +159,17 @@ const RouterConfig = () => {
               </Route>
 
               <Route path="/activate/:token" element={<UserActivate />} />
+              <Route path="/chat" element={<ChatPageLayout />} />
               {/* 404 page */}
               <Route
                 path="*"
                 element={<ErrorPage url="/" label="Back to Homepage" />}
-              />
+                />
             </Routes>
           </BrowserRouter>
         )}
-      </AuthContext.Provider>
+      {/* </AuthContext.Provider> */}
+        {/* </Provider> */}
     </>
   );
 };

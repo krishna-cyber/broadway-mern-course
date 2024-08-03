@@ -14,7 +14,7 @@ class BannerService{
     listData = async ({skip =0, filter = {}})=>{
         try {
             const count = await BannerModel.countDocuments(filter);
-            const data = await BannerModel.find(filter).populate('createdBy',["_id","name","email","role"]).skip(skip).sort({_id:'desc'});
+            const data = await BannerModel.find(filter).populate('createdBy',["_id","fullName","email","role"]).skip(skip).sort({_id:'desc'});
             return {data,count};
         } catch (exception) {
             throw exception;
@@ -22,10 +22,8 @@ class BannerService{
     }
     getDetailByFilter = async (filter)=>{
         try {
-            const bannerDetail = await BannerModel.findOne(filter);
-            if(!bannerDetail){
-                throw {statusCode:404,message:"Banner not found"};
-            }
+            const bannerDetail = await BannerModel.findByIdAndDelete(filter, { new: true });
+          console.log(bannerDetail);
             return bannerDetail;
         } catch (exception) {
             throw exception;
