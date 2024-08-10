@@ -18,3 +18,5 @@ export type SearchParams = {
   sort?: string;
   order?: string;
 }
+
+export const validFileExtensions = ['image/jpg', 'image/gif', 'image/png', 'image/jpeg', 'image/svg', 'image/webp'] ;

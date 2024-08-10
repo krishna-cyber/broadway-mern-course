@@ -1,7 +1,55 @@
+import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, FileInput, Label, Modal, Rating } from "flowbite-react";
 import React, { useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+import * as yup from "yup";
+import { checkIfFilesAreCorrectType, checkIfFilesAreTooBig } from "../../utils";
+import { HiUpload } from "react-icons/hi";
+import { FaUpload } from "react-icons/fa";
+import { GrUpload } from "react-icons/gr";
+
+type Inputs = {
+  title: string;
+  description: string;
+  reviewCheckbox?: boolean | undefined;
+  image?: any[] | undefined;
+};
+
+const schema = yup
+  .object({
+    title: yup.string().required(),
+    description: yup.string().required(),
+    reviewCheckbox: yup
+      .boolean()
+      .optional()
+      .oneOf([true], "You must accept the terms and conditions"),
+    image: yup
+      .array()
+
+      .test(
+        "is-valid-type",
+        "Not a valid image type",
+        checkIfFilesAreCorrectType
+      )
+      .test(
+        "is-valid-size",
+        "Max allowed size is 100KB",
+        checkIfFilesAreTooBig
+      ),
+  })
+  .required();
 
 const ProductReviewForm = () => {
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
+  const onSubmit = (data: Inputs) => console.log(data);
   const [openModal, setOpenModal] = useState(false);
   function onCloseModal() {
     setOpenModal(false);
@@ -11,7 +59,7 @@ const ProductReviewForm = () => {
       <Button onClick={() => setOpenModal(true)} color={"blue"}>
         write a review
       </Button>
- 
+
       <Modal show={openModal} size="4xl" onClose={onCloseModal} popup>
         <Modal.Header>
           <h3 className="text-lg font-semibold text-slate-700 dark:text-white">
@@ -25,7 +73,11 @@ const ProductReviewForm = () => {
           </a>
         </Modal.Header>
         <Modal.Body>
-          <form className="p-4 md:p-5">
+          <form
+            id="review-form"
+            onSubmit={handleSubmit(onSubmit)}
+            className="p-4 md:p-5"
+          >
             <div className="mb-4 grid grid-cols-2 gap-4">
               <div className="col-span-2">
                 <Rating size={"lg"}>
@@ -50,11 +102,15 @@ const ProductReviewForm = () => {
                   Review title
                 </label>
                 <input
+                  {...register("title")}
                   type="text"
                   name="title"
                   id="title"
                   className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-600 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
                 />
+                <span className=" text-sm italic text-red-800">
+                  {errors.title?.message}
+                </span>
               </div>
               <div className="col-span-2">
                 <label
@@ -64,10 +120,14 @@ const ProductReviewForm = () => {
                   Review description
                 </label>
                 <textarea
+                  {...register("description")}
                   id="description"
                   rows={6}
                   className="mb-2 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
                 ></textarea>
+                <span className=" text-sm italic text-red-800">
+                  {errors.description?.message}
+                </span>
                 <p className="ms-auto text-xs text-gray-500 dark:text-gray-400">
                   Problems with the product or delivery?{" "}
                   <a
@@ -85,21 +145,7 @@ const ProductReviewForm = () => {
                   className="flex h-64 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:hover:border-gray-500 dark:hover:bg-gray-600"
                 >
                   <div className="flex flex-col items-center justify-center pb-6 pt-5">
-                    <svg
-                      className="mb-4 h-8 w-8 text-gray-500 dark:text-gray-400"
-                      aria-hidden="true"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 20 16"
-                    >
-                      <path
-                        stroke="currentColor"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth="2"
-                        d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
-                      />
-                    </svg>
+                    <GrUpload className="mb-4 h-8 w-8 text-gray-500 dark:text-gray-400" />
                     <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
                       <span className="font-semibold">Click to upload</span> or
                       drag and drop
@@ -108,14 +154,27 @@ const ProductReviewForm = () => {
                       SVG, PNG, JPG or GIF (MAX. 800x400px)
                     </p>
                   </div>
-                  <FileInput id="dropzone-file" className="hidden" />
+                  <FileInput
+                    onChange={(e: any) => {
+                      const image = e.target.files["0"];
+                      let images = [];
+                      images.push(image);
+
+                      setValue("image", images);
+                    }}
+                    id="dropzone-file"
+                    className="hidden"
+                  />
+                  <span className=" text-sm italic text-red-800">
+                    {errors.image?.message}
+                  </span>
                 </Label>
               </div>
-            
+
               <div className="col-span-2">
                 <div className="flex items-center">
                   <input
-                    id="review-checkbox"
+                    {...register("reviewCheckbox")}
                     type="checkbox"
                     value=""
                     className="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600"
@@ -133,13 +192,16 @@ const ProductReviewForm = () => {
                     </a>
                     .
                   </label>
+                  <span className=" text-sm italic text-red-800">
+                    {errors.reviewCheckbox?.message}
+                  </span>
                 </div>
               </div>
             </div>
           </form>
         </Modal.Body>
         <Modal.Footer className=" gap-3">
-          <Button color={"blue"} size={"md"}>
+          <Button color={"blue"} size={"sm"} type="submit" form="review-form">
             Add review
           </Button>
           <Button color={"gray"} onClick={onCloseModal}>
