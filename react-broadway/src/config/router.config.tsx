@@ -30,6 +30,7 @@ import {BannerEdit,BannerCreate,BannerList} from "../pages/banner"
 import { useDispatch } from "react-redux";
 import { getLoggedInUserForRedux } from "../store/reducer/user.reducer";
 import { ChatPageLayout } from "../pages/layout/chat.layout";
+import ProductPage from "../pages/product/product.page";
 
 
 const RouterConfig = () => {
@@ -69,6 +70,7 @@ const RouterConfig = () => {
                 <Route path="/register" element={<RegisterPage />} />
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/categories" element={<div>category</div>} />
+                <Route path="/product/:productName" element={<ProductPage/>} />
                 <Route path="/category/:slug" element={<CategoryDetail />} />
               </Route>
 

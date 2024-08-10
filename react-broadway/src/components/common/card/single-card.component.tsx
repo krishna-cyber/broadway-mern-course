@@ -1,19 +1,6 @@
 import { Card } from "flowbite-react";
 import { SingleCardWithImageAndTitleProps } from "./singleCard.contracts";
 
-export const ImageWithTitleCard = ({data}:{data:SingleCardWithImageAndTitleProps})=>{
-    return(<>
-     <Card
-        className="w-auto"
-      renderImage={() => <img width={500} height={500} src={data.image} alt="image 1" />}
-    >
-      <h5 className="text-2xl text-center font-semibold tracking-tight text-gray-900 dark:text-white">
-       {data.title}
-      </h5>
-     
-    </Card>
-    </>)
-}
 
 
 export const SingleCardItem = ({data}:{data:SingleCardWithImageAndTitleProps})=>{
