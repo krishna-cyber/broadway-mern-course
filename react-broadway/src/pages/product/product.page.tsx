@@ -7,7 +7,7 @@ import ProductOverview from '../../components/products/product-overview.componen
 const ProductPage = () => {
   return (
     <>
-    {/* <ProductViewLandingPage /> */}
+  
    <ProductOverview/>
     <ProductReview />
     </>

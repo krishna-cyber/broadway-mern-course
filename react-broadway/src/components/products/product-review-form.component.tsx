@@ -1,11 +1,10 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, FileInput, Label, Modal, Rating } from "flowbite-react";
-import React, { useState } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
+import  { useState } from "react";
+import {  useForm } from "react-hook-form";
 import * as yup from "yup";
 import { checkIfFilesAreCorrectType, checkIfFilesAreTooBig } from "../../utils";
-import { HiUpload } from "react-icons/hi";
-import { FaUpload } from "react-icons/fa";
+
 import { GrUpload } from "react-icons/gr";
 
 type Inputs = {
@@ -17,8 +16,11 @@ type Inputs = {
 
 const schema = yup
   .object({
-    title: yup.string().required(),
-    description: yup.string().required(),
+    title: yup.string().required("Title is required"),
+    description: yup
+      .string()
+      .required("Description is required")
+      .min(10, "Description must be at least 10 characters"),
     reviewCheckbox: yup
       .boolean()
       .optional()
@@ -44,7 +46,6 @@ const ProductReviewForm = () => {
     register,
     handleSubmit,
     setValue,
-    watch,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
@@ -106,7 +107,11 @@ const ProductReviewForm = () => {
                   type="text"
                   name="title"
                   id="title"
-                  className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-600 focus:ring-primary-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
+                  className={
+                    errors.title
+                      ? "mb-2 block w-full rounded-lg border border-red-500 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
+                      : "mb-2 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
+                  }
                 />
                 <span className=" text-sm italic text-red-800">
                   {errors.title?.message}
@@ -123,7 +128,11 @@ const ProductReviewForm = () => {
                   {...register("description")}
                   id="description"
                   rows={6}
-                  className="mb-2 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
+                  className={
+                    errors.description
+                      ? "mb-2 block w-full rounded-lg border border-red-500 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
+                      : "mb-2 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
+                  }
                 ></textarea>
                 <span className=" text-sm italic text-red-800">
                   {errors.description?.message}
@@ -142,7 +151,11 @@ const ProductReviewForm = () => {
               <div className="flex col-span-2 w-full items-center justify-center">
                 <Label
                   htmlFor="dropzone-file"
-                  className="flex h-64 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:hover:border-gray-500 dark:hover:bg-gray-600"
+                  className={
+                    errors.image
+                      ? "mb-2 block w-full rounded-lg border border-red-500 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
+                      : "mb-2 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
+                  }
                 >
                   <div className="flex flex-col items-center justify-center pb-6 pt-5">
                     <GrUpload className="mb-4 h-8 w-8 text-gray-500 dark:text-gray-400" />
@@ -190,11 +203,11 @@ const ProductReviewForm = () => {
                     >
                       terms and conditions
                     </a>
-                    .
-                  </label>
+                    .<br />
                   <span className=" text-sm italic text-red-800">
                     {errors.reviewCheckbox?.message}
                   </span>
+                  </label>
                 </div>
               </div>
             </div>

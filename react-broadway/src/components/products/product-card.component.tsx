@@ -5,6 +5,7 @@ import { FaCartPlus, FaDollarSign, FaHeartbeat, FaMoneyCheck, FaShoppingBasket }
 import { GrDeliver } from "react-icons/gr";
 import { HiHeart, HiOutlineHeart } from "react-icons/hi";
 import { HiEye } from "react-icons/hi2";
+import { Link } from "react-router-dom";
 
 const ProductCardComponent = () => {
   return (
@@ -40,12 +41,12 @@ const ProductCardComponent = () => {
           </div>
         </div>
 
-        <a
-          href="#"
+        <Link
+          to="/product/:product-name"
           className="text-lg font-semibold leading-tight text-gray-900 hover:underline dark:text-white"
         >
           Apple iMac 27", 1TB HDD, Retina 5K Display, M3 Max
-        </a>
+        </Link>
         <Rating>
           <Rating.Star />
           <Rating.Star />
