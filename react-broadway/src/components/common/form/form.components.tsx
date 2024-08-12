@@ -43,6 +43,7 @@ export const TextInputComponent = ({
 };
 
 export const TextAreaComponent = ({
+  placeholder,
   control,
   rows = 3,
   name,
@@ -61,7 +62,7 @@ export const TextAreaComponent = ({
       
       <Textarea
         {...field}
-        placeholder="Enter your address details here..."
+        placeholder={placeholder}
         required={required}
         rows={rows}
 

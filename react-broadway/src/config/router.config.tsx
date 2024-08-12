@@ -8,9 +8,7 @@ import {
 
 import { CategoryDetail } from "../pages/category/category-detail.page";
 import { ErrorPage } from "../pages/error/error.page";
-import AuthContext from "../context/auth.context";
 import { useEffect, useState } from "react";
-import authServiceInstance from "../pages/auth/auth.service";
 import { CheckPermission } from "./rbac.config";
 import { UserRoles } from "./constants";
 import {
@@ -31,6 +29,7 @@ import { useDispatch } from "react-redux";
 import { getLoggedInUserForRedux } from "../store/reducer/user.reducer";
 import { ChatPageLayout } from "../pages/layout/chat.layout";
 import ProductPage from "../pages/product/product.page";
+import { ProductCreate,ProductEdit,ProductList } from "../pages/product";
 
 
 const RouterConfig = () => {
@@ -42,8 +41,7 @@ const RouterConfig = () => {
   const getLoggedInUser = async () => {
     try {
      dispatch(getLoggedInUserForRedux())
-      // dispatch(setLoggedInUserForRedux(response?.result));
-      // setLoggedInUser(response?.result);
+     
     } catch (error) {
       console.log(error);
     } finally {
@@ -90,6 +88,9 @@ const RouterConfig = () => {
                   />{" "}
                 <Route path="/admin/banner-create" element={<BannerCreate />} />
                 <Route path="/admin/banner/edit/:id" element={<BannerEdit />} />
+                <Route path="/admin/product-lists" element={<ProductList />} />
+                <Route path="/admin/Product-create" element={<ProductCreate />} />
+                <Route path="/admin/Product/edit/:id" element={<ProductEdit />} />
                 <Route
                   path="*"
                   element={<ErrorPage url="/admin" label="Back to Dashboard" />}

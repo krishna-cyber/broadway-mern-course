@@ -6,13 +6,11 @@ import {
   HiTable,
   HiUser,
   HiViewBoards,
-  HiX,
 } from "react-icons/hi";
 
-import { NavLink, Outlet } from "react-router-dom";
+import {  Outlet } from "react-router-dom";
 import AdminDashboardNavbar from "../../components/dashboard/dashboard-navbar.component";
 import DashboardSidebar from "../../components/dashboard/admin-dashboard-sidebar.component";
-import { Badge, Sidebar } from "flowbite-react";
 
 export const AdminDashboardLayout = () => {
   const sideBarMenuLinks = [
@@ -34,22 +32,22 @@ export const AdminDashboardLayout = () => {
     {
       menu: "Category Management",
       icon: HiInbox,
-      link: "/admin/category",
+      link: "/admin/category-lists",
     },
     {
       menu: "Product Management",
       icon: HiShoppingBag,
-      link: "/admin/product",
+      link: "/admin/product-lists",
     },
     {
       menu: "User Management",
       icon: HiUser,
-      link: "/admin/user",
+      link: "/admin/user-lists",
     },
     {
       menu: "Order Management",
       icon: HiTable,
-      link: "/admin/order",
+      link: "/admin/order-lists",
     },
   ];
 

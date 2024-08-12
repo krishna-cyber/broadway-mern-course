@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
-import {SliderComponent} from "../common/slider/slider.component"
+import { SliderComponent } from "../common/slider/slider.component";
 import { SingleSlider } from "../common/slider/__contracts/slider.contract";
+
 export const BannerComponent = () => {
     const[bannerData,setBannerData] = useState([] as Array<SingleSlider>);
 
