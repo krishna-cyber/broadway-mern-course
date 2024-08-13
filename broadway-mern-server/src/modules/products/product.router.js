@@ -10,14 +10,15 @@ const router = require('express').Router();
 
 
 // public routes
-// router.get('/list-home', bannerController.listForHome);
+router.get('/list-home', productController.listForHome);
 
-// router.route('/')
-//     .get(loginCheck,hasPermission(['admin']))
-//     .post(loginCheck,hasPermission(['admin']), setPath('banners'),uploadFile().single('image'),bodyValidator(BannerCreateDTO),bannerController.create);
+router.route('/')
+    .get(loginCheck,hasPermission(['admin']),productController.viewProduct)
+    .post(loginCheck,hasPermission(['admin','seller']), setPath('banners'),uploadFile().single('image'),bodyValidator(productCreateDTO),productController.createProduct);
 
-//     router.route('/:id')
-//     .get(loginCheck,hasPermission(['admin']))
-//     .put(loginCheck,hasPermission(['admin']), setPath('banners'),bodyValidator(BannerUpdateDTO),bannerController.edit)
+    router.route('/:id')
+    .get(loginCheck,hasPermission(['admin','seller','customer']),productController.viewProduct)
+    .put(loginCheck,hasPermission(['admin','seller']), setPath('banners'),bodyValidator(productUpdateDTO),productController.editProduct)
+    .delete(loginCheck,hasPermission(['admin','seller']),productController.deleteProduct);
 
 module.exports = router;

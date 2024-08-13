@@ -4,7 +4,7 @@ const productService = require("./product.service");
 
 class ProductController{
         productId;
-        create = async (req,res,next)=>{
+        createProduct = async (req,res,next)=>{
                 try {
                         const data = req.body;
                         const image = req.file;
@@ -55,7 +55,7 @@ class ProductController{
                 next(exception);
         }
         }
-        view = async (req,res,next)=>{
+        viewProduct = async (req,res,next)=>{
                 try {
                         const id = req.params.id;
                         if(!id){
@@ -75,7 +75,7 @@ class ProductController{
                         next(exception);
                 }
         }
-        edit = async (req,res,next)=>{
+        editProduct = async (req,res,next)=>{
                 // get banner by id , validate and update banner details
                 try {
                         const id = req.params.id;
@@ -100,7 +100,7 @@ class ProductController{
                         
                 }
         }
-        delete = async (req,res,next)=>{
+        deleteProduct = async (req,res,next)=>{
             //delete banner by id 
             //also delete image from cloudinary
             //response result response meta null messge banner deleted successfully

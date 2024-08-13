@@ -1,4 +1,3 @@
-const { link } = require('joi');
 const joi = require('joi');
 const { statusType } = require('../../config/constants.config');
 

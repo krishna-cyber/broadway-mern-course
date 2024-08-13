@@ -22,9 +22,11 @@ const ProductCreate = () => {
       .max(50)
       .required(),
     description: yup.string().min(10).max(500).required(),
-    link: yup.string().url().nullable().optional().default(null),
     status: yup.string().oneOf(["active", "inactive"]).required(),
     image: yup.mixed().required(),
+    price: yup.number().required(),
+    stock: yup.number().required(),
+    discount: yup.number().required(),
   });
   const {
     control,
@@ -72,35 +74,22 @@ const ProductCreate = () => {
                 errMsg={errors.title?.message}
               />
             </div>
-            <div className="sm:col-span-2">
-              <Label
+         
+            <div>
+            <Label
                 htmlFor="title"
                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
               >
-                Link
+                price
               </Label>
 
               <TextInputComponent
-                name="link"
+                name="price"
+                type="number"
                 control={control}
-                placeholder="https://"
-                errMsg={errors.link?.message}
+                placeholder="price[500]"
+                errMsg={errors.price?.message}
               />
-            </div>
-
-            <div>
-              <Label
-                htmlFor="category"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
-                Active Status
-              </Label>
-              <div className="max-w-md">
-                <Select {...register("status")} id="status" required>
-                  <option>active</option>
-                  <option>inactive</option>
-                </Select>
-              </div>
             </div>
             <div>
               <div>
@@ -112,6 +101,39 @@ const ProductCreate = () => {
                 id="image"
                 helperText="SVG, PNG, JPG or GIF (MAX. 800x400px)."
               />
+            </div>
+            <div>
+              <Label
+                htmlFor="category"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >
+                Discount
+              </Label>
+              <div className="max-w-md">
+                <TextInputComponent name="discount" control={control} placeholder="Discount" errMsg={errors.discount?.message} />
+              </div>
+            </div>
+           
+
+            <div>
+              <Label
+                htmlFor="category"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >
+                status
+              </Label>
+              <div className="max-w-md">
+                <Select {...register("status")} id="status" required>
+                  <option>active</option>
+                  <option>inactive</option>
+                </Select>
+              </div>
+            </div>
+            <div>
+              <div>
+                <Label htmlFor="stock" value="stock" />
+              </div>
+              <TextInputComponent name="stock" control={control} placeholder="stock" errMsg={errors.stock?.message} />
             </div>
 
             <div className="sm:col-span-2">
