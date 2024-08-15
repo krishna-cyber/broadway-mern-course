@@ -1,5 +1,5 @@
 import { AxiosResponse } from "axios";
-import { instance } from "../config/axios.config";
+import { axiosInstance } from "../config/axios.config";
 import { SearchParams } from "../config/constants";
 
 interface HeaderConfigProps {
@@ -48,7 +48,7 @@ abstract class HttpService {
   postRequest = async (url: string, data: any = {}, config: any = null) => {
     try {
       this.#setHeaders(config);
-      const response = await instance.post(url, data, {
+      const response = await axiosInstance.post(url, data, {
         headers: { ...this.headers },
       });
 
@@ -64,7 +64,7 @@ abstract class HttpService {
       this.#setHeaders(config);
 
       //TODO params for get request
-      const response = await instance.get(url, {
+      const response = await axiosInstance.get(url, {
         headers: { ...this.headers },
         params: { ...this.params },
       });
@@ -82,7 +82,7 @@ abstract class HttpService {
       this.#setHeaders(config);
 
       //TODO params for delete request
-      const response : AxiosResponse = await instance.delete(url, {
+      const response : AxiosResponse = await axiosInstance.delete(url, {
         headers: { ...this.headers },
        
       });
@@ -99,7 +99,7 @@ abstract class HttpService {
 
     try {
       this.#setHeaders(config);
-      const response = await instance.patch(url, data, {
+      const response = await axiosInstance.patch(url, data, {
         headers: { ...this.headers },
         params: { ...this.params },
       });

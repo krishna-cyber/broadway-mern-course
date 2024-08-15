@@ -4,13 +4,14 @@ import { FaFileExport, FaLongArrowAltDown, FaPlus } from "react-icons/fa";
 import { Button, Pagination } from "flowbite-react";
 import { Link } from "react-router-dom";
 import ProductTable from "../../components/productDashboard/product-table.component";
+import { useQuery } from "@tanstack/react-query";
+import { getProducts } from "../../api/api";
 
 
 
 
 
 const ProductList = () => {
-  
  
   return (
     <section className="bg-gray-50 dark:bg-gray-900 py-3 sm:py-5">

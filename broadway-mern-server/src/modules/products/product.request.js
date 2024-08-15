@@ -4,18 +4,22 @@ const { statusType } = require('../../config/constants.config');
 
 const productCreateDTO = joi.object({
     title : joi.string().min(3).max(50).required(),
-
+    price: joi.number().required(),
+    discount: joi.number().optional().empty(null,'').default(null), 
+    description: joi.string().required().min(4),
     status : joi.string().valid(...Object.values(statusType)).required(),
     image: joi.string().required(),
-    parentId : joi.string().optional().empty(null,'').default(null),
-    brands:joi.array().items(joi.string()).optional().empty(null,'').default(null)
+stock: joi.number().required()
 });
 
 const productUpdateDTO= joi.object({
     title : joi.string().min(3).max(50).required(),
-    link : joi.string().uri().empty(null,'').optional().default(null),
+    price: joi.number().required(),
+    discount: joi.number().optional().empty(null,'').default(null), 
+    description: joi.string().required().min(4),
     status : joi.string().valid(...Object.values(statusType)).required(),
-    image: joi.string().optional()
+    image: joi.string().required(),
+    parentId : joi.string().optional().empty(null,'').default(null),
 });
 
 module.exports = {

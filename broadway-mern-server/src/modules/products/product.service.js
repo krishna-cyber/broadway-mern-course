@@ -11,10 +11,13 @@ class ProductService{
         }
     }
 
-    listData = async ({skip =0, filter = {}})=>{
+    listData = async ({page =1, filter = {},pageSize=10})=>{
         try {
+            const skip = (page - 1) * pageSize;
             const count = await ProductModel.countDocuments(filter);
-            const data = await ProductModel.find(filter).populate('createdBy',["_id","name","email","role"]).skip(skip).sort({_id:'desc'})
+            const totalPages = Math.ceil(count/pageSize);
+            const data = await ProductModel.find(filter).populate('createdBy',["_id","name","email","role"]).skip(skip).limit(pageSize).sort({_id:'desc'});
+            return {data,totalPages}
         } catch (exception) {
             throw exception;
         }
@@ -49,6 +52,13 @@ class ProductService{
                 throw {statusCode:404,message:"Banner not found"};
             }
             return response;
+        } catch (exception) {
+            throw exception;
+        }
+    }
+    countProducts = async ()=>{
+        try {
+            return await ProductModel.countDocuments();
         } catch (exception) {
             throw exception;
         }

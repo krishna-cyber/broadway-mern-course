@@ -6,6 +6,7 @@ const ProductSchema = new mongoose.Schema({
     title:{
         type: String,
         required: true,
+        unique: true,
     min:3,
     max:100
     },
@@ -15,7 +16,7 @@ const ProductSchema = new mongoose.Schema({
     },
     discount:{
         type:Number,
-        default:null
+        default:null,
     },
     description:{
         type:String,
@@ -38,7 +39,7 @@ const ProductSchema = new mongoose.Schema({
     },
     createdBy:{
         type: mongoose.Types.ObjectId,
-        ref: 'Users',
+        ref: 'User',
         default: null
     }
 },

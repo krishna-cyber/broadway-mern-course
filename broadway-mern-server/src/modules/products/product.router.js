@@ -12,12 +12,17 @@ const router = require('express').Router();
 // public routes
 router.get('/list-home', productController.listForHome);
 
+// count of products
+router.get('/count',productController.countProducts);
+
+// protected routes
+
 router.route('/')
-    .get(loginCheck,hasPermission(['admin']),productController.viewProduct)
-    .post(loginCheck,hasPermission(['admin','seller']), setPath('banners'),uploadFile().single('image'),bodyValidator(productCreateDTO),productController.createProduct);
+    .get(loginCheck,hasPermission(['admin','seller']),productController.viewProduct)
+    .post(loginCheck,hasPermission(['admin','seller']), setPath('products'),uploadFile().single('image'),bodyValidator(productCreateDTO),productController.createProduct);
 
     router.route('/:id')
-    .get(loginCheck,hasPermission(['admin','seller','customer']),productController.viewProduct)
+    .get(productController.viewProduct)
     .put(loginCheck,hasPermission(['admin','seller']), setPath('banners'),bodyValidator(productUpdateDTO),productController.editProduct)
     .delete(loginCheck,hasPermission(['admin','seller']),productController.deleteProduct);
 

@@ -7,6 +7,8 @@ import { SearchParams } from "../../config/constants";
 
 import TableActionButtons from "../common/table/table-action-buttons.component";
 import { NavLink } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import {  countTotalProducts, getProducts } from "../../api/api";
 
 const ProductTable = () => {
   const [bannerData, setBannerData] = useState([
@@ -121,10 +123,25 @@ const ProductTable = () => {
         "Boil water quickly and efficiently with our electric kettle. Featuring a 1.7-liter capacity and auto shut-off, it's a must-have for your kitchen.",
     },
   ]);
+  const { data, isError, error, isLoading, isFetching } = useQuery({
+    queryKey: ["productLists"],
+    queryFn: getProducts,
+  });
+  const totalProducts = useQuery({
+    queryKey: ["totalProducts"],
+    queryFn: countTotalProducts,
+    
+  });
+
+  console.log(data);
+  console.log(totalProducts)
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
 
-  const onPageChange = (page: number) => setCurrentPage(page);
+  const paginationChange = (page: number) => {
+    setCurrentPage(page);
+    console.log("Page: ", page);
+  };
 
   // only triggers when currentPage changes otherwise it will not trigger , this callback prevents when some user click on same pagination
   // number it will not trigger the api call again
@@ -192,8 +209,9 @@ const ProductTable = () => {
             <RowSkeleton rows={4} cols={5} />
           ) : (
             <>
-              {bannerData && bannerData.length > 0 ? (
-                bannerData.map((data: any, index: number) => (
+              {data?.result &&
+              data?.result.length > 0 ? (
+                data?.result.map((data: any, index: number) => (
                   <Table.Row
                     key={index}
                     className="bg-white dark:border-gray-700 dark:bg-gray-800"
@@ -208,11 +226,11 @@ const ProductTable = () => {
 
                     <Table.Cell>
                       <NavLink to={data.image} target="_data.image">
-                        <img className=" w-40 h-16 " src={data.imageLink} />
+                        <img className=" w-40 h-16 " src={data.image} />
                       </NavLink>
                     </Table.Cell>
                     <Table.Cell>
-                      {data.status === "active" ? (
+                      {data.status === "ACTIVE" ? (
                         <Badge className="mx-auto w-fit" color="info">
                           Published
                         </Badge>
@@ -226,7 +244,7 @@ const ProductTable = () => {
                       Rs. {data.price}
                     </Table.Cell>
                     <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                      {data.stocks} avilable
+                      {data.stock} avilable
                     </Table.Cell>
                     <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
                       {data.discount}% off
@@ -263,14 +281,15 @@ const ProductTable = () => {
           </span>
           of
           <span className="font-semibold mx-2 text-gray-900 dark:text-white">
-            1000
+          
+            {totalProducts?.data?.result}
           </span>
         </span>
 
         <Pagination
-          currentPage={1}
-          totalPages={0}
-          onPageChange={onPageChange}
+          currentPage={currentPage}
+          totalPages={data?.meta?.totalPages||1}
+          onPageChange={paginationChange}
           showIcons
         />
       </nav>
