@@ -1,10 +1,5 @@
-import BannerCreate from "./banner-create.page";
-import BannerEdit from "./banner-edit.page copy";
-import BannerList from "./banner-list.page";
+import BrandCreate from "./brand-create.page";
+import BrandEdit from "./brand-edit.page copy";
+import BrandList from "./brand-list.page";
 
-
-export {
-    BannerCreate,
-    BannerEdit,
-    BannerList
-}
+export { BrandCreate, BrandEdit, BrandList };

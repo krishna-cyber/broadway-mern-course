@@ -1,18 +1,12 @@
-import { useEffect, useState } from "react";
-import BannerTable from "../../components/banner/banner-table.component";
 import { FaFileExport, FaLongArrowAltDown, FaPlus } from "react-icons/fa";
 import { Button, Pagination } from "flowbite-react";
 import { Link } from "react-router-dom";
-import ProductTable from "../../components/productDashboard/product-table.component";
-import { useQuery } from "@tanstack/react-query";
-import { getProducts } from "../../services/api/api";
+import CategoryTable from "../../components/category/category-table.component";
 
 
 
 
-
-const ProductList = () => {
- 
+const CategoryList = () => {
   return (
     <section className="bg-gray-50 dark:bg-gray-900 py-3 sm:py-5">
       <div className="px-4 mx-auto max-w-screen-2xl lg:px-12">
@@ -20,7 +14,7 @@ const ProductList = () => {
           <div className="flex flex-col px-4 py-3 space-y-3 lg:flex-row lg:items-center lg:justify-between lg:space-y-0 lg:space-x-4">
             <div className="flex items-center flex-1 space-x-4">
               <h5>
-                <span className="text-gray-500">All Products:</span>
+                <span className="text-gray-500">All categories:</span>
                 <span className="dark:text-white">123456</span>
               </h5>
               <h5>
@@ -29,7 +23,7 @@ const ProductList = () => {
               </h5>
             </div>
             <div className="flex flex-col flex-shrink-0 space-y-3 md:flex-row md:items-center lg:justify-end md:space-y-0 md:space-x-3">
-              <Link to={"/admin/product-create"}>
+              <Link to={"/admin/category-create"}>
                 <Button
                   size={"xs"}
                   color={""}
@@ -37,7 +31,7 @@ const ProductList = () => {
                   className="flex items-center justify-center px-4 py-2 text-sm font-medium text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800"
                 >
                   <FaPlus className="mr-3 h-4 w-4" />
-                  Add new product
+                  Add new category
                 </Button>
               </Link>
 
@@ -61,7 +55,7 @@ const ProductList = () => {
               </Button>
             </div>
           </div>
-          <ProductTable />
+          <CategoryTable />
          
         </div>
       </div>
@@ -69,4 +63,4 @@ const ProductList = () => {
   );
 };
 
-export default ProductList;
+export default CategoryList;

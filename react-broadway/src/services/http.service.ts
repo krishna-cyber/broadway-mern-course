@@ -8,7 +8,7 @@ interface HeaderConfigProps {
   params?: SearchParams;
 }
 
-abstract class HttpService {
+ class HttpService {
   private headers = {};
   private params = {};
 
@@ -112,4 +112,5 @@ abstract class HttpService {
   };
 }
 
-export default HttpService;
+const httpService = new HttpService();
+export default httpService;

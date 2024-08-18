@@ -2,12 +2,12 @@ import React from "react";
 import ProductCardComponent from "./product-card.component";
 import { Button } from "flowbite-react";
 import { useQuery } from "@tanstack/react-query";
-import { getProducts } from "../../api/api";
+import { getproductsForLandingPage } from "../../services/api/api";
 
 const ProductViewLandingPage = () => {
   const { data, isError, error, isLoading, isFetching } = useQuery({
     queryKey: ["productsForLandingPage"],
-    queryFn: getProducts,
+    queryFn: getproductsForLandingPage,
   });
 
   console.log(data);

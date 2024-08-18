@@ -18,7 +18,7 @@ router.get('/count',productController.countProducts);
 // protected routes
 
 router.route('/')
-    .get(loginCheck,hasPermission(['admin','seller']),productController.viewProduct)
+    .get(loginCheck,hasPermission(['admin','seller']),productController.listForTable)
     .post(loginCheck,hasPermission(['admin','seller']), setPath('products'),uploadFile().single('image'),bodyValidator(productCreateDTO),productController.createProduct);
 
     router.route('/:id')

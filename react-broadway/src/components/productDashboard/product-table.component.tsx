@@ -2,17 +2,17 @@ import { Badge, Checkbox, Pagination, Table } from "flowbite-react";
 import { useCallback, useEffect, useState } from "react";
 import RowSkeleton from "../common/table/row-skeleton.component";
 import { toast } from "react-toastify";
-import authServiceInstance from "../../pages/auth/auth.service";
+import httpService from "../../services/http.service";
 import { SearchParams } from "../../config/constants";
 
 import TableActionButtons from "../common/table/table-action-buttons.component";
 import { NavLink } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import {  countTotalProducts, getProducts } from "../../api/api";
+import {  countTotalProducts, getProductsForTable } from "../../services/api/api";
 
 const ProductTable = () => {
   const [bannerData, setBannerData] = useState([
-    {
+  {
       id: "001",
       title: "Wireless Bluetooth Headphones",
       imageLink: "https://example.com/images/headphones.jpg",
@@ -125,7 +125,7 @@ const ProductTable = () => {
   ]);
   const { data, isError, error, isLoading, isFetching } = useQuery({
     queryKey: ["productLists"],
-    queryFn: getProducts,
+    queryFn: getProductsForTable,
   });
   const totalProducts = useQuery({
     queryKey: ["totalProducts"],
@@ -149,7 +149,7 @@ const ProductTable = () => {
     async ({ page = 1, limit = 10, search = "" }: SearchParams) => {
       setLoading(true);
       try {
-        const banners: any = await authServiceInstance.getRequest("/banner", {
+        const banners: any = await httpService.getRequest("/banner", {
           auth: true,
           params: { page: page, limit: limit, search: search },
         });
@@ -169,7 +169,7 @@ const ProductTable = () => {
   // Delete banner
   const deleteBanner = async (id: string) => {
     try {
-      const response = await authServiceInstance.deleteRequest(
+      const response = await httpService.deleteRequest(
         `/banner/${id}`,
         {
           auth: true,

@@ -1,13 +1,12 @@
 import { createAsyncThunk, createSlice, Slice } from '@reduxjs/toolkit'
-import authServiceInstance from '../../pages/auth/auth.service';
-
+import httpService from '../../services/http.service';
 
 
 export const getLoggedInUserForRedux :any = createAsyncThunk(
   'User/getLoggedInUserForRedux',
   async (data) => {
     try {
-      const response: any = await authServiceInstance.getRequest("/auth/me", {
+      const response: any = await httpService.getRequest("/auth/me", {
         auth: true,
       });
       return response.result

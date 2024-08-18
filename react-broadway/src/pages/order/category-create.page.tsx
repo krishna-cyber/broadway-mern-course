@@ -7,15 +7,15 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { GrSend } from "react-icons/gr";
-import authServiceInstance from "../auth/auth.service";
 import { toast } from "react-toastify";
 import { useState } from "react";
-import {  useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import httpService from "../../services/http.service";
 
-const BannerCreate = () => {
-  const [loading,setLoading] = useState(false);
+const CategoryCreate = () => {
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const BannerCreateDTO = yup.object({
+  const CategoryCreateDTO = yup.object({
     title: yup
       .string()
       .min(3, "Title must be at least 3 charactes.")
@@ -33,22 +33,25 @@ const BannerCreate = () => {
     setValue,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(BannerCreateDTO),
+    resolver: yupResolver(CategoryCreateDTO),
   });
 
-  const onSubmit =async  (data: any) => {
+  const onSubmit = async (data: any) => {
     setLoading(true);
     try {
-      console.log("Banner create data:",data);
-     const response:any = await authServiceInstance.postRequest("/banner",data, {auth:true,file:true});
-     toast.success(response?.message);
+      console.log("Banner create data:", data);
+      const response: any = await httpService.postRequest("/banner", data, {
+        auth: true,
+        file: true,
+      });
+      toast.success(response?.message);
     } catch (error) {
-        console.log(error);
-    }finally{
-        setLoading(false);
-        navigate("/admin/banner-lists");
+      console.log(error);
+    } finally {
+      setLoading(false);
+      navigate("/admin/banner-lists");
     }
-  }
+  };
   return (
     <section className="bg-white dark:bg-gray-900">
       <div className="py-8 px-4 max-w-2xl lg:py-8">
@@ -107,8 +110,7 @@ const BannerCreate = () => {
                 <Label htmlFor="image" value="Upload file" />
               </div>
               <FileInput
-             
-              onChange={(e:any) => setValue("image", e.target.files[0])}
+                onChange={(e: any) => setValue("image", e.target.files[0])}
                 id="image"
                 helperText="SVG, PNG, JPG or GIF (MAX. 800x400px)."
               />
@@ -130,14 +132,14 @@ const BannerCreate = () => {
             </div>
           </div>
           <Button
-          isProcessing={loading}
-          disabled={loading}
+            isProcessing={loading}
+            disabled={loading}
             type="submit"
             color={""}
             size={"xs"}
             className="inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-primary-700 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800"
           >
-              <GrSend className="mr-2 h-5 w-5" />
+            <GrSend className="mr-2 h-5 w-5" />
             Create Banner
           </Button>
         </form>
@@ -146,4 +148,4 @@ const BannerCreate = () => {
   );
 };
 
-export default BannerCreate;
+export default CategoryCreate;

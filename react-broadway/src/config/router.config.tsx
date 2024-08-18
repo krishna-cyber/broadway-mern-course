@@ -30,6 +30,10 @@ import { getLoggedInUserForRedux } from "../store/reducer/user.reducer";
 import { ChatPageLayout } from "../pages/layout/chat.layout";
 import ProductPage from "../pages/product/product.page";
 import { ProductCreate,ProductEdit,ProductList } from "../pages/product";
+import UserList from "../pages/users/user-list.page";
+import UserCreate from "../pages/users/user-create.page";
+import UserEdit from "../pages/users/user-edit.page copy";
+import { CategoryCreate, CategoryEdit, CategoryList } from "../pages/category";
 
 
 const RouterConfig = () => {
@@ -55,9 +59,8 @@ const RouterConfig = () => {
   }, []);
   return (
     <>
- {/* <Provider store={store}> */}
 
-      {/* <AuthContext.Provider value={{ loggedInUser, setLoggedInUser }}> */}
+
         {loading ? (
           <LoadingPage />
         ) : (
@@ -91,25 +94,19 @@ const RouterConfig = () => {
                 <Route path="/admin/product-lists" element={<ProductList />} />
                 <Route path="/admin/Product-create" element={<ProductCreate />} />
                 <Route path="/admin/Product/edit/:id" element={<ProductEdit />} />
+                <Route path="/admin/user-lists" element={<UserList />} />
+                <Route path="/admin/user-create" element={<UserCreate />} />
+                <Route path="/admin/user/edit/:id" element={<UserEdit />} />
+                <Route path="/admin/category-lists" element={<CategoryList/>} />
+                <Route path="/admin/category-create" element={<CategoryCreate />} />
+                <Route path="/admin/category/edit/:id" element={<CategoryEdit/>} />
                 <Route
                   path="*"
                   element={<ErrorPage url="/admin" label="Back to Dashboard" />}
                   />
               </Route>
 
-              {/* for testing admin dashboard */}
-              {/* <Route path="/admin" element={<AdminDashboardLayout />}>
-                <Route index element={<AdminDashboard />} />
-                <Route
-                path="/admin/banner-lists"
-                element={<BannerList />}
-                />{" "}
-                <Route path="/admin/banner-create" element={<BannerCreate />} />
-                <Route
-                path="*"
-                element={<ErrorPage url="/admin" label="Back to Dashboard" />}
-                />
-                </Route> */}
+              
 
               {/* seller dashboard routes */}
               <Route
@@ -171,8 +168,7 @@ const RouterConfig = () => {
             </Routes>
           </BrowserRouter>
         )}
-      {/* </AuthContext.Provider> */}
-        {/* </Provider> */}
+     
     </>
   );
 };

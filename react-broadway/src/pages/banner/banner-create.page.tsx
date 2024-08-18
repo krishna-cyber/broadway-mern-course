@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { GrSend } from "react-icons/gr";
-import authServiceInstance from "../auth/auth.service";
+import httpService from "../../services/http.service";
 import { toast } from "react-toastify";
 import { useState } from "react";
 import {  useNavigate } from "react-router-dom";
@@ -40,7 +40,7 @@ const BannerCreate = () => {
     setLoading(true);
     try {
       console.log("Banner create data:",data);
-     const response:any = await authServiceInstance.postRequest("/banner",data, {auth:true,file:true});
+     const response:any = await httpService.postRequest("/banner",data, {auth:true,file:true});
      toast.success(response?.message);
     } catch (error) {
         console.log(error);

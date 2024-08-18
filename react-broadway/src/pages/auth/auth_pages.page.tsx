@@ -9,7 +9,7 @@ import {
 import {  NavLink, useNavigate, useParams } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import authServiceInstance from "./auth.service";
+import httpService from "../../services/http.service";
 import { toast } from "react-toastify";
 import { Button, Modal, HR } from "flowbite-react";
 import { AiOutlineLoading } from "react-icons/ai";
@@ -65,7 +65,7 @@ export const RegisterPage = () => {
     //submitting form data to the server
     try {
       setLoading(true);
-      const response = await authServiceInstance.postRequest(
+      const response = await httpService.postRequest(
         "/auth/register",
         data,
         { file: true }
@@ -295,7 +295,7 @@ export const UserActivate = () => {
   // activate user function
   const activateUser = async () => {
     try {
-      const response = await authServiceInstance.getRequest(
+      const response = await httpService.getRequest(
         `/auth/activate/${params.token}`
       );
       setMsg(
@@ -418,7 +418,7 @@ export const LoginPage = () => {
     try {
       console.log(data);
       setLoading(true);
-      const response: any = await authServiceInstance.postRequest(
+      const response: any = await httpService.postRequest(
         "/auth/login",
         data
       );
