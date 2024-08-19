@@ -12,6 +12,7 @@ import { SearchParams } from "../../config/constants";
 
 import TableActionButtons from "../common/table/table-action-buttons.component";
 import { NavLink } from "react-router-dom";
+import { useFetchBannersForTable } from "../../services/queries/queries";
 
 const BannerTable = () => {
   const [bannerData, setBannerData] = useState([
@@ -24,6 +25,10 @@ const BannerTable = () => {
       status: "active",
     },
   ]);
+
+
+  const bannersDataForTable = useFetchBannersForTable();
+  console.log(`Banners data for table: `, bannersDataForTable.data?.result);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -86,12 +91,12 @@ const BannerTable = () => {
           <Table.HeadCell>Action</Table.HeadCell>
         </Table.Head>
         <Table.Body className="divide-y">
-          {loading ? (
+          {bannersDataForTable.isLoading ? (
             <RowSkeleton rows={4} cols={5} />
           ) : (
             <>
-              {bannerData && bannerData.length > 0 ? (
-                bannerData.map((data: any, index: number) => (
+              {bannersDataForTable.data?.result && bannersDataForTable.data?.result.length > 0 ? (
+                bannersDataForTable.data?.result.map((data: any, index: number) => (
                   <Table.Row
                     key={index}
                     className="bg-white dark:border-gray-700 dark:bg-gray-800"
@@ -109,7 +114,7 @@ const BannerTable = () => {
                       </NavLink>
                     </Table.Cell>
                     <Table.Cell>
-                      {data.status === "active" ? (
+                      {data.status === "ACTIVE" ? (
                         <Badge className="mx-auto w-fit" color="info">
                           Published
                         </Badge>
@@ -150,13 +155,13 @@ const BannerTable = () => {
           </span>
           of
           <span className="font-semibold mx-2 text-gray-900 dark:text-white">
-            1000
+            {bannersDataForTable.data?.meta?.total || 0}
           </span>
         </span>
 
         <Pagination
           currentPage={1}
-          totalPages={0}
+          totalPages={bannersDataForTable.data?.meta?.pages||1}
           onPageChange={onPageChange}
           showIcons
         />
