@@ -28,3 +28,8 @@ export const createProduct = async(data:any)=>{
 export const getBannersForTable = async()=>{
    return await httpService.getRequest('/banner',{auth:true})
 }
+
+export const getUsers = async()=>{
+   return await httpService.getRequest('/user',{auth:true})
+}
+

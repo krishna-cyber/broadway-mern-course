@@ -14,6 +14,11 @@ const { bodyValidator } = require('../../middlewares/validator.middleware');
 const {uploadFile}= require('../../middlewares/uploader.middleware')
 
 
+router.route('/')
+.get(userController.userLists)
+.post(setPath('user'),uploadFile().single('profile'),bodyValidator(userCreateDTO),userController.userCreate);
+
+
 
 
 

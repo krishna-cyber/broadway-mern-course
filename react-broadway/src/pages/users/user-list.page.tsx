@@ -3,6 +3,7 @@ import BannerTable from "../../components/banner/banner-table.component";
 import { FaFileExport, FaLongArrowAltDown, FaPlus } from "react-icons/fa";
 import { Button, Pagination } from "flowbite-react";
 import { Link } from "react-router-dom";
+import UserTable from "../../components/users/user-table.component";
 
 
 
@@ -58,7 +59,7 @@ const UserList = () => {
               </Button>
             </div>
           </div>
-          <BannerTable />
+          <UserTable />
          
         </div>
       </div>

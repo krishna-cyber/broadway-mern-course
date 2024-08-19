@@ -6,12 +6,12 @@ const userService = require('./user.service');
 
 class UserController{
 //    get all users 
- userLists = (req,res,next)=>{
-    res.status(200).json({
-        result: null,
-        message: 'Get all users',
-        meta: null
-    });
+ userLists =async (req,res,next)=>{
+   try {
+    
+   } catch (error) {
+    next(error);
+   }
  }
 // create a new user
 userCreate = async (req,res,next)=>{
