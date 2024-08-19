@@ -23,11 +23,7 @@ const BannerSchema = new mongoose.Schema({
         enum: [statusType.ACTIVE,statusType.INACTIVE],
         default: statusType.ACTIVE
     },
-    description:{
-
-        type: String,
-
-    },
+   
     createdBy:{
         type: mongoose.Types.ObjectId,
         ref: 'User',

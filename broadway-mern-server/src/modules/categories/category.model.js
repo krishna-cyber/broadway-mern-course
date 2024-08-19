@@ -1,43 +1,64 @@
-const { ref } = require('joi');
-const mongoose = require('mongoose');
-const statusType = require('../../config/constants.config');
+const { ref } = require("joi");
+const mongoose = require("mongoose");
+const statusType = require("../../config/constants.config");
 
+// Function to generate a slug from a string
+const generateSlug = (name) => {
+  return name
+    .toLowerCase() // Convert to lowercase
+    .replace(/[^a-z0-9\s-]/g, "") // Remove special characters
+    .trim() // Trim whitespace
+    .replace(/\s+/g, "-") // Replace spaces with hyphens
+    .replace(/-+/g, "-"); // Replace multiple hyphens with a single hyphen
+};
 
-const BannerSchema = new mongoose.Schema({
-    title:{
-        type: String,
-        required: true,
-    min:3,
-    max:100
+const BannerSchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+      unique: true, // Ensures category names are unique
+      trim: true,
     },
-    image:{
-        type: String,
-        required: true,
+    description: {
+      type: String,
+      trim: true,
     },
-    link:{
-        type:String,
-        default:null
+    parentCategory: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Category", // Reference to another category for subcategories
+      default: null,
     },
-    status:{
-        type:String,
-        enum: [statusType.ACTIVE,statusType.INACTIVE],
-        default: statusType.ACTIVE
+    image: {
+      type: String, // URL to the category image
+      trim: true,
     },
-    createdBy:{
-        type: mongoose.Types.ObjectId,
-        ref: 'Users',
-        default: null
-    }
-},
-    {
-        timestamps: true,
-        autoCreate: true,
-        autoIndex: true
-    });
+    slug: {
+      type: String,
+      required: true,
+      unique: true, // URL-friendly version of the category name
+      lowercase: true,
+      trim: true,
+    },
+    createdBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+  },
+  {
+    timestamps: true,
+    autoCreate: true,
+    autoIndex: true,
+  }
+);
+// Pre-save middleware to generate the slug
+categorySchema.pre("save", function (next) {
+  // Generate slug from the name
+  this.slug = generateSlug(this.name);
+  next();
+});
 
+const Category = mongoose.model("Category", categorySchema);
 
-
-const BannerModel = mongoose.model('Banner', BannerSchema);
-
-
-module.exports = BannerModel;
+module.exports = Category;

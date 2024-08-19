@@ -9,6 +9,7 @@ import TableActionButtons from "../common/table/table-action-buttons.component";
 import { NavLink } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import {  countTotalProducts, getProductsForTable } from "../../services/api/api";
+import { useFetchProductsForTable } from "../../services/queries/queries";
 
 const ProductTable = () => {
   const [bannerData, setBannerData] = useState([
@@ -123,10 +124,7 @@ const ProductTable = () => {
         "Boil water quickly and efficiently with our electric kettle. Featuring a 1.7-liter capacity and auto shut-off, it's a must-have for your kitchen.",
     },
   ]);
-  const { data, isError, error, isLoading, isFetching } = useQuery({
-    queryKey: ["productLists"],
-    queryFn: getProductsForTable,
-  });
+  const { data, isError, error, isLoading, isFetching } = useFetchProductsForTable();
   const totalProducts = useQuery({
     queryKey: ["totalProducts"],
     queryFn: countTotalProducts,

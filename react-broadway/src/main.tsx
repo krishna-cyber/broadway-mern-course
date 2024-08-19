@@ -19,6 +19,7 @@ import { store } from "./store/store";
 // Create a client
 const queryClient = new QueryClient()
 
+
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <StrictMode>
      <QueryClientProvider client={queryClient}>

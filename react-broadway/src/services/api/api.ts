@@ -24,3 +24,7 @@ export const createProduct = async(data:any)=>{
    console.log(data)
    return await httpService.postRequest('/product/create-product')
 }
+
+export const getBannersForTable = async()=>{
+   return await httpService.getRequest('/banner',{auth:true})
+}
