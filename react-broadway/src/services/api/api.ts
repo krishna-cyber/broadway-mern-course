@@ -29,7 +29,7 @@ export const getBannersForTable = async()=>{
    return await httpService.getRequest('/banner',{auth:true})
 }
 
-export const getUsers = async()=>{
-   return await httpService.getRequest('/user',{auth:true})
+export const getUsersForTable = async()=>{
+   return await httpService.getRequest('/users',{auth:true})
 }
 

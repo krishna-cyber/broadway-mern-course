@@ -8,11 +8,19 @@ class UserController{
 //    get all users 
  userLists =async (req,res,next)=>{
    try {
-    
+        const users = await userService.getAllUsers();
+      const meta =   await userService.countUsers();  // By default limit is 10
+        res.json({
+            result: users,
+            message: 'All users',
+            meta
+        })
    } catch (error) {
     next(error);
    }
  }
+
+
 // create a new user
 userCreate = async (req,res,next)=>{
 
@@ -42,13 +50,7 @@ res.status(200).json ({
 
 }
 
-/**
- * This function is used to get a user by id
- * @param {import('express').Request} req 
- * @param {import('express').Response} res 
- * @param {import('express').NextFunction} next 
- * @returns {Promise<void>}
- */
+
 userDetailById = (req,res,next)=>{
     const id = req.params.id;
    res.status(200).json({

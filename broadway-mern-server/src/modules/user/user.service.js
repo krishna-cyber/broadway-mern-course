@@ -115,6 +115,27 @@ getSingleUserByFilter = async (filter)=>{
     }
 }
 
+getAllUsers = async (filter)=>{
+    try {
+        const users = await UserModel.find(filter,'-password');
+        return users; 
+    } catch (error) {
+        throw error;
+    }
+}
+
+countUsers = async (limit=10)=>{
+    try {
+        const meta = await UserModel.countDocuments();
+        return {
+            total:meta,
+            limit:limit,
+            page:Math.ceil(meta/limit)
+        }
+    } catch (error) {
+            throw error;
+    }
+}
 
 
 }
