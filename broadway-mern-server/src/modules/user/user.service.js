@@ -31,7 +31,7 @@ class UserService {
           `./public/uploads/${req.uploadPath}/${data[req.file.fieldname]}`
         );
         deleteFile(
-          `./public/uploads/${req.uploadPath}/${data[req.file.fieldname]}`
+          `public/uploads/${req.uploadPath}/${data[req.file.fieldname]}`
         );
         console.log(req.file);
         data.image = imageUrl;
