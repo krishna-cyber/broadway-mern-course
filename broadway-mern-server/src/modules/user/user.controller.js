@@ -9,6 +9,7 @@ class UserController{
  userLists =async (req,res,next)=>{
    try {
         const users = await userService.getAllUsers();
+
       const meta =   await userService.countUsers();  // By default limit is 10
         res.json({
             result: users,
@@ -28,8 +29,9 @@ try {
 
 
 // data transformation
- const data = userService.transformUserCreate(req);
- 
+ const data = await userService.transformUserCreate(req);
+
+console.log(`Data is ready to create user `,data);
  //Database store
    const user = await userService.createUser(data)
 
@@ -41,7 +43,7 @@ await userService.sendActivationEmail(data);
 // sending response
 res.status(200).json ({
     result: user,
-    message:"User Created Successfully",
+    message:"User Created Successfully,Activation mail sent",
     meta: null
 })
     } catch (error) {

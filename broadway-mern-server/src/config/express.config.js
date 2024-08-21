@@ -46,6 +46,7 @@ app.use((err, req, res, next) => {
 
     //handling mongoose validation error
     if (err.code === 11000) {
+        console.log(`Validation error at mongodb `)
         const uniqueFieldKeys = Object.keys(err.keyPattern);  // ['email','phone'] throws array of unique failed keys
         console.log(uniqueFieldKeys);
         detail= {};

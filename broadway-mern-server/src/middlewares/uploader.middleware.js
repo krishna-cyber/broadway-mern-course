@@ -45,22 +45,7 @@ const uploadFile = (fileType = fileFilterType.IMAGE) => {
   });
 };
 
-// const uploader= multer ({
-//     storage:storage,
-//     fileFilter:(req,file,cb)=>{
-//         let fileExt = file.originalname.split('.').pop();  //maybe sometimes mahe uppercase extension
 
-//        let allowedExt = ['png','jpg','jpeg','gif'];
-
-//         if(allowedExt.includes(fileExt.toLowerCase())){
-//             cb(null,true);}
-//             else{
-//               cb({code:400,message:`file format not allowed`},false)
-//             }
-//     },
-//     limits:{ fileSize: 1024*1024*5}//5MB
-
-// });
 
 const setPath = (path) => {
   return (req, res, next) => {

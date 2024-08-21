@@ -16,7 +16,7 @@ const {uploadFile}= require('../../middlewares/uploader.middleware')
 
 router.route('/')
 .get(userController.userLists)
-.post(setPath('user'),uploadFile().single('profile'),bodyValidator(userCreateDTO),userController.userCreate);
+.post(loginCheck,hasPermission(['admin']),setPath('user'),uploadFile().single('profile'),bodyValidator(userCreateDTO),userController.userCreate);
 
 
 

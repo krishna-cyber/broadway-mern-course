@@ -1,8 +1,8 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createProduct } from "../api/api";
 
+const queryClient = useQueryClient();
 export function useCreateProduct() {
-  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (data) => createProduct(data),
     onSettled: (data, error, variables, context) => {
@@ -16,4 +16,8 @@ export function useCreateProduct() {
       }
     },
   });
+}
+
+export function useCreateUser() {
+ ]
 }

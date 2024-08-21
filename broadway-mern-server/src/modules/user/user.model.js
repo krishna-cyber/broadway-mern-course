@@ -64,6 +64,20 @@ const UserSchema = new mongoose.Schema({
 
 
 
+UserSchema.set('toJSON', {
+    transform: function (doc, ret) {
+      delete ret.password;
+      return ret;
+    }
+  });
+  
+  UserSchema.set('toObject', {
+    transform: function (doc, ret) {
+      delete ret.password;
+      return ret;
+    }
+  });
+
 const UserModel = mongoose.model('User', UserSchema, );
 
 module.exports = UserModel;
