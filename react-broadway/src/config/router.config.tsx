@@ -99,6 +99,9 @@ const RouterConfig = () => {
                 path="/admin/category/edit/:id"
                 element={<CategoryEdit />}
               />
+              <Route path="/admin/order-lists" element={<ProductList />} />
+              <Route path="/admin/order-create" element={<ProductCreate />} />
+              <Route path="/admin/order/edit/:id" element={<ProductEdit />} />
               <Route
                 path="*"
                 element={<ErrorPage url="/admin" label="Back to Dashboard" />}
