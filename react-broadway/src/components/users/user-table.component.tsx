@@ -8,7 +8,6 @@ import { SearchParams } from "../../config/constants";
 import TableActionButtons from "../common/table/table-action-buttons.component";
 import { NavLink } from "react-router-dom";
 import {
-  useFetchBannersForTable,
   useFetchUsers,
 } from "../../services/queries/queries";
 
@@ -25,7 +24,7 @@ const UserTable = () => {
   ]);
 
   const usersDataForTable = useFetchUsers();
-  console.log(`users data for table: `, usersDataForTable.data?.result);
+  console.log(`users data for table: `, usersDataForTable.data);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -172,7 +171,7 @@ const UserTable = () => {
 
         <Pagination
           currentPage={1}
-          totalPages={usersDataForTable.data?.meta?.pages || 1}
+          totalPages={usersDataForTable.data?.meta?.page || 1}
           onPageChange={onPageChange}
           showIcons
         />

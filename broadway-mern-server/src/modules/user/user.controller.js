@@ -8,7 +8,8 @@ class UserController{
 //    get all users 
  userLists =async (req,res,next)=>{
    try {
-        const users = await userService.getAllUsers();
+    const {limit,page} = req.query;
+        const users = await userService.getAllUsers(limit,page);
 
       const meta =   await userService.countUsers();  // By default limit is 10
         res.json({
@@ -32,6 +33,7 @@ try {
  const data = await userService.transformUserCreate(req);
 
 console.log(`Data is ready to create user `,data);
+data.createdBy = req.authUser?.id
  //Database store
    const user = await userService.createUser(data)
 

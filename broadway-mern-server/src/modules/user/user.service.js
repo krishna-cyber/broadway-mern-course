@@ -118,9 +118,11 @@ class UserService {
     }
   };
 
-  getAllUsers = async (filter) => {
+  getAllUsers = async (limit, page, search = {}) => {
     try {
-      const users = await UserModel.find(filter, "-password");
+      const users = await UserModel.find(search, "-password")
+        .limit(limit)
+        .skip((parseInt(page, 10) - 1) * limit);
       return users;
     } catch (error) {
       throw error;
@@ -129,11 +131,11 @@ class UserService {
 
   countUsers = async (limit = 10) => {
     try {
-      const meta = await UserModel.countDocuments();
+      const total = await UserModel.countDocuments();
       return {
-        total: meta,
-        limit: limit,
-        page: Math.ceil(meta / limit),
+        total,
+        limit,
+        page: Math.ceil(total / limit),
       };
     } catch (error) {
       throw error;
