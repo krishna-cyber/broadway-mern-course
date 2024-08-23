@@ -164,7 +164,7 @@ const AdminDashboard = () => {
   xField: 'month',
   yField: 'salesAmount',
   label: {
-    text: (d) => `${d.salesAmount}`,
+    text: (d:any) => `${d.salesAmount}`,
     textBaseline: 'bottom',
   },
   axis: {

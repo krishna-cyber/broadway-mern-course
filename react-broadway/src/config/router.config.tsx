@@ -109,14 +109,15 @@ const RouterConfig = () => {
             </Route>
 
             {/* seller dashboard routes */}
-            <Route
+            {/* <Route
               path="/seller"
               element={
-                <>
-                  <SellerDashboardLayout /> <Outlet />
-                </>
+                <CheckPermission allowedBy={UserRoles.SELLER}>
+                  <SellerDashboard />
+                </CheckPermission>
               }
-            >
+            > */}
+              <Route path="/seller" element={<SellerDashboardLayout />}>
               <Route
                 index
                 element={
@@ -131,7 +132,7 @@ const RouterConfig = () => {
               />
             </Route>
 
-            {/* seller dashboard routes */}
+            {/* customer dashboard routes */}
             <Route
               path="/customer"
               element={
@@ -140,6 +141,15 @@ const RouterConfig = () => {
                 </CheckPermission>
               }
             >
+              {/* This is for testing purpose only */}
+              {/* <Route
+              path="/customer"
+              element={
+                
+                  <CustomerDashboardLayout />
+          
+              }
+            ></Route> */}
               <Route
                 index
                 element={
@@ -157,7 +167,7 @@ const RouterConfig = () => {
             </Route>
 
             <Route path="/activate/:token" element={<UserActivate />} />
-            <Route path="/chat" element={<ChatPageLayout />} />
+            {/* <Route path="/chat" element={<ChatPageLayout />} /> */}
             {/* 404 page */}
             <Route
               path="*"

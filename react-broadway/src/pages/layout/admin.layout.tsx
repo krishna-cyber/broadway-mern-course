@@ -9,7 +9,7 @@ import {
 } from "react-icons/hi";
 
 import { Outlet } from "react-router-dom";
-import AdminDashboardNavbar from "../../components/dashboard/dashboard-navbar.component";
+import {AdminDashboardNavbar} from "../../components/dashboard/dashboard-navbar.component";
 import DashboardSidebar from "../../components/dashboard/admin-dashboard-sidebar.component";
 import DashboardFooter from "../../components/common/footer/footer.component";
 
