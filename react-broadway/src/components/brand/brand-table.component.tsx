@@ -97,8 +97,8 @@ console.log(data,isLoading,isError)
             <RowSkeleton rows={4} cols={7} />
           ) : (
             <>
-              {data.result && data.result.length > 0 ? (
-                data.result.map((data: any, index: number) => (
+              {data.result && data.result?.length > 0 ? (
+                data.result?.map((data: any, index: number) => (
                   <Table.Row
                     key={index}
                     className="bg-white dark:border-gray-700 dark:bg-gray-800"
@@ -144,36 +144,7 @@ console.log(data,isLoading,isError)
             </>
           )}
 
-          {/* <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
-            <Table.Cell className="p-4">
-              <Checkbox />
-            </Table.Cell>
-            <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-              Microsoft Surface Pro
-            </Table.Cell>
-            <Table.Cell>White</Table.Cell>
-            <Table.Cell>Laptop PC</Table.Cell>
-            <Table.Cell>$1999</Table.Cell>
-            <Table.Cell>
-              <a href="#" className="font-medium text-cyan-600 hover:underline dark:text-cyan-500">
-                Edit
-              </a>
-            </Table.Cell>
-          </Table.Row>
-          <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800">
-            <Table.Cell className="p-4">
-              <Checkbox />
-            </Table.Cell>
-            <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">Magic Mouse 2</Table.Cell>
-            <Table.Cell>Black</Table.Cell>
-            <Table.Cell>Accessories</Table.Cell>
-            <Table.Cell>$99</Table.Cell>
-            <Table.Cell>
-              <a href="#" className="font-medium text-cyan-600 hover:underline dark:text-cyan-500">
-                Edit
-              </a>
-            </Table.Cell>
-          </Table.Row> */}
+          
         </Table.Body>
       </Table>
       <nav
@@ -187,13 +158,13 @@ console.log(data,isLoading,isError)
           </span>
           of
           <span className="font-semibold mx-2 text-gray-900 dark:text-white">
-            {data.meta.total}
+            {data?.meta?.total}
           </span>
         </span>
 
         <Pagination
-          currentPage={data.meta.currentPage}
-          totalPages={data.meta.totalPages|1}
+          currentPage={currentPage} 
+          totalPages={data?.meta.totalPages|1}
           onPageChange={onPageChange}
           showIcons
         />

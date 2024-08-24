@@ -7,7 +7,6 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { GrSend } from "react-icons/gr";
-import httpService from "../../services/http.service";
 import { toast } from "react-toastify";
 import { useState } from "react";
 import {  useNavigate } from "react-router-dom";
@@ -24,7 +23,7 @@ const BannerCreate = () => {
       .max(50)
       .required(),
     description: yup.string().min(10).max(500).required(),
-    link: yup.string().url().nullable().optional().default(null),
+    link: yup.string().url().nullable().required(),
     status: yup.string().oneOf(["active", "inactive"]).required(),
     image: yup.mixed().required(),
   });

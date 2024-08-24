@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getBannersForTable, getBrandsForTable, getProductsForTable,  getUsersForTable } from "../api/api";
+import { getBannersForTable, getBrandsForTable, getCategoryForTable, getProductsForTable,  getUsersForTable } from "../api/api";
 
 export function useFetchProductsForTable(){
     return useQuery({
@@ -11,14 +11,14 @@ export function useFetchProductsForTable(){
 
 export function useFetchProductsForLandingPage(){
     return useQuery({
-        queryKey: ["productListsForTable"],
+        queryKey: ["productListsForHome"],
         queryFn: getProductsForTable,
       });
 }
 
 export function useFetchBannersForTable(){
   return useQuery({
-    queryKey: ['banners'],
+    queryKey: ['bannerListsForTable'],
     queryFn: getBannersForTable
   })
 }
@@ -33,7 +33,14 @@ export function useFetchUsers(){
 
 export function useFetchBrandsForTable(){
   return useQuery({
-      queryKey: ["productListsForTable"],
+      queryKey: ["brandListForTable"],
       queryFn: getBrandsForTable,
     });
+}
+
+export function useFetchCategoryForTable(){
+  return useQuery({
+    queryKey: ['categoryListsForTable'],
+    queryFn: getCategoryForTable
+  })
 }

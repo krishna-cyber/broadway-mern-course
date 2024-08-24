@@ -11,12 +11,14 @@ import { toast } from "react-toastify";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import httpService from "../../services/http.service";
+import { useCreateCategory } from "../../services/mutations/mutations";
 
 const CategoryCreate = () => {
+  const createCategory = useCreateCategory();
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const CategoryCreateDTO = yup.object({
-    title: yup
+    name: yup
       .string()
       .min(3, "Title must be at least 3 charactes.")
       .max(50)
@@ -35,22 +37,21 @@ const CategoryCreate = () => {
   } = useForm({
     resolver: yupResolver(CategoryCreateDTO),
   });
-
-  const onSubmit = async (data: any) => {
+console.log(`errors`, errors);
+  const onSubmit = async (data:any,error) => {
+    console.log(`Data for create category`, data);
     setLoading(true);
-    try {
-      console.log("Banner create data:", data);
-      const response: any = await httpService.postRequest("/banner", data, {
-        auth: true,
-        file: true,
-      });
-      toast.success(response?.message);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setLoading(false);
-      navigate("/admin/banner-lists");
-    }
+    createCategory.mutate(data,{
+      onSuccess: (data) => {
+        toast.success(data?.message);
+        navigate("/admin/category-lists");
+      },
+      onError: (error) => {
+        toast.error(error?.response?.data?.message);
+        setLoading(false);
+      },
+      
+    });
   };
   return (
     <section className="bg-white dark:bg-gray-900">
@@ -62,34 +63,20 @@ const CategoryCreate = () => {
           <div className="grid gap-4 sm:grid-cols-2 sm:gap-6">
             <div className="sm:col-span-2">
               <Label
-                htmlFor="title"
+                htmlFor="name"
                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
               >
                 Category Title
               </Label>
 
               <TextInputComponent
-                name="title"
+                name="name"
                 control={control}
-                placeholder="Banner Title"
-                errMsg={errors.title?.message}
+                placeholder="Category Title"
+                errMsg={errors.name?.message}
               />
             </div>
-            <div className="sm:col-span-2">
-              <Label
-                htmlFor="title"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
-                Link
-              </Label>
-
-              <TextInputComponent
-                name="link"
-                control={control}
-                placeholder="https://"
-                errMsg={errors.link?.message}
-              />
-            </div>
+          
 
             <div>
               <Label
@@ -114,6 +101,9 @@ const CategoryCreate = () => {
                 id="image"
                 helperText="SVG, PNG, JPG or GIF (MAX. 800x400px)."
               />
+              <span className="text-red-500 text-xs">
+                {errors.image?.message}
+              </span>
             </div>
 
             <div className="sm:col-span-2">

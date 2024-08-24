@@ -14,7 +14,7 @@ const router = require('express').Router();
 router.get('/list-home', categoryController.listForHome);
 
 router.route('/')
-    .get(loginCheck,hasPermission(['admin']))
+    .get(loginCheck,hasPermission(['admin']),categoryController.listForDashboard)
     .post(loginCheck,hasPermission(['admin']), setPath('categories'),uploadFile().single('image'),bodyValidator(categoryCreateDTO),categoryController.create);
 
     router.route('/:id')

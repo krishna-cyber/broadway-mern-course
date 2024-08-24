@@ -17,7 +17,7 @@ const CategoryList = () => {
           <div className="flex flex-col px-4 py-3 space-y-3 lg:flex-row lg:items-center lg:justify-between lg:space-y-0 lg:space-x-4">
             <div className="flex items-center flex-1 space-x-4">
               <h5>
-                <span className="text-gray-500">All Banners:</span>
+                <span className="text-gray-500">All categories:</span>
                 <span className="dark:text-white">123456</span>
               </h5>
               <h5>

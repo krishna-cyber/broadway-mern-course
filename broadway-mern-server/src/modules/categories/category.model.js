@@ -35,7 +35,6 @@ const categorySchema = new mongoose.Schema(
     },
     slug: {
       type: String,
-      required: true,
       unique: true, // URL-friendly version of the category name
       lowercase: true,
       trim: true,
@@ -53,11 +52,12 @@ const categorySchema = new mongoose.Schema(
   }
 );
 // Pre-save middleware to generate the slug
-categorySchema.pre("save", function (next) {
+categorySchema.pre('save', function (next) {
   // Generate slug from the name
   this.slug = generateSlug(this.name);
   next();
 });
+
 
 const CategoryModel = mongoose.model("Category", categorySchema);
 

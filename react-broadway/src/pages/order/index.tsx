@@ -1,5 +1,5 @@
-import CategoryCreate from "./category-create.page";
-import CategoryEdit from "./category-edit.page copy";
-import CategoryList from "./category-list.page";
+import OrderCreate from "./order-create.page";
+import OrderEdit from "./order-edit.page copy";
+import OrderList from "./order-list.page";
 
-export { CategoryCreate, CategoryEdit, CategoryList };
+export { OrderCreate, OrderEdit, OrderList };

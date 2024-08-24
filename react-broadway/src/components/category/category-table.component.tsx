@@ -12,6 +12,7 @@ import { SearchParams } from "../../config/constants";
 
 import TableActionButtons from "../common/table/table-action-buttons.component";
 import { NavLink } from "react-router-dom";
+import { useFetchCategoryForTable } from "../../services/queries/queries";
 
 const CategoryTable = () => {
   const [bannerData, setBannerData] = useState([
@@ -27,7 +28,7 @@ const CategoryTable = () => {
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
 
-
+const categoryList = useFetchCategoryForTable();
   const onPageChange = (page: number) => setCurrentPage(page);
 
   // only triggers when currentPage changes otherwise it will not trigger , this callback prevents when some user click on same pagination
@@ -54,7 +55,7 @@ const CategoryTable = () => {
   );
 
   // Delete banner
-  const deleteBanner = async (id: string) => {
+  const deleteCategory = async (id: string) => {
     try {
       const response = await httpService.deleteRequest(`/banner/${id}`, {
         auth: true,
@@ -68,9 +69,9 @@ const CategoryTable = () => {
     }
   };
 
-  useEffect(() => {
-    getAllBanners({});
-  }, []);
+  // useEffect(() => {
+  //   getAllBanners({});
+  // }, []);
 
   return (
     <div className="overflow-x-auto">
@@ -81,17 +82,17 @@ const CategoryTable = () => {
           </Table.HeadCell>
           <Table.HeadCell>Title</Table.HeadCell>
           <Table.HeadCell>Link</Table.HeadCell>
+          <Table.HeadCell>TotalProducts</Table.HeadCell>
           <Table.HeadCell>Image</Table.HeadCell>
-          <Table.HeadCell>Status</Table.HeadCell>
           <Table.HeadCell>Action</Table.HeadCell>
         </Table.Head>
         <Table.Body className="divide-y">
-          {loading ? (
+          {categoryList.isLoading ? (
             <RowSkeleton rows={4} cols={5} />
           ) : (
             <>
-              {bannerData && bannerData.length > 0 ? (
-                bannerData.map((data: any, index: number) => (
+              {categoryList.data?.result && categoryList.data?.result.length > 0 ? (
+                categoryList.data?.result.map((data: any, index: number) => (
                   <Table.Row
                     key={index}
                     className="bg-white dark:border-gray-700 dark:bg-gray-800"
@@ -100,27 +101,18 @@ const CategoryTable = () => {
                       <Checkbox />
                     </Table.Cell>
                     <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                      {data.title}
+                      {data.name}
                     </Table.Cell>
-                    <Table.Cell>{data.link || `No link avilable`}</Table.Cell>
+                    <Table.Cell>{data?.link || `No link avilable`}</Table.Cell>
+                    <Table.Cell>{`No Products avilable`}</Table.Cell>
                     <Table.Cell>
-                      <NavLink to={data.image} target="_data.image">
-                      <img className=" w-40 h-16 " src={data.image} />
+                      <NavLink to={data?.image} target="_data?.image">
+                      <img className=" w-40 h-16 " src={data?.image} />
                       </NavLink>
                     </Table.Cell>
-                    <Table.Cell>
-                      {data.status === "active" ? (
-                        <Badge className="mx-auto w-fit" color="info">
-                          Published
-                        </Badge>
-                      ) : (
-                        <Badge className="mx-auto w-fit" color="pink">
-                          Unpublished
-                        </Badge>
-                      )}{" "}
-                    </Table.Cell>
+                
                     <Table.Cell className=" flex gap-3">
-                      <TableActionButtons editUrl={`/admin/banner/edit/${data._id}`} deleteAction={deleteBanner} rowId={data._id} />
+                      <TableActionButtons editUrl={`/admin/banner/edit/${data?._id}`} deleteAction={deleteCategory} rowId={data?._id} />
                     
                     </Table.Cell>
                   </Table.Row>
