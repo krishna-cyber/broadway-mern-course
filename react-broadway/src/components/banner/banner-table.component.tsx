@@ -15,48 +15,18 @@ import { NavLink } from "react-router-dom";
 import { useFetchBannersForTable } from "../../services/queries/queries";
 
 const BannerTable = () => {
-  const [bannerData, setBannerData] = useState([
-    {
-      _id: "someid",
-      title: "Banner Image",
-      image:
-        "https://icms-image.slatic.net/images/ims-web/d01caa71-9c68-4c12-a35e-f6c10c53e73d.jpg",
-      link: null,
-      status: "active",
-    },
-  ]);
+  
 
 
   const bannersDataForTable = useFetchBannersForTable();
   console.log(`Banners data for table: `, bannersDataForTable.data?.result);
-  const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
 
 
   const onPageChange = (page: number) => setCurrentPage(page);
 
-  // only triggers when currentPage changes otherwise it will not trigger , this callback prevents when some user click on same pagination
-  // number it will not trigger the api call again
-  const getAllBanners = useCallback(
-    async ({ page = 1, limit = 10, search = "" }: SearchParams) => {
-      setLoading(true);
-      try {
-        const banners:any = await httpService.getRequest("/banner", {
-          auth: true,
-          params: { page: page, limit: limit, search: search },
-        });
-        setBannerData(banners?.result);
-        console.log({ page, limit, search });
-        console.log("Banners: ", banners);
-      } catch (error: any) {
-        console.error("Error fetching banners: ", error);
-        toast.warning(error?.message);
-      } finally {
-        setLoading(false);
-      }
-    },
-    [currentPage]
-  );
+
+ 
 
   // Delete banner
   const deleteBanner = async (id: string) => {
@@ -73,9 +43,7 @@ const BannerTable = () => {
     }
   };
 
-  useEffect(() => {
-    getAllBanners({});
-  }, []);
+ 
 
   return (
     <div className="overflow-x-auto">
@@ -114,7 +82,7 @@ const BannerTable = () => {
                       </NavLink>
                     </Table.Cell>
                     <Table.Cell>
-                      {data.status === "ACTIVE" ? (
+                      {data.status === "ACTIVE" || "active"? (
                         <Badge className="mx-auto w-fit" color="info">
                           Published
                         </Badge>
@@ -160,7 +128,7 @@ const BannerTable = () => {
         </span>
 
         <Pagination
-          currentPage={1}
+          currentPage={currentPage}
           totalPages={bannersDataForTable.data?.meta?.pages||1}
           onPageChange={onPageChange}
           showIcons

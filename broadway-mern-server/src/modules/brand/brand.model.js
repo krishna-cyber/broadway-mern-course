@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const statusType = require('../../config/constants.config');
 
 
-const BannerSchema = new mongoose.Schema({
+const BrandSchema = new mongoose.Schema({
     title:{
         type: String,
         required: true,
@@ -25,7 +25,7 @@ const BannerSchema = new mongoose.Schema({
     },
     createdBy:{
         type: mongoose.Types.ObjectId,
-        ref: 'Users',
+        ref: 'User',
         default: null
     }
 },
@@ -37,7 +37,7 @@ const BannerSchema = new mongoose.Schema({
 
 
 
-const BannerModel = mongoose.model('Banner', BannerSchema);
+const BrandModel = mongoose.model('Brand', BrandSchema);
 
 
-module.exports = BannerModel;
+module.exports = BrandModel;

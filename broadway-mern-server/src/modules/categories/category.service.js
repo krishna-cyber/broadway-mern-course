@@ -1,10 +1,10 @@
-const BannerModel = require("./category.model");
+const CategoryModel = require("./category.model");
 
-class BannerService{
+class CategoryService{
 
     crateBanner= async (data)=>{
         try {
-            const banner = new BannerModel(data);
+            const banner = new CategoryModel(data);
             return await banner.save();
         } catch (exception) {
             throw exception;
@@ -13,15 +13,15 @@ class BannerService{
 
     listData = async ({skip =0, filter = {}})=>{
         try {
-            const count = await BannerModel.countDocuments(filter);
-            const data = await BannerModel.find(filter).populate('createdBy',["_id","name","email","role"]).skip(skip).sort({_id:'desc'})
+            const count = await CategoryModel.countDocuments(filter);
+            const data = await CategoryModel.find(filter).populate('createdBy',["_id","name","email","role"]).skip(skip).sort({_id:'desc'})
         } catch (exception) {
             throw exception;
         }
     }
     getDetailByFilter = async (filter)=>{
         try {
-            const bannerDetail = await BannerModel.findOne(filter);
+            const bannerDetail = await CategoryModel.findOne(filter);
             if(!bannerDetail){
                 throw {statusCode:404,message:"Banner not found"};
             }
@@ -33,7 +33,7 @@ class BannerService{
 
     deleteById = async (id)=>{
         try {
-        const response = await BannerModel.findByIdAndDelete(id);
+        const response = await CategoryModel.findByIdAndDelete(id);
         if(!response){
             throw {statusCode:404,message:"Banner not found"};
         }
@@ -44,7 +44,7 @@ class BannerService{
     }
     updateById = async (id,data)=>{
         try {
-            const response = await BannerModel.findByIdAndUpdate(id,data,{new:true});
+            const response = await CategoryModel.findByIdAndUpdate(id,data,{new:true});
             if(!response){
                 throw {statusCode:404,message:"Banner not found"};
             }
@@ -55,6 +55,6 @@ class BannerService{
     }
 }
 
-const bannerService = new BannerService();
+const categoryService = new CategoryService();
 
-module.exports = bannerService;
+module.exports = categoryService;

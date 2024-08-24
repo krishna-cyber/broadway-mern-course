@@ -12,7 +12,7 @@ const generateSlug = (name) => {
     .replace(/-+/g, "-"); // Replace multiple hyphens with a single hyphen
 };
 
-const BannerSchema = new mongoose.Schema(
+const categorySchema = new mongoose.Schema(
   {
     name: {
       type: String,
@@ -59,6 +59,6 @@ categorySchema.pre("save", function (next) {
   next();
 });
 
-const Category = mongoose.model("Category", categorySchema);
+const CategoryModel = mongoose.model("Category", categorySchema);
 
-module.exports = Category;
+module.exports = CategoryModel;

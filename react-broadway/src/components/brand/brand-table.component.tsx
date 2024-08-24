@@ -7,14 +7,15 @@ import {
 import { useCallback, useEffect, useState } from "react";
 import RowSkeleton from "../common/table/row-skeleton.component";
 import { toast } from "react-toastify";
-import authServiceInstance from "../../pages/auth/auth.service";
+import httpService from "../../services/http.service";
 import { SearchParams } from "../../config/constants";
 
 import TableActionButtons from "../common/table/table-action-buttons.component";
 import { NavLink } from "react-router-dom";
+import { useFetchBrandsForTable } from "../../services/queries/queries";
 
-const BannerTable = () => {
-  const [bannerData, setBannerData] = useState([
+const BrandTable = () => {
+  const [brandData, setBrandData] = useState([
     {
       _id: "someid",
       title: "Banner Image",
@@ -36,11 +37,11 @@ const BannerTable = () => {
     async ({ page = 1, limit = 10, search = "" }: SearchParams) => {
       setLoading(true);
       try {
-        const banners:any = await authServiceInstance.getRequest("/banner", {
+        const banners:any = await httpService.getRequest("/banner", {
           auth: true,
           params: { page: page, limit: limit, search: search },
         });
-        setBannerData(banners?.result);
+        setBrandData(banners?.result);
         console.log({ page, limit, search });
         console.log("Banners: ", banners);
       } catch (error: any) {
@@ -56,7 +57,7 @@ const BannerTable = () => {
   // Delete banner
   const deleteBanner = async (id: string) => {
     try {
-      const response = await authServiceInstance.deleteRequest(`/banner/${id}`, {
+      const response = await httpService.deleteRequest(`/banner/${id}`, {
         auth: true,
       });
       console.log("Delete banner response: ", response);
@@ -68,9 +69,8 @@ const BannerTable = () => {
     }
   };
 
-  useEffect(() => {
-    getAllBanners({});
-  }, []);
+const {data,isLoading,isError} = useFetchBrandsForTable();
+console.log(data,isLoading,isError)
 
   return (
     <div className="overflow-x-auto">
@@ -80,18 +80,25 @@ const BannerTable = () => {
             <Checkbox />
           </Table.HeadCell>
           <Table.HeadCell>Title</Table.HeadCell>
-          <Table.HeadCell>Link</Table.HeadCell>
           <Table.HeadCell>Image</Table.HeadCell>
+          <Table.HeadCell>Link</Table.HeadCell>
           <Table.HeadCell>Status</Table.HeadCell>
+          <Table.HeadCell>CreatedBy</Table.HeadCell>
           <Table.HeadCell>Action</Table.HeadCell>
         </Table.Head>
         <Table.Body className="divide-y">
-          {loading ? (
-            <RowSkeleton rows={4} cols={5} />
+          {isError && <Table.Cell
+                  colSpan={6}
+                  className="whitespace-nowrap font-medium text-center  text-gray-900 dark:text-white"
+                >
+                  Error on Fetching Brand details
+                </Table.Cell>}
+          {isLoading  ? (
+            <RowSkeleton rows={4} cols={7} />
           ) : (
             <>
-              {bannerData && bannerData.length > 0 ? (
-                bannerData.map((data: any, index: number) => (
+              {data.result && data.result.length > 0 ? (
+                data.result.map((data: any, index: number) => (
                   <Table.Row
                     key={index}
                     className="bg-white dark:border-gray-700 dark:bg-gray-800"
@@ -102,14 +109,14 @@ const BannerTable = () => {
                     <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
                       {data.title}
                     </Table.Cell>
-                    <Table.Cell>{data.link || `No link avilable`}</Table.Cell>
                     <Table.Cell>
                       <NavLink to={data.image} target="_data.image">
                       <img className=" w-40 h-16 " src={data.image} />
                       </NavLink>
                     </Table.Cell>
+                    <Table.Cell>{data.link || `No link avilable`}</Table.Cell>
                     <Table.Cell>
-                      {data.status === "active" ? (
+                      {data.status === "ACTIVE" ? (
                         <Badge className="mx-auto w-fit" color="info">
                           Published
                         </Badge>
@@ -119,6 +126,7 @@ const BannerTable = () => {
                         </Badge>
                       )}{" "}
                     </Table.Cell>
+                    <Table.Cell>{data.createdBy?.fullName || `Self Registered`}</Table.Cell>
                     <Table.Cell className=" flex gap-3">
                       <TableActionButtons editUrl={`/admin/banner/edit/${data._id}`} deleteAction={deleteBanner} rowId={data._id} />
                     
@@ -179,13 +187,13 @@ const BannerTable = () => {
           </span>
           of
           <span className="font-semibold mx-2 text-gray-900 dark:text-white">
-            1000
+            {data.meta.total}
           </span>
         </span>
 
         <Pagination
-          currentPage={1}
-          totalPages={0}
+          currentPage={data.meta.currentPage}
+          totalPages={data.meta.totalPages|1}
           onPageChange={onPageChange}
           showIcons
         />
@@ -197,4 +205,4 @@ const BannerTable = () => {
   );
 };
 
-export default BannerTable;
+export default BrandTable;

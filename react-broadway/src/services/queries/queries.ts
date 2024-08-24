@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getBannersForTable, getProductsForTable,  getUsersForTable } from "../api/api";
+import { getBannersForTable, getBrandsForTable, getProductsForTable,  getUsersForTable } from "../api/api";
 
 export function useFetchProductsForTable(){
     return useQuery({
@@ -31,3 +31,9 @@ export function useFetchUsers(){
   })
 }
 
+export function useFetchBrandsForTable(){
+  return useQuery({
+      queryKey: ["productListsForTable"],
+      queryFn: getBrandsForTable,
+    });
+}

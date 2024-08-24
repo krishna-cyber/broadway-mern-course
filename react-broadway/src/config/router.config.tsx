@@ -34,6 +34,7 @@ import UserList from "../pages/users/user-list.page";
 import UserCreate from "../pages/users/user-create.page";
 import UserEdit from "../pages/users/user-edit.page copy";
 import { CategoryCreate, CategoryEdit, CategoryList } from "../pages/category";
+import { BrandCreate, BrandEdit, BrandList } from "../pages/brand";
 
 const RouterConfig = () => {
   // const [loggedInUser, setLoggedInUser] = useState(null);
@@ -102,6 +103,9 @@ const RouterConfig = () => {
               <Route path="/admin/order-lists" element={<ProductList />} />
               <Route path="/admin/order-create" element={<ProductCreate />} />
               <Route path="/admin/order/edit/:id" element={<ProductEdit />} />
+              <Route path="/admin/brand-lists" element={<BrandList />} />{" "}
+              <Route path="/admin/brand-create" element={<BrandCreate />} />
+              <Route path="/admin/brand/edit/:id" element={<BrandEdit />} />
               <Route
                 path="*"
                 element={<ErrorPage url="/admin" label="Back to Dashboard" />}

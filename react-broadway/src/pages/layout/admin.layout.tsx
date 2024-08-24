@@ -6,7 +6,9 @@ import {
   HiTable,
   HiUser,
   HiViewBoards,
+  
 } from "react-icons/hi";
+import { TbBrandAppleFilled } from "react-icons/tb";
 
 import { Outlet } from "react-router-dom";
 import {AdminDashboardNavbar} from "../../components/dashboard/dashboard-navbar.component";
@@ -39,6 +41,11 @@ export const AdminDashboardLayout = () => {
       menu: "Product Management",
       icon: HiShoppingBag,
       link: "/admin/product-lists",
+    },
+    {
+      menu: "Brand Management",
+      icon: TbBrandAppleFilled,
+      link: "/admin/brand-lists",
     },
     {
       menu: "User Management",

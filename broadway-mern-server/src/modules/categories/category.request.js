@@ -20,7 +20,6 @@ const categoryUpdateDTO= joi.object({
 });
 
 module.exports = {
-    BannerCreateDTO,
-    BannerUpdateDTO
-
+ categoryCreateDTO,
+ categoryUpdateDTO
 }

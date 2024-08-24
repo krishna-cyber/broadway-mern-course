@@ -25,7 +25,7 @@ const storage = multer.diskStorage({
 
 // create a uploadfile middleware that takes file type and validates it
 const uploadFile = (fileType = fileFilterType.IMAGE) => {
-  const allowedExt = ["png", "jpg", "jpeg", "gif"];
+  const allowedExt = ["png", "jpg", "jpeg", "gif","webp"];
   if (fileType == fileFilterType.DOC) {
     allowedExt = ["pdf", "doc", "docx", "txt"];
   }

@@ -1,13 +1,12 @@
-import { useEffect, useState } from "react";
-import BannerTable from "../../components/banner/banner-table.component";
 import { FaFileExport, FaLongArrowAltDown, FaPlus } from "react-icons/fa";
 import { Button, Pagination } from "flowbite-react";
 import { Link } from "react-router-dom";
+import BrandTable from "../../components/brand/brand-table.component";
 
 
 
 
-const BannerList = () => {
+const BrandList = () => {
   
  
   return (
@@ -58,7 +57,7 @@ const BannerList = () => {
               </Button>
             </div>
           </div>
-          <BannerTable />
+          <BrandTable />
          
         </div>
       </div>
@@ -66,4 +65,4 @@ const BannerList = () => {
   );
 };
 
-export default BannerList;
+export default BrandList;

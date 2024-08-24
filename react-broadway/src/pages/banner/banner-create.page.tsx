@@ -11,8 +11,10 @@ import httpService from "../../services/http.service";
 import { toast } from "react-toastify";
 import { useState } from "react";
 import {  useNavigate } from "react-router-dom";
+import { useCreateBanner } from "../../services/mutations/mutations";
 
 const BannerCreate = () => {
+  const createBannerMutation = useCreateBanner();
   const [loading,setLoading] = useState(false);
   const navigate = useNavigate();
   const BannerCreateDTO = yup.object({
@@ -38,16 +40,19 @@ const BannerCreate = () => {
 
   const onSubmit =async  (data: any) => {
     setLoading(true);
-    try {
-      console.log("Banner create data:",data);
-     const response:any = await httpService.postRequest("/banner",data, {auth:true,file:true});
-     toast.success(response?.message);
-    } catch (error) {
-        console.log(error);
-    }finally{
-        setLoading(false);
+ 
+    createBannerMutation.mutate(data,{
+      onSuccess: (data) => {
+        toast.success(data?.message);
         navigate("/admin/banner-lists");
-    }
+      },
+      onError: (error) => {
+        toast.error(error?.response?.data?.message);
+        setLoading(false);
+      },
+      
+    });
+    
   }
   return (
     <section className="bg-white dark:bg-gray-900">

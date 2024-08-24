@@ -32,5 +32,12 @@ export const getUsersForTable = async () => {
 
 
 export const createUser = async (data: any) => {
-   return await httpService.postRequest("/users/create-user", {auth:true,file:true});
+   return await httpService.postRequest("/users/create-user",data, {auth:true,file:true});
+};
+export const getBrandsForTable = async () => {
+  return await httpService.getRequest("/brand",{auth:true});
+};
+
+export const createBanner = async (data: any) => {
+  return await httpService.postRequest("/banner/create-user",data, {auth:true,file:true});
 };
