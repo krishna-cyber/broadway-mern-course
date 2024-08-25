@@ -135,9 +135,7 @@ class BannerController{
         }
         listForHome = async(req,res,next)=>{
                 try {
-                        const list = await bannerService.listData({limit:5,
-                                filter:{status:true}
-                        });
+                        const list = await bannerService.listForHome();
 
                         res.json({
                                 result:list,

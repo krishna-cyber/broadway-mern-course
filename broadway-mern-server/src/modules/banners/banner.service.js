@@ -52,6 +52,21 @@ class BannerService{
             throw exception;
         }
     }
+    listForHome = async ()=>{
+        try {
+            const list = await BannerModel.find(
+               {
+                $or:[
+                   { status:'active'},
+                   { status:'ACTIVE'}
+                ]
+               },{_id:1,image:1,title:1,link:1}
+            ).limit(7).sort({_id:'desc'});
+            return list;
+        } catch (exception) {
+            throw exception;
+        }
+    }
 }
 
 const bannerService = new BannerService();

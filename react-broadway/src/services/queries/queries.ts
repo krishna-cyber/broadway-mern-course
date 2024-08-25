@@ -1,11 +1,17 @@
 import { useQuery } from "@tanstack/react-query";
-import { getBannersForTable, getBrandsForTable, getCategoryForTable, getProductsForTable,  getUsersForTable } from "../api/api";
+import { getBannersForTable, getBrandsForTable, getCategoryForTable, getLandingPageBanner, getProductsForTable,  getUsersForTable } from "../api/api";
 
 export function useFetchProductsForTable(){
     return useQuery({
         queryKey: ["productListsForTable"],
         queryFn: getProductsForTable,
       });
+}
+export function useFetchLandingPageBanners(){
+  return useQuery({
+      queryKey: ["landingPageBanners"],
+      queryFn: getLandingPageBanner,
+    });
 }
 
 

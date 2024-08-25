@@ -250,7 +250,7 @@ const AdminDashboard = () => {
           Categories Distribution
           <Pie  {...pieConfig} />
         </h2></div>
-        <div className="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-48 md:h-72">
+        <div className="border-2 border-dashed rounded-lg border-gray-300 dark:border-gray-600 h-auto md:h-auto">
         <h2 className="text-semibold p-4 text-2xl">
           Top 5 brands by selling 
           <Column {...monthlySellingConfig} />

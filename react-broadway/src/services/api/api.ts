@@ -1,6 +1,8 @@
-import { axiosInstance } from "../../config/axios.config";
 import httpService from "../http.service";
-import { Product } from "../../types/types";
+
+export const getLandingPageBanner = async () => {
+  return await httpService.getRequest("/banner/list-home");
+}
 
 export const getProductsForTable = async () => {
   return await httpService.getRequest("/product");

@@ -11,7 +11,7 @@ export const SliderComponent = ({data}:{data:Array<SingleSlider>}) => {
         data && data.map((item:SingleSlider,index:number)=>{
           return(
 
-          item.link? <a key={index+1} href={item.link}> <img  src={item.image} /> </a> : <img key={index+1} src={item.image} />
+          item.link? <a key={item._id} href={item.link} target="_blank"> <img  src={item.image} /> </a> : <img key={item._id} src={item.image} />
          
          
           )
