@@ -107,7 +107,7 @@ const categoryList = useFetchCategoryForTable();
                     <Table.Cell>{`No Products avilable`}</Table.Cell>
                     <Table.Cell>
                       <NavLink to={data?.image} target="_data?.image">
-                      <img className=" w-40 h-16 " src={data?.image} />
+                      <img className=" w-20 h-20 " src={data?.image} />
                       </NavLink>
                     </Table.Cell>
                 

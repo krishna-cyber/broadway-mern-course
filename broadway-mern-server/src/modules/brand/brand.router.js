@@ -19,5 +19,5 @@ router.route('/')
     router.route('/:id')
     .get(loginCheck,hasPermission(['admin']),brandController.getById)
     .put(loginCheck,hasPermission(['admin']), setPath('brands'),bodyValidator(brandUpdateDTO),brandController.edit)
-
+    .delete(loginCheck,hasPermission(['admin']),brandController.deleteBrandById);
 module.exports = router;

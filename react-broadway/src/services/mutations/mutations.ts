@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createBanner, createCategory, createProduct,createUser, editBanner, editProduct, editUser } from "../api/api";
+import { createBanner, createCategory, createProduct,createUser, deleteBanner, deleteBrand, deleteProduct, deleteUser, editBanner, editCategory, editProduct, editUser } from "../api/api";
+import { toast } from "react-toastify";
 
 export function useCreateProduct() {
   const queryClient = useQueryClient();
@@ -158,14 +159,106 @@ export function useeditBrand() {
 export function useeditCategory() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (data) => editBanner(data),
+    mutationFn: (data) => editCategory(data),
     onSettled: (data, error, variables, context) => {
       console.log("on settled");
       if (error) {
-        console.log("Error occured creating product");
+        toast.error("Error occured updating Category");
       } else {
+        toast.success("Category updated successfully");
         queryClient.invalidateQueries({
           queryKey: ["productLists"],
+        });
+      }
+    },
+  });
+}
+
+export function useDeleteProduct() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (data) => deleteProduct(data),
+    onSettled: (data, error, variables, context) => {
+      console.log("on settled");
+      if (error) {
+        toast.error("Error occured deleting product");
+      } else {
+        toast.success("Product deleted successfully");
+        queryClient.invalidateQueries({
+          queryKey: ["productListsForTable"],
+        });
+      }
+    },
+  });
+}
+
+export function useDeleteUser() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (data) => deleteUser(data),
+    onSettled: (data, error, variables, context) => {
+      console.log("on settled");
+      if (error) {
+        toast.error("Error occured deleting User");
+      } else {
+        toast.success("User deleted successfully");
+        queryClient.invalidateQueries({
+          queryKey: ["users"],
+        });
+      }
+    },
+  });
+}
+
+export function useDeleteBanner() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (data:string) => deleteBanner(data),
+    onSettled: (data, error, variables, context) => {
+      console.log("on settled");
+      if (error) {
+        toast.error("Error occured deleting Banner");
+      } else {
+        toast.success("Banner deleted successfully");
+        queryClient.invalidateQueries({
+          queryKey: ["bannerListsForTable"],
+        });
+      }
+    },
+  });
+}
+
+
+export function useDeleteBrand() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (data) => deleteBrand(data),
+    onSettled: (data, error, variables, context) => {
+      console.log("on settled");
+      if (error) {
+        toast.error("Error occured deleting Brand");
+      } else {
+        toast.success("Brand deleted successfully");
+        queryClient.invalidateQueries({
+          queryKey: ["brandListForTable"],
+        });
+      }
+    },
+  });
+}
+
+export function useDeleteCategory() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (data) => deleteBanner(data),
+    onSettled: (data, error, variables, context) => {
+      console.log("on settled");
+      if (error) {
+        toast.error("Error occured deleting Category");
+      } else {
+        toast.success("Category deleted successfully");
+        queryClient.invalidateQueries({
+          queryKey: ["categoryListsForTable"],
         });
       }
     },

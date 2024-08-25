@@ -49,11 +49,28 @@ export const createUser = async (data: any) => {
 };
 
 export const createBanner = async (data: any) => {
-  return await httpService.postRequest("/banner/create-user",data, {auth:true,file:true});
+  return await httpService.postRequest("/banner",data, {auth:true,file:true});
 };
 
 export const editBanner = async (data: any) => {}
 
 export const editProduct = async (data: any) => {}
+export const editCategory = async (data: any) => {}
 
 export const editUser = async (data: any) => {}
+
+export const deleteBanner = async (data: any) => {
+  return await httpService.deleteRequest(`/banner/${data}`, { auth: true });
+}
+
+export const deleteProduct = async (data: any) => {
+  return await httpService.deleteRequest(`/product/${data}`, { auth: true });
+}
+
+export const deleteUser = async (data: any) => {
+  return await httpService.deleteRequest(`/users/${data}`, { auth: true });
+}
+
+export const deleteBrand = async (data: any) => {
+  return await httpService.deleteRequest(`/brand/${data}`, { auth: true });
+}

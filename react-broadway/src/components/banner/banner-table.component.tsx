@@ -4,21 +4,22 @@ import {
   Pagination,
   Table,
 } from "flowbite-react";
-import { useCallback, useEffect, useState } from "react";
 import RowSkeleton from "../common/table/row-skeleton.component";
 import { toast } from "react-toastify";
 import httpService from "../../services/http.service";
-import { SearchParams } from "../../config/constants";
 
 import TableActionButtons from "../common/table/table-action-buttons.component";
 import { NavLink } from "react-router-dom";
 import { useFetchBannersForTable } from "../../services/queries/queries";
+import { useState } from "react";
+import { useDeleteBanner } from "../../services/mutations/mutations";
 
 const BannerTable = () => {
   
 
 
   const bannersDataForTable = useFetchBannersForTable();
+  const deleteBannerById = useDeleteBanner();
   console.log(`Banners data for table: `, bannersDataForTable.data?.result);
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -30,17 +31,7 @@ const BannerTable = () => {
 
   // Delete banner
   const deleteBanner = async (id: string) => {
-    try {
-      const response = await httpService.deleteRequest(`/banner/${id}`, {
-        auth: true,
-      });
-      console.log("Delete banner response: ", response);
-      toast.success("Banner deleted successfully");
-      getAllBanners({});
-    } catch (error: any) {
-      console.error("Error deleting banner: ", error);
-      toast.warning('Error deleting banner, please try again');
-    }
+    deleteBannerById.mutate(id)
   };
 
  

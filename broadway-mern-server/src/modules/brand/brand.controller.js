@@ -98,12 +98,17 @@ class BrandController {
         message: "Banner updated successfully",
         meta: null,
       });
-    } catch (exception) {}
+    } catch (exception) {
+      next(exception);
+    }
   };
-  delete = async (req, res, next) => {
-    //delete banner by id
-    //also delete image from cloudinary
-    //response result response meta null messge banner deleted successfully
+  deleteBrandById = async (req, res, next) => {
+    try {
+      const {id} = req.params;
+      const response = await brandService.deleteById(id);
+    } catch (error) {
+      next(error);
+    }
   };
   listForHome = async (req, res, next) => {
     try {
@@ -123,19 +128,18 @@ class BrandController {
   };
   listForDashboard = async (req, res, next) => {
     try {
-      const {count,data} = await brandService.listData({
+      const { count, data } = await brandService.listData({
         limit: 10,
-        filter:{},
+        filter: {},
       });
 
       res.json({
         result: data,
         message: "List of brands",
         meta: {
-          total:count,
-          currentPage:1,
-          totalPages:0
-
+          total: count,
+          currentPage: 1,
+          totalPages: 0,
         },
       });
     } catch (exception) {
