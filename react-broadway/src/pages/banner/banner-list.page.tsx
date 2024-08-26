@@ -1,14 +1,14 @@
-import { useEffect, useState } from "react";
 import BannerTable from "../../components/banner/banner-table.component";
 import { FaFileExport, FaLongArrowAltDown, FaPlus } from "react-icons/fa";
 import { Button, Pagination } from "flowbite-react";
 import { Link } from "react-router-dom";
+import { useFetchBannersForTable } from "../../services/queries/queries";
 
 
 
 
 const BannerList = () => {
-  
+  const bannersDataForTable = useFetchBannersForTable(1,5);  
  
   return (
     <section className="bg-gray-50 dark:bg-gray-900 py-3 sm:py-5">
@@ -17,8 +17,8 @@ const BannerList = () => {
           <div className="flex flex-col px-4 py-3 space-y-3 lg:flex-row lg:items-center lg:justify-between lg:space-y-0 lg:space-x-4">
             <div className="flex items-center flex-1 space-x-4">
               <h5>
-                <span className="text-gray-500">All Products:</span>
-                <span className="dark:text-white">123456</span>
+                <span className="text-gray-500">All Banners:</span>
+                <span className="dark:text-white">{bannersDataForTable.data?.meta?.total || 0}</span>
               </h5>
               <h5>
                 <span className="text-gray-500">Total sales:</span>
