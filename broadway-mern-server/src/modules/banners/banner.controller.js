@@ -39,15 +39,19 @@ class BannerController{
         }
         getAllBanners = async (req,res,next)=>{
                 try {
-                        const list = await bannerService.listData({});
+
+                        const {page,limit}= req.query;
+                        const {data,count,totalPages} = await bannerService.listData(page,limit);
+
                         
                         res.json({
-                                result: list.data,
+                                result: data,
                                 message: "List of banners",
                                 meta: {
-                                        total: list.count,
-                                        pages: 1,
-                                        limit: 10
+                                        total: count,
+                                        currentPage: page,
+                                        totalPages,
+                                        limit
                                 }
                         });
                 } catch (exception) {

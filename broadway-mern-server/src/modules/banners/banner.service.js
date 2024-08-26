@@ -11,11 +11,14 @@ class BannerService{
         }
     }
 
-    listData = async ({skip =0, filter = {}})=>{
+    listData = async (currentPage,limit,filter={})=>{
         try {
+            //calculate skip based on current page and limit
             const count = await BannerModel.countDocuments(filter);
-            const data = await BannerModel.find(filter).populate('createdBy',["_id","fullName","email","role"]).skip(skip).sort({_id:'desc'});
-            return {data,count};
+            const skip = (currentPage - 1) * limit;
+            const data = await BannerModel.find(filter).populate('createdBy',["_id","fullName","email","role"]).skip(skip).limit(limit).sort({_id:'desc'});
+            let totalPages = Math.ceil(count / limit);
+            return {data,count,totalPages};
         } catch (exception) {
             throw exception;
         }

@@ -1,52 +1,59 @@
-import { useQuery } from "@tanstack/react-query";
-import { getBannersForTable, getBrandsForTable, getCategoryForTable, getLandingPageBanner, getProductsForTable,  getUsersForTable } from "../api/api";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import {
+  getBannersForTable,
+  getBrandsForTable,
+  getCategoryForTable,
+  getLandingPageBanner,
+  getProductsForTable,
+  getUsersForTable,
+} from "../api/api";
 
-export function useFetchProductsForTable(){
-    return useQuery({
-        queryKey: ["productListsForTable"],
-        queryFn: getProductsForTable,
-      });
-}
-export function useFetchLandingPageBanners(){
+export function useFetchProductsForTable(page: number, limit: number) {
   return useQuery({
-      queryKey: ["landingPageBanners"],
-      queryFn: getLandingPageBanner,
-    });
+    queryKey: ["productListsForTable", { page }],
+    queryFn: () => getProductsForTable(page, limit),
+    placeholderData: keepPreviousData,
+  });
 }
-
-
-export function useFetchProductsForLandingPage(){
-    return useQuery({
-        queryKey: ["productListsForHome"],
-        queryFn: getProductsForTable,
-      });
-}
-
-export function useFetchBannersForTable(){
+export function useFetchLandingPageBanners() {
   return useQuery({
-    queryKey: ['bannerListsForTable'],
-    queryFn: getBannersForTable
-  })
+    queryKey: ["landingPageBanners"],
+    queryFn: getLandingPageBanner,
+  });
 }
 
-
-export function useFetchUsers(){
+export function useFetchProductsForLandingPage() {
   return useQuery({
-    queryKey: ['users'],
-    queryFn: getUsersForTable
-  })
+    queryKey: ["productListsForHome"],
+    queryFn: getLandingPageBanner,
+  });
 }
 
-export function useFetchBrandsForTable(){
+export function useFetchBannersForTable(page:number,limit:number) {
   return useQuery({
-      queryKey: ["brandListForTable"],
-      queryFn: getBrandsForTable,
-    });
+    queryKey: ["bannerListsForTable",{page}],
+    queryFn: ()=>getBannersForTable(page,limit),
+    placeholderData: keepPreviousData,
+  });
 }
 
-export function useFetchCategoryForTable(){
+export function useFetchUsers() {
   return useQuery({
-    queryKey: ['categoryListsForTable'],
-    queryFn: getCategoryForTable
-  })
+    queryKey: ["users"],
+    queryFn: getUsersForTable,
+  });
+}
+
+export function useFetchBrandsForTable() {
+  return useQuery({
+    queryKey: ["brandListForTable"],
+    queryFn: getBrandsForTable,
+  });
+}
+
+export function useFetchCategoryForTable() {
+  return useQuery({
+    queryKey: ["categoryListsForTable"],
+    queryFn: getCategoryForTable,
+  });
 }

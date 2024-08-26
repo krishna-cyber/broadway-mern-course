@@ -4,7 +4,7 @@ export const getLandingPageBanner = async () => {
   return await httpService.getRequest("/banner/list-home");
 }
 
-export const getProductsForTable = async () => {
+export const getProductsForTable = async (page:number,limit:number) => {
   return await httpService.getRequest("/product");
 };
 
@@ -31,8 +31,8 @@ export const createCategory = async (data: any) => {
     file: true,
   });
 };
-export const getBannersForTable = async () => {
-  return await httpService.getRequest("/banner", { auth: true });
+export const getBannersForTable = async (page:number,limit:number) => {
+  return await httpService.getRequest(`/banner?page=${page}&limit=${limit}`, { auth: true });
 };
 
 export const getUsersForTable = async () => {

@@ -5,28 +5,28 @@ import {
   Table,
 } from "flowbite-react";
 import RowSkeleton from "../common/table/row-skeleton.component";
-import { toast } from "react-toastify";
-import httpService from "../../services/http.service";
+
 
 import TableActionButtons from "../common/table/table-action-buttons.component";
 import { NavLink } from "react-router-dom";
 import { useFetchBannersForTable } from "../../services/queries/queries";
 import { useState } from "react";
 import { useDeleteBanner } from "../../services/mutations/mutations";
+import { current } from "@reduxjs/toolkit";
 
 const BannerTable = () => {
   
 
 
-  const bannersDataForTable = useFetchBannersForTable();
+  const [page, setpage] = useState(1);
+  const bannersDataForTable = useFetchBannersForTable(page,5);  //current page and limit
   const deleteBannerById = useDeleteBanner();
-  console.log(`Banners data for table: `, bannersDataForTable.data?.result);
-  const [currentPage, setCurrentPage] = useState(1);
 
+  const onPageChange = (page: number) => setpage(page);
 
-  const onPageChange = (page: number) => setCurrentPage(page);
-
-
+if(bannersDataForTable.isError){
+  console.log(`Error: `, bannersDataForTable.error);
+}
  
 
   // Delete banner
@@ -119,8 +119,8 @@ const BannerTable = () => {
         </span>
 
         <Pagination
-          currentPage={currentPage}
-          totalPages={bannersDataForTable.data?.meta?.pages||1}
+          currentPage={page}
+          totalPages={bannersDataForTable.data?.meta?.totalPages||1}
           onPageChange={onPageChange}
           showIcons
         />
