@@ -5,7 +5,7 @@ export const getLandingPageBanner = async () => {
 }
 
 export const getProductsForTable = async (page:number,limit:number) => {
-  return await httpService.getRequest("/product");
+  return await httpService.getRequest(`/product?page=${page}&limit=${limit}`);
 };
 
 export const countTotalProducts = async () => {

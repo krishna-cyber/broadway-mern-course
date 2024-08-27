@@ -30,19 +30,16 @@ class ProductController {
   };
   listForTable = async (req, res, next) => {
     try {
-      const {currentPage,pageSize }= req.query;
-      const {data,totalPages} = await productService.listData({
-        pageSize: pageSize || 10,
-        page:currentPage ,
-        filter: {},
-      });
+      const {page,limit }= req.query;
+      const {data,totalPages,total,currentPage} = await productService.listData(page,limit);
       res.json({
         result: data,
         message: "List of products",
         meta: {
-          page: 1,
-          pageSize: 10,
-          totalPages
+          total,
+          currentPage,
+          totalPages,
+          limit
         },
       });
     } catch (exception) {

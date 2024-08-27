@@ -11,13 +11,13 @@ class ProductService{
         }
     }
 
-    listData = async ({page =1, filter = {},pageSize=10})=>{
+    listData = async (currentPage=1,limit=5,filter={})=>{
         try {
-            const skip = (page - 1) * pageSize;
-            const count = await ProductModel.countDocuments(filter);
-            const totalPages = Math.ceil(count/pageSize);
-            const data = await ProductModel.find(filter).populate('createdBy',["_id","name","email","role"]).skip(skip).limit(pageSize).sort({_id:'desc'});
-            return {data,totalPages}
+            const skip = (currentPage - 1) * limit;
+            const total = await ProductModel.countDocuments(filter);
+            const totalPages = Math.ceil(total/limit);
+            const data = await ProductModel.find(filter).populate('createdBy',["_id","name","email","role"]).skip(skip).limit(limit).sort({_id:'desc'});
+            return {data,totalPages,total,limit,currentPage}
         } catch (exception) {
             throw exception;
         }
