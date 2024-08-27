@@ -104,9 +104,18 @@ class CategoryController {
     } catch (exception) {}
   };
   delete = async (req, res, next) => {
-    //delete banner by id
-    //also delete image from cloudinary
-    //response result response meta null messge banner deleted successfully
+  try {
+    const {id} = req.params;
+  await categoryService.deleteById(id);
+  res.json({
+    result:null,
+    message:`Category deleted successfully`,
+    meta:null
+  })
+  } catch (error) {
+    console.log(  `Error at category delete middleware or function`,error)
+    next(error)
+  }
   };
   listForHome = async (req, res, next) => {
     try {
@@ -126,7 +135,8 @@ class CategoryController {
   };
   listForDashboard = async (req, res, next) => {
     try {
-      const { data, meta } = await categoryService.listData(req.query.currentPage,req.query.limit,req.query.filter);
+      const {page,limit}= req.query;
+      const { data, meta } = await categoryService.listData(page,limit);
 
       res.json({
         result: data,

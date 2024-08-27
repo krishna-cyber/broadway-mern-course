@@ -29,7 +29,7 @@ class CategoryService{
             const meta = {
                 total: count,
                 totalPages: Math.ceil(count / limit),
-                currentPage: currentPage,
+                currentPage,
             };
     
             // Return the data along with meta information

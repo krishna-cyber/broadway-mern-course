@@ -5,6 +5,7 @@ const { bodyValidator } = require('../../middlewares/validator.middleware');
 const categoryController = require('./category.controller');
 const {  categoryCreateDTO,
     categoryUpdateDTO} = require('./category.request');
+const categoryService = require('./category.service');
 
 const router = require('express').Router();
 
@@ -19,6 +20,7 @@ router.route('/')
 
     router.route('/:id')
     .get(loginCheck,hasPermission(['admin']))
+    .delete(loginCheck,hasPermission(['admin']),categoryController.delete)
     .put(loginCheck,hasPermission(['admin']), setPath('categories'),bodyValidator(categoryUpdateDTO),categoryController.edit)
 
 module.exports = router;

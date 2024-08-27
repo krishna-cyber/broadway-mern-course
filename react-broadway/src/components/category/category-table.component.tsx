@@ -13,65 +13,24 @@ import { SearchParams } from "../../config/constants";
 import TableActionButtons from "../common/table/table-action-buttons.component";
 import { NavLink } from "react-router-dom";
 import { useFetchCategoryForTable } from "../../services/queries/queries";
+import { useDeleteCategory } from "../../services/mutations/mutations";
 
 const CategoryTable = () => {
-  const [bannerData, setBannerData] = useState([
-    {
-      _id: "someid",
-      title: "Banner Image",
-      image:
-        "https://icms-image.slatic.net/images/ims-web/d01caa71-9c68-4c12-a35e-f6c10c53e73d.jpg",
-      link: null,
-      status: "active",
-    },
-  ]);
-  const [loading, setLoading] = useState(true);
+
   const [currentPage, setCurrentPage] = useState(1);
 
-const categoryList = useFetchCategoryForTable();
+const categoryList = useFetchCategoryForTable(currentPage,5);
+const deleteBanner = useDeleteCategory()
   const onPageChange = (page: number) => setCurrentPage(page);
 
-  // only triggers when currentPage changes otherwise it will not trigger , this callback prevents when some user click on same pagination
-  // number it will not trigger the api call again
-  const getAllBanners = useCallback(
-    async ({ page = 1, limit = 10, search = "" }: SearchParams) => {
-      setLoading(true);
-      try {
-        const banners:any = await httpService.getRequest("/banner", {
-          auth: true,
-          params: { page: page, limit: limit, search: search },
-        });
-        setBannerData(banners?.result);
-        console.log({ page, limit, search });
-        console.log("Banners: ", banners);
-      } catch (error: any) {
-        console.error("Error fetching banners: ", error);
-        toast.warning(error?.message);
-      } finally {
-        setLoading(false);
-      }
-    },
-    [currentPage]
-  );
+
 
   // Delete banner
   const deleteCategory = async (id: string) => {
-    try {
-      const response = await httpService.deleteRequest(`/banner/${id}`, {
-        auth: true,
-      });
-      console.log("Delete banner response: ", response);
-      toast.success("Banner deleted successfully");
-      getAllBanners({});
-    } catch (error: any) {
-      console.error("Error deleting banner: ", error);
-      toast.warning('Error deleting banner, please try again');
-    }
+  deleteBanner.mutate(id)
   };
 
-  // useEffect(() => {
-  //   getAllBanners({});
-  // }, []);
+
 
   return (
     <div className="overflow-x-auto">
@@ -147,8 +106,8 @@ const categoryList = useFetchCategoryForTable();
         </span>
 
         <Pagination
-          currentPage={1}
-          totalPages={0}
+          currentPage={currentPage}
+          totalPages={categoryList.data?.meta.totalPages || 1}
           onPageChange={onPageChange}
           showIcons
         />

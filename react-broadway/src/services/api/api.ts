@@ -42,8 +42,8 @@ export const getUsersForTable = async () => {
 export const getBrandsForTable = async (page:number,limit:number) => {
   return await httpService.getRequest(`/brand?page=${page}&limit=${limit}`,{auth:true});
 };
-export const getCategoryForTable = async () => {
-  return await httpService.getRequest("/category",{auth:true});
+export const getCategoryForTable = async (page:number =1,limit:number=5) => {
+  return await httpService.getRequest(`/category?page=${page}&limit=${limit}`,{auth:true});
 };
 
 export const createUser = async (data: any) => {
@@ -63,6 +63,10 @@ export const editUser = async (data: any) => {}
 
 export const deleteBanner = async (data: any) => {
   return await httpService.deleteRequest(`/banner/${data}`, { auth: true });
+}
+
+export const deleteCategory = async (data: any) => {
+  return await httpService.deleteRequest(`/category/${data}`, { auth: true });
 }
 
 export const deleteProduct = async (data: any) => {

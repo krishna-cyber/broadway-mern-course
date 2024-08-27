@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createBanner, createCategory, createProduct,createUser, deleteBanner, deleteBrand, deleteProduct, deleteUser, editBanner, editCategory, editProduct, editUser } from "../api/api";
+import { createBanner, createCategory, createProduct,createUser, deleteBanner, deleteBrand, deleteCategory, deleteProduct, deleteUser, editBanner, editCategory, editProduct, editUser } from "../api/api";
 import { toast } from "react-toastify";
 
 export function useCreateProduct() {
@@ -250,13 +250,14 @@ export function useDeleteBrand() {
 export function useDeleteCategory() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (data) => deleteBanner(data),
+    mutationFn: (data:string) => deleteCategory(data),
     onSettled: (data, error, variables, context) => {
       console.log("on settled");
       if (error) {
+        console.log (error)
         toast.error("Error occured deleting Category");
       } else {
-        toast.success("Category deleted successfully");
+        toast.success(data?.message);
         queryClient.invalidateQueries({
           queryKey: ["categoryListsForTable"],
         });

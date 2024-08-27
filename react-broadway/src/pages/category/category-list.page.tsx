@@ -2,11 +2,13 @@ import { FaFileExport, FaLongArrowAltDown, FaPlus } from "react-icons/fa";
 import { Button, Pagination } from "flowbite-react";
 import { Link } from "react-router-dom";
 import CategoryTable from "../../components/category/category-table.component";
+import { useFetchCategoryForTable } from "../../services/queries/queries";
 
 
 
 
 const CategoryList = () => {
+  const {data}= useFetchCategoryForTable(1,5)
   return (
     <section className="bg-gray-50 dark:bg-gray-900 py-3 sm:py-5">
       <div className="px-4 mx-auto max-w-screen-2xl lg:px-12">
@@ -15,7 +17,7 @@ const CategoryList = () => {
             <div className="flex items-center flex-1 space-x-4">
               <h5>
                 <span className="text-gray-500">All categories:</span>
-                <span className="dark:text-white">123456</span>
+                <span className="dark:text-white">{data?.meta.total}</span>
               </h5>
               <h5>
                 <span className="text-gray-500">Total sales:</span>

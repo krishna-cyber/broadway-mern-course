@@ -53,9 +53,10 @@ export function useFetchUsers() {
 }
 
 
-export function useFetchCategoryForTable() {
+export function useFetchCategoryForTable(page:number,limit:number) {
   return useQuery({
-    queryKey: ["categoryListsForTable"],
-    queryFn: getCategoryForTable,
+    queryKey: ["categoryListsForTable",{page}],
+    queryFn:()=> getCategoryForTable(page,limit),
+    placeholderData: keepPreviousData,
   });
 }
