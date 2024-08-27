@@ -29,10 +29,18 @@ export function useFetchProductsForLandingPage() {
   });
 }
 
-export function useFetchBannersForTable(page:number,limit:number) {
+export function useFetchBannersForTable(page: number, limit: number) {
   return useQuery({
-    queryKey: ["bannerListsForTable",{page}],
-    queryFn: ()=>getBannersForTable(page,limit),
+    queryKey: ["bannerListsForTable", { page }],
+    queryFn: () => getBannersForTable(page, limit),
+    placeholderData: keepPreviousData,
+  });
+}
+
+export function useFetchBrandsForTable(page: number, limit: number) {
+  return useQuery({
+    queryKey: ["bannerListsForTable", { page }],
+    queryFn: () => getBrandsForTable(page, limit),
     placeholderData: keepPreviousData,
   });
 }
@@ -44,12 +52,6 @@ export function useFetchUsers() {
   });
 }
 
-export function useFetchBrandsForTable() {
-  return useQuery({
-    queryKey: ["brandListForTable"],
-    queryFn: getBrandsForTable,
-  });
-}
 
 export function useFetchCategoryForTable() {
   return useQuery({

@@ -104,7 +104,7 @@ class BrandController {
   };
   deleteBrandById = async (req, res, next) => {
     try {
-      const {id} = req.params;
+      const { id } = req.params;
       const response = await brandService.deleteById(id);
     } catch (error) {
       next(error);
@@ -128,18 +128,18 @@ class BrandController {
   };
   listForDashboard = async (req, res, next) => {
     try {
-      const { count, data } = await brandService.listData({
-        limit: 10,
-        filter: {},
-      });
+      const { page, limit } = req.query;
+
+      console.log(page, limit);
+      const { data, count, totalPages } = await brandService.listData(page,limit);
 
       res.json({
         result: data,
         message: "List of brands",
         meta: {
           total: count,
-          currentPage: 1,
-          totalPages: 0,
+          page,
+          totalPages,
         },
       });
     } catch (exception) {

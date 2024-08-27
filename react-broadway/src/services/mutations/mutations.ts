@@ -232,7 +232,7 @@ export function useDeleteBanner() {
 export function useDeleteBrand() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (data) => deleteBrand(data),
+    mutationFn: (data:number) => deleteBrand(data),
     onSettled: (data, error, variables, context) => {
       console.log("on settled");
       if (error) {

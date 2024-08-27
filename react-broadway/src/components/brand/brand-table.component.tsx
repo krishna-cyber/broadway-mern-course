@@ -1,76 +1,26 @@
-import {
-  Badge,
-  Checkbox,
-  Pagination,
-  Table,
-} from "flowbite-react";
-import { useCallback, useEffect, useState } from "react";
+import { Badge, Checkbox, Pagination, Table } from "flowbite-react";
+import {  useState } from "react";
 import RowSkeleton from "../common/table/row-skeleton.component";
-import { toast } from "react-toastify";
-import httpService from "../../services/http.service";
-import { SearchParams } from "../../config/constants";
+
 
 import TableActionButtons from "../common/table/table-action-buttons.component";
 import { NavLink } from "react-router-dom";
 import { useFetchBrandsForTable } from "../../services/queries/queries";
+import { useDeleteBrand } from "../../services/mutations/mutations";
 
 const BrandTable = () => {
-  const [brandData, setBrandData] = useState([
-    {
-      _id: "someid",
-      title: "Banner Image",
-      image:
-        "https://icms-image.slatic.net/images/ims-web/d01caa71-9c68-4c12-a35e-f6c10c53e73d.jpg",
-      link: null,
-      status: "active",
-    },
-  ]);
-  const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
+  const { data, isLoading, isError } = useFetchBrandsForTable(currentPage,5);
+  const deleteBrand = useDeleteBrand();
 
 
+  console.log(`Data of brand table component`,data);
   const onPageChange = (page: number) => setCurrentPage(page);
 
-  // only triggers when currentPage changes otherwise it will not trigger , this callback prevents when some user click on same pagination
-  // number it will not trigger the api call again
-  const getAllBanners = useCallback(
-    async ({ page = 1, limit = 10, search = "" }: SearchParams) => {
-      setLoading(true);
-      try {
-        const banners:any = await httpService.getRequest("/banner", {
-          auth: true,
-          params: { page: page, limit: limit, search: search },
-        });
-        setBrandData(banners?.result);
-        console.log({ page, limit, search });
-        console.log("Banners: ", banners);
-      } catch (error: any) {
-        console.error("Error fetching banners: ", error);
-        toast.warning(error?.message);
-      } finally {
-        setLoading(false);
-      }
-    },
-    [currentPage]
-  );
-
   // Delete banner
-  const deleteBanner = async (id: string) => {
-    try {
-      const response = await httpService.deleteRequest(`/banner/${id}`, {
-        auth: true,
-      });
-      console.log("Delete banner response: ", response);
-      toast.success("Banner deleted successfully");
-      getAllBanners({});
-    } catch (error: any) {
-      console.error("Error deleting banner: ", error);
-      toast.warning('Error deleting banner, please try again');
-    }
+  const deleteBanner = async (id: number) => {
+    deleteBrand.mutate(id);
   };
-
-const {data,isLoading,isError} = useFetchBrandsForTable();
-console.log(data,isLoading,isError)
 
   return (
     <div className="overflow-x-auto">
@@ -87,13 +37,15 @@ console.log(data,isLoading,isError)
           <Table.HeadCell>Action</Table.HeadCell>
         </Table.Head>
         <Table.Body className="divide-y">
-          {isError && <Table.Cell
-                  colSpan={6}
-                  className="whitespace-nowrap font-medium text-center  text-gray-900 dark:text-white"
-                >
-                  Error on Fetching Brand details
-                </Table.Cell>}
-          {isLoading  ? (
+          {isError && (
+            <Table.Cell
+              colSpan={6}
+              className="whitespace-nowrap font-medium text-center  text-gray-900 dark:text-white"
+            >
+              Error on Fetching Brand details
+            </Table.Cell>
+          )}
+          {isLoading ? (
             <RowSkeleton rows={4} cols={7} />
           ) : (
             <>
@@ -111,7 +63,7 @@ console.log(data,isLoading,isError)
                     </Table.Cell>
                     <Table.Cell>
                       <NavLink to={data.image} target="_data.image">
-                      <img className=" w-40 h-16 " src={data.image} />
+                        <img className=" w-40 h-16 " src={data.image} />
                       </NavLink>
                     </Table.Cell>
                     <Table.Cell>{data.link || `No link avilable`}</Table.Cell>
@@ -126,10 +78,15 @@ console.log(data,isLoading,isError)
                         </Badge>
                       )}{" "}
                     </Table.Cell>
-                    <Table.Cell>{data.createdBy?.fullName || `Self Registered`}</Table.Cell>
+                    <Table.Cell>
+                      {data.createdBy?.fullName || `Self Registered`}
+                    </Table.Cell>
                     <Table.Cell className=" flex gap-3">
-                      <TableActionButtons editUrl={`/admin/banner/edit/${data._id}`} deleteAction={deleteBanner} rowId={data._id} />
-                    
+                      <TableActionButtons
+                        editUrl={`/admin/banner/edit/${data._id}`}
+                        deleteAction={deleteBanner}
+                        rowId={data._id}
+                      />
                     </Table.Cell>
                   </Table.Row>
                 ))
@@ -143,8 +100,6 @@ console.log(data,isLoading,isError)
               )}
             </>
           )}
-
-          
         </Table.Body>
       </Table>
       <nav
@@ -163,15 +118,12 @@ console.log(data,isLoading,isError)
         </span>
 
         <Pagination
-          currentPage={currentPage} 
-          totalPages={data?.meta.totalPages|1}
+          currentPage={currentPage}
+          totalPages={data?.meta?.totalPages || 1}
           onPageChange={onPageChange}
           showIcons
         />
       </nav>
-   
-     
-       
     </div>
   );
 };

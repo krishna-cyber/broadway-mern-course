@@ -10,21 +10,25 @@ class BannerService {
     }
   };
 
-  listData = async ({ skip = 0, filter = {} }) => {
+  listData = async (currentPage,limit,filter={})=>{
     try {
-      const count = await Brandmodel.countDocuments(filter);
-      const data = await Brandmodel.find(filter)
-        .populate("createdBy", ["_id", "fullName", "email", "role"])
-        .skip(skip)
-        .sort({ _id: "desc" });
-      return { count, data };
+      console.log(currentPage,limit,filter);
+        //calculate skip based on current page and limit
+        const count = await Brandmodel.countDocuments(filter);
+        const skip = (currentPage - 1) * limit;
+        const data = await Brandmodel.find(filter).populate('createdBy',["_id","fullName","email","role"]).skip(skip).limit(limit).sort({_id:'desc'});
+        let totalPages = Math.ceil(count / limit);
+        return {data,count,totalPages};
     } catch (exception) {
-      throw exception;
+        throw exception;
     }
-  };
+}
   getDetailByFilter = async (filter) => {
     try {
-      const bannerDetail = await Brandmodel.findOne(filter).populate("createdBy",["_id","fullName","email","role"]);
+      const bannerDetail = await Brandmodel.findOne(filter).populate(
+        "createdBy",
+        ["_id", "fullName", "email", "role"]
+      );
       if (!bannerDetail) {
         throw { statusCode: 404, message: "Banner not found" };
       }
@@ -59,9 +63,12 @@ class BannerService {
     }
   };
 
-  getDetailById = async ({_id}) => {
+  getDetailById = async ({ _id }) => {
     try {
-      const bannerDetail = await Brandmodel.findById(_id).populate("createdBy",["_id","fullName","email","role"]);
+      const bannerDetail = await Brandmodel.findById(_id).populate(
+        "createdBy",
+        ["_id", "fullName", "email", "role"]
+      );
       if (!bannerDetail) {
         throw { statusCode: 404, message: "Banner not found" };
       }
@@ -70,7 +77,6 @@ class BannerService {
       throw exception;
     }
   };
-
 }
 
 const bannerService = new BannerService();

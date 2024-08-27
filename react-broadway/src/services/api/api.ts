@@ -39,8 +39,8 @@ export const getUsersForTable = async () => {
   return await httpService.getRequest("/users", { auth: true });
 };
 
-export const getBrandsForTable = async () => {
-  return await httpService.getRequest("/brand",{auth:true});
+export const getBrandsForTable = async (page:number,limit:number) => {
+  return await httpService.getRequest(`/brand?page=${page}&limit=${limit}`,{auth:true});
 };
 export const getCategoryForTable = async () => {
   return await httpService.getRequest("/category",{auth:true});
