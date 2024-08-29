@@ -5,8 +5,7 @@ import ProductViewLandingPage from "../../components/products/product-Listing.co
 const LandingPage = () => {
   return (
     <>
-    {/* Header and Footer Component comes from layout page of landing page */}
-      {/* <Header /> */}
+   
       <BannerComponent />
       <CategoryMenu />
       <ProductViewLandingPage/>

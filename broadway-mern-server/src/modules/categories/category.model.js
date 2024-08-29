@@ -29,6 +29,10 @@ const categorySchema = new mongoose.Schema(
       ref: "Category", // Reference to another category for subcategories
       default: null,
     },
+    icon:{
+      type:String,
+      default:null
+    },
     slug: {
       type: String,
       unique: true, // URL-friendly version of the category name

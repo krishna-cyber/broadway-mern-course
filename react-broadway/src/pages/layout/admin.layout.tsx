@@ -11,7 +11,7 @@ import {
 import { TbBrandAppleFilled } from "react-icons/tb";
 
 import { Outlet } from "react-router-dom";
-import {AdminDashboardNavbar} from "../../components/dashboard/dashboard-navbar.component";
+import {DashboardNavbar} from "../../components/dashboard/dashboard-navbar.component";
 import DashboardSidebar from "../../components/dashboard/admin-dashboard-sidebar.component";
 import DashboardFooter from "../../components/common/footer/footer.component";
 
@@ -61,7 +61,7 @@ export const AdminDashboardLayout = () => {
 
   return (
     <div className="antialiased bg-gray-50 dark:bg-gray-900">
-      <AdminDashboardNavbar />
+      <DashboardNavbar />
 
       <DashboardSidebar sideBarMenuLinks={sideBarMenuLinks} />
 

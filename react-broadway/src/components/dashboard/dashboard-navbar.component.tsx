@@ -10,7 +10,7 @@ import {
 // import AuthContext from "../../context/auth.context";
 import { useSelector } from "react-redux";
 
-export const AdminDashboardNavbar = () => {
+export const DashboardNavbar = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   // const {loggedInUser}:any = useContext(AuthContext);
   const { loggedInUser } = useSelector((state: any) => state.user);

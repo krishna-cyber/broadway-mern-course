@@ -15,12 +15,15 @@ const router = require('express').Router();
 router.get('/list-home', categoryController.listForHome);
 
 router.route('/')
-    .get(loginCheck,hasPermission(['admin']),categoryController.listForDashboard)
+    .get(loginCheck,hasPermission(['admin','seller']),categoryController.listForDashboard)
     .post(loginCheck,hasPermission(['admin']), setPath('categories'),uploadFile().single('image'),bodyValidator(categoryCreateDTO),categoryController.create);
 
     router.route('/:id')
     .get(loginCheck,hasPermission(['admin']))
     .delete(loginCheck,hasPermission(['admin']),categoryController.delete)
     .put(loginCheck,hasPermission(['admin']), setPath('categories'),bodyValidator(categoryUpdateDTO),categoryController.edit)
+
+
+
 
 module.exports = router;

@@ -3,6 +3,7 @@ import {
   getBannersForTable,
   getBrandsForTable,
   getCategoryForTable,
+  getCategoryLists,
   getLandingPageBanner,
   getProductsForTable,
   getUsersForTable,
@@ -19,6 +20,12 @@ export function useFetchLandingPageBanners() {
   return useQuery({
     queryKey: ["landingPageBanners"],
     queryFn: getLandingPageBanner,
+  });
+}
+export function useFetchCategoryList() {
+  return useQuery({
+    queryKey: ["landingPageCategory"],
+    queryFn: getCategoryLists,
   });
 }
 

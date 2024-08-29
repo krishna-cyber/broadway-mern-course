@@ -25,7 +25,7 @@ class CategoryController {
       });
     } catch (exception) {
       // cloudinary delete image also
-      
+
       next(exception);
     }
   };
@@ -104,30 +104,27 @@ class CategoryController {
     } catch (exception) {}
   };
   delete = async (req, res, next) => {
-  try {
-    const {id} = req.params;
-  await categoryService.deleteById(id);
-  res.json({
-    result:null,
-    message:`Category deleted successfully`,
-    meta:null
-  })
-  } catch (error) {
-    console.log(  `Error at category delete middleware or function`,error)
-    next(error)
-  }
+    try {
+      const { id } = req.params;
+      await categoryService.deleteById(id);
+      res.json({
+        result: null,
+        message: `Category deleted successfully`,
+        meta: null,
+      });
+    } catch (error) {
+      console.log(`Error at category delete middleware or function`, error);
+      next(error);
+    }
   };
   listForHome = async (req, res, next) => {
     try {
-      const list = await categoryService.listData({
-        limit: 5,
-        filter: { status: true },
-      });
+      const { data, meta } = await categoryService.listData();
 
       res.json({
-        result: list,
+        result: data,
         message: "List of banners",
-        meta: null,
+        meta: meta,
       });
     } catch (exception) {
       next(exception);
@@ -135,14 +132,27 @@ class CategoryController {
   };
   listForDashboard = async (req, res, next) => {
     try {
-      const {page,limit}= req.query;
-      const { data, meta } = await categoryService.listData(page,limit);
+      const { role } = req.authUser;
 
-      res.json({
-        result: data,
-        message: "List of category",
-        meta: meta,
-      });
+      const { page, limit } = req.query;
+      if (role === "seller") {
+        const { data, meta } = await categoryService.listData(page, limit, {
+          createdBy: req.authUser.id,
+        });
+
+        res.json({
+          result: data,
+          message: "List of category",
+          meta: meta,
+        });
+      }
+      const { data, meta } = await categoryService.listData(page,limit);
+  
+        res.json({
+          result: data,
+          message: "List of category",
+          meta: meta,
+        });
     } catch (exception) {
       next(exception);
     }

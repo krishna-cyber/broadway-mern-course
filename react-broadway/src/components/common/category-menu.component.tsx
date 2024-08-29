@@ -3,6 +3,7 @@ import { FaBook,  FaFootballBall, FaMusic } from 'react-icons/fa';
 import { GrSupport } from 'react-icons/gr';
 import { HiArrowRight,  HiComputerDesktop, HiLightBulb, HiMiniBookmarkSlash,  HiTv } from 'react-icons/hi2';
 import { Link } from 'react-router-dom'
+import { useFetchCategoryList } from '../../services/queries/queries';
 
 
 interface category{
@@ -12,6 +13,7 @@ interface category{
 }
 
 const CategoryMenu = () => {
+    const {data,isLoading,isError} = useFetchCategoryList();
     const categories :category[]=   [
         {
             title: 'Books',
@@ -67,10 +69,10 @@ const CategoryMenu = () => {
     </div>
 
     <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-        {categories && categories.map((category, index) => (
+        {data?.result && data?.result.map((category, index) => (
             <Link key={index} to={category.link} className="flex items-center rounded-lg border border-gray-200 bg-white px-4 py-2 hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700">
-                {category.icon}
-                <span className="text-sm font-medium text-gray-900 dark:text-white">{category.title}</span>
+                {/* {category.icon} */}
+                <span className="text-sm font-medium text-gray-900 dark:text-white">{category.name}</span>
             </Link>
         ))}
       

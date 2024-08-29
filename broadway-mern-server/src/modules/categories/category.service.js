@@ -11,7 +11,7 @@ class CategoryService{
         }
     }
 
-     listData = async (currentPage = 1, limit = 10, filter = {}) => {
+     listData = async (currentPage = 1, limit = 8, filter = {}) => {
         try {
             const skip = (currentPage - 1) * limit;
     
@@ -20,7 +20,6 @@ class CategoryService{
     
             // Retrieve the data, with pagination, filtering, sorting, and population
             const data = await CategoryModel.find(filter)
-                .populate('createdBy', ["_id", "name", "email", "role"])
                 .skip(skip)
                 .limit(limit)  // You missed adding this, but it's typically needed for pagination
                 .sort({_id: 'desc'});

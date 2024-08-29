@@ -16,8 +16,11 @@ export const getproductsForLandingPage = async () => {
   return await httpService.getRequest("/product/list-home");
 };
 
+export const getCategoryLists = async () => {
+  return await httpService.getRequest("/category/list-home");
+};
+
 export const createProduct = async (data: any) => {
-  console.log(data);
   return await httpService.postRequest("/product/create-product", {
     auth: true,
     file: true,
@@ -25,7 +28,6 @@ export const createProduct = async (data: any) => {
 };
 
 export const createCategory = async (data: any) => {
-  console.log(data);
   return await httpService.postRequest("/category", data,{
     auth: true,
     file: true,

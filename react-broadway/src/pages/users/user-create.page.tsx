@@ -16,15 +16,16 @@ const UserCreate = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const UserCreateDTO = yup.object({
-    title: yup
+    fullName: yup
       .string()
       .min(3, "Title must be at least 3 charactes.")
       .max(50)
       .required(),
-    description: yup.string().min(10).max(500).required(),
-    link: yup.string().url().nullable().optional().default(null),
-    status: yup.string().oneOf(["active", "inactive"]).required(),
+    email:yup.string().email(),
+    phone: yup.string().min(10).max(15).required(),
     image: yup.mixed().required(),
+    password: yup.string().min(6).max(20).required(),
+    role: yup.string().oneOf(["customer", "seller"]).required(),
   });
   const {
     control,
@@ -36,6 +37,8 @@ const UserCreate = () => {
     resolver: yupResolver(UserCreateDTO),
   });
 
+
+  console.log(errors)
   const onSubmit = async (data: any) => {
     setLoading(true);
     try {
@@ -46,63 +49,69 @@ const UserCreate = () => {
       });
       toast.success(response?.message);
     } catch (error) {
+      toast.error(`Failed to create user`)
       console.log(error);
     } finally {
       setLoading(false);
-      navigate("/admin/banner-lists");
+      navigate("/admin/user-lists");
     }
   };
   return (
     <section className="bg-white dark:bg-gray-900">
-      <div className="py-8 px-4 max-w-2xl lg:py-8">
+      <div className="py-8 px-4 max-w-[80%] lg:py-8">
         <h2 className="mb-4 text-xl font-bold text-gray-900 dark:text-white">
-          Create new Banner
+          Create new User
         </h2>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="grid gap-4 sm:grid-cols-2 sm:gap-6">
-            <div className="sm:col-span-2">
-              <Label
-                htmlFor="title"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
-                Banner Title
-              </Label>
-
-              <TextInputComponent
-                name="title"
-                control={control}
-                placeholder="Banner Title"
-                errMsg={errors.title?.message}
-              />
-            </div>
-            <div className="sm:col-span-2">
-              <Label
-                htmlFor="title"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
-                Link
-              </Label>
-
-              <TextInputComponent
-                name="link"
-                control={control}
-                placeholder="https://"
-                errMsg={errors.link?.message}
-              />
-            </div>
-
+          
             <div>
               <Label
                 htmlFor="category"
                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
               >
-                Active Status
+                Full Name
               </Label>
               <div className="max-w-md">
-                <Select {...register("status")} id="status" required>
-                  <option>active</option>
-                  <option>inactive</option>
-                </Select>
+              <TextInputComponent
+                name="fullName"
+                control={control}
+                placeholder="User fullName"
+                errMsg={errors.fullName?.message}
+              />
+              </div>
+            </div>
+            <div>
+              <div>
+              <Label
+                htmlFor="email"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >
+               Email
+              </Label>
+              </div>
+              <TextInputComponent
+                name="email"
+                placeholder="Email"
+                control={control}
+                errMsg={errors.email?.message}
+              />
+            </div>
+
+            <div>
+              <Label
+                htmlFor="password"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >
+                Password
+              </Label>
+              <div className="max-w-md">
+              <TextInputComponent
+                name="password"
+                placeholder="********"
+                control={control}
+                errMsg={errors.password?.message}
+              />
               </div>
             </div>
             <div>
@@ -114,22 +123,39 @@ const UserCreate = () => {
                 id="image"
                 helperText="SVG, PNG, JPG or GIF (MAX. 800x400px)."
               />
+              {errors.image?.message&& <span className=" text-red-500 text-md italic">Profile picture must be required</span>}
             </div>
-
-            <div className="sm:col-span-2">
+            <div>
               <Label
-                htmlFor="description"
+                htmlFor="category"
                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
               >
-                Description
+                Role
               </Label>
-
-              <TextAreaComponent
-                name="description"
-                control={control}
-                errMsg={errors.description?.message}
-              />
+              <div className="max-w-md">
+              <Select {...register("role")} id="role" required>
+                  <option>seller</option>
+                  <option>customer</option>
+                </Select>
+              </div>
             </div>
+            <div>
+              <Label
+                htmlFor="phone"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >
+                Phone
+              </Label>
+              <div className="max-w-md">
+              <TextInputComponent
+                name="phone"
+                control={control}
+                placeholder="+977 98xxxxxxx"
+                errMsg={errors.phone?.message}
+              />
+              </div>
+            </div>
+
           </div>
           <Button
             isProcessing={loading}
@@ -140,7 +166,7 @@ const UserCreate = () => {
             className="inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-primary-700 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800"
           >
             <GrSend className="mr-2 h-5 w-5" />
-            Create Banner
+            Create user
           </Button>
         </form>
       </div>

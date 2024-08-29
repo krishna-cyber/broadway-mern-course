@@ -41,7 +41,9 @@ const UserSchema = new mongoose.Schema({
     },
     activationToken:String,
     activatedFor:Date,
-    phone:[String],
+    phone:[{
+        type: String,
+    }],
     address:{
         permanentAddress:AddressSchema,
         temporaryAddress:AddressSchema
