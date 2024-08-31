@@ -1,5 +1,10 @@
 import httpService from "../http.service";
 
+export const getStaticFiles = async (url:string) => {
+  return await httpService.getRequest(`/${url}`);
+}
+
+
 export const getLandingPageBanner = async () => {
   return await httpService.getRequest("/banner/list-home");
 }
@@ -46,6 +51,9 @@ export const getBrandsForTable = async (page:number,limit:number) => {
 };
 export const getCategoryForTable = async (page:number =1,limit:number=5) => {
   return await httpService.getRequest(`/category?page=${page}&limit=${limit}`,{auth:true});
+};
+export const getOrdersForTable = async (page:number =1,limit:number=5) => {
+  return await httpService.getRequest(`/order?page=${page}&limit=${limit}`,{auth:true});
 };
 
 export const createUser = async (data: any) => {

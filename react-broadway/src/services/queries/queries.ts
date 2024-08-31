@@ -1,11 +1,13 @@
-import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQueries, useQuery } from "@tanstack/react-query";
 import {
   getBannersForTable,
   getBrandsForTable,
   getCategoryForTable,
   getCategoryLists,
   getLandingPageBanner,
+  getOrdersForTable,
   getProductsForTable,
+  getStaticFiles,
   getUsersForTable,
 } from "../api/api";
 
@@ -28,7 +30,12 @@ export function useFetchCategoryList() {
     queryFn: getCategoryLists,
   });
 }
-
+export function useFetchOrdersList(page: number, limit: number) {
+  return useQuery({
+    queryKey: ["ordersLists"],
+    queryFn:()=> getOrdersForTable(page, limit),
+  });
+}
 export function useFetchProductsForLandingPage() {
   return useQuery({
     queryKey: ["productListsForHome"],
@@ -66,4 +73,22 @@ export function useFetchCategoryForTable(page: number, limit: number) {
     queryFn: () => getCategoryForTable(page, limit),
     placeholderData: keepPreviousData,
   });
+}
+
+
+
+
+
+
+
+// query that can be used to fetch multiple data usequeries
+export function useFetchStaticFiles (url:[string]) {
+return useQueries({
+  queries: url.map((url) => ({
+    queryKey: ["staticFiles", { url }],
+    queryFn: () => getStaticFiles(url),
+  })),
+
+  
+})
 }

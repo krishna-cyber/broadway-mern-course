@@ -1,17 +1,13 @@
-import { Badge, Button, Checkbox, Pagination, Table } from "flowbite-react";
+import {  Button, Checkbox, Pagination, Table } from "flowbite-react";
 import RowSkeleton from "../common/table/row-skeleton.component";
 
-import TableActionButtons from "../common/table/table-action-buttons.component";
-import { useFetchBannersForTable } from "../../services/queries/queries";
 import { useState } from "react";
-import { useDeleteBanner } from "../../services/mutations/mutations";
 import { DateTime } from "luxon";
-import { HiEye, HiPencil } from "react-icons/hi2";
+import { useFetchOrdersList } from "../../services/queries/queries";
 
 const OrderTable = () => {
   const [page, setpage] = useState(1);
-  const bannersDataForTable = useFetchBannersForTable(page, 5); //current page and limit
-  const deleteBannerById = useDeleteBanner();
+  const {data,isLoading,isError} = useFetchOrdersList();
   const sampleOrders = [
     {
       orderId: "ORD123456",
@@ -43,14 +39,11 @@ const OrderTable = () => {
 
   const onPageChange = (page: number) => setpage(page);
 
-  if (bannersDataForTable.isError) {
-    console.log(`Error: `, bannersDataForTable.error);
+  if (isError) {
+    console.log(`Error: `, isError);
   }
 
-  // Delete banner
-  const deleteBanner = async (id: string) => {
-    deleteBannerById.mutate(id);
-  };
+ 
 
   return (
     <div className="overflow-x-auto">
@@ -67,12 +60,12 @@ const OrderTable = () => {
         </Table.Head>
 
         <Table.Body className="divide-y">
-          {bannersDataForTable.isLoading ? (
+          {isLoading ? (
             <RowSkeleton rows={4} cols={5} />
           ) : (
             <>
-              {sampleOrders && sampleOrders.length > 0 ? (
-                sampleOrders.map((data, index: number) => {
+              {data && data?.length > 0 ? (
+                data?.map((data, index: number) => {
                   const placedOnDate = DateTime.fromISO(data.placedOn);
 
                   return (
@@ -128,13 +121,13 @@ const OrderTable = () => {
           </span>
           of
           <span className="font-semibold mx-2 text-gray-900 dark:text-white">
-            {bannersDataForTable.data?.meta?.total || 0}
+            {data?.meta?.total || 0}
           </span>
         </span>
 
         <Pagination
           currentPage={page}
-          totalPages={bannersDataForTable.data?.meta?.totalPages || 1}
+          totalPages={data?.meta?.totalPages || 1}
           onPageChange={onPageChange}
           showIcons
         />

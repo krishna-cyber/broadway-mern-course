@@ -14,6 +14,11 @@ interface category{
 
 const CategoryMenu = () => {
     const {data,isLoading,isError} = useFetchCategoryList();
+
+    
+    
+    
+
     const categories :category[]=   [
         {
             title: 'Books',
@@ -71,8 +76,8 @@ const CategoryMenu = () => {
     <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {data?.result && data?.result.map((category, index) => (
             <Link key={index} to={category.link} className="flex items-center rounded-lg border border-gray-200 bg-white px-4 py-2 hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700">
-                {/* {category.icon} */}
-                <span className="text-sm font-medium text-gray-900 dark:text-white">{category.name}</span>
+                <img src={`http://localhost:3000/${category.image}`} alt="" className="w-6 h-6 object-cover" />
+                <span className="text-sm ml-3 font-medium text-gray-900 dark:text-white">{category.name}</span>
             </Link>
         ))}
       

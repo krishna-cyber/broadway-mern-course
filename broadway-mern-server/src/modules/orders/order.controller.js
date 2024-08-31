@@ -34,7 +34,7 @@ class OrderController {
       const {data,totalPages,total,currentPage} = await orderService.listData(page,limit);
       res.json({
         result: data,
-        message: "List of products",
+        message: "List of orders",
         meta: {
           total,
           currentPage,
