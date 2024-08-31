@@ -27,7 +27,6 @@ import { BannerEdit, BannerCreate, BannerList } from "../pages/banner";
 
 import { useDispatch } from "react-redux";
 import { getLoggedInUserForRedux } from "../store/reducer/user.reducer";
-import { ChatPageLayout } from "../pages/layout/chat.layout";
 import ProductPage from "../pages/product/product.page";
 import { ProductCreate, ProductEdit, ProductList } from "../pages/product";
 import UserList from "../pages/users/user-list.page";
@@ -101,8 +100,7 @@ const RouterConfig = () => {
                 path="/admin/category/edit/:id"
                 element={<CategoryEdit />}
               />
-              <Route path="/admin/order-lists" element={<ProductList />} />
-              <Route path="/admin/order/edit/:id" element={<ProductEdit />} />
+              <Route path="/admin/order-lists" element={<OrderList />} />
               <Route path="/admin/brand-lists" element={<BrandList />} />{" "}
               <Route path="/admin/brand-create" element={<BrandCreate />} />
               <Route path="/admin/brand/edit/:id" element={<BrandEdit />} />
