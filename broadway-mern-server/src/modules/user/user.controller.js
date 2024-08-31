@@ -7,15 +7,16 @@ const userService = require('./user.service');
 class UserController{
 //    get all users 
  userLists =async (req,res,next)=>{
+    const {page,limit}= req.query;
    try {
-    const {limit,page} = req.query;
-        const users = await userService.getAllUsers(limit,page);
+    console.log(`Page and limit`,page,limit);
+        const users = await userService.getAllUsers(page,limit);
 
-      const meta =   await userService.countUsers();  // By default limit is 10
+      const meta =   await userService.countUsers(limit);  // By default limit is 10
         res.json({
             result: users,
             message: 'All users',
-            meta
+            meta:{...meta,currentPage:+page}
         })
    } catch (error) {
     next(error);

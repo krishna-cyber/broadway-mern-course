@@ -1,76 +1,23 @@
 import { Badge, Checkbox, Pagination, Table } from "flowbite-react";
-import { useCallback, useEffect, useState } from "react";
+import { useState } from "react";
 import RowSkeleton from "../common/table/row-skeleton.component";
-import { toast } from "react-toastify";
-import httpService from "../../services/http.service";
-import { SearchParams } from "../../config/constants";
 
 import TableActionButtons from "../common/table/table-action-buttons.component";
-import { NavLink } from "react-router-dom";
-import {
-  useFetchUsers,
-} from "../../services/queries/queries";
+import { useFetchUsers } from "../../services/queries/queries";
 
 const UserTable = () => {
-  const [bannerData, setBannerData] = useState([
-    {
-      _id: "someid",
-      title: "Banner Image",
-      image:
-        "https://icms-image.slatic.net/images/ims-web/d01caa71-9c68-4c12-a35e-f6c10c53e73d.jpg",
-      link: null,
-      status: "active",
-    },
-  ]);
-
-  const usersDataForTable = useFetchUsers();
-  console.log(`users data for table: `, usersDataForTable.data);
-  const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
+
+  const { data, isLoading, isError } = useFetchUsers(currentPage, 5);
+  console.log(`users data for table: `, data);
 
   const onPageChange = (page: number) => setCurrentPage(page);
 
   // only triggers when currentPage changes otherwise it will not trigger , this callback prevents when some user click on same pagination
   // number it will not trigger the api call again
-  const getAllBanners = useCallback(
-    async ({ page = 1, limit = 10, search = "" }: SearchParams) => {
-      setLoading(true);
-      try {
-        const banners: any = await httpService.getRequest("/banner", {
-          auth: true,
-          params: { page: page, limit: limit, search: search },
-        });
-        setBannerData(banners?.result);
-        console.log({ page, limit, search });
-        console.log("Banners: ", banners);
-      } catch (error: any) {
-        console.error("Error fetching banners: ", error);
-        toast.warning(error?.message);
-      } finally {
-        setLoading(false);
-      }
-    },
-    [currentPage]
-  );
 
   // Delete banner
-  const deleteBanner = async (id: string) => {
-    try {
-      const response = await httpService.deleteRequest(`/banner/${id}`, {
-        auth: true,
-      });
-      console.log("Delete banner response: ", response);
-      toast.success("Banner deleted successfully");
-      getAllBanners({});
-    } catch (error: any) {
-      console.error("Error deleting banner: ", error);
-      toast.warning("Error deleting banner, please try again");
-    }
-  };
-
-  useEffect(() => {
-    getAllBanners({});
-  }, []);
+  const removeUser = async (id: string) => {};
 
   return (
     <div className="overflow-x-auto">
@@ -88,60 +35,59 @@ const UserTable = () => {
           <Table.HeadCell>Actions</Table.HeadCell>
         </Table.Head>
         <Table.Body className="divide-y">
-          {usersDataForTable.isLoading ? (
+          {isLoading ? (
             <RowSkeleton rows={4} cols={7} />
           ) : (
             <>
-              {usersDataForTable.data?.result &&
-              usersDataForTable.data?.result.length > 0 ? (
-                usersDataForTable.data?.result.map(
-                  (data: any, index: number) => (
-                    <Table.Row
-                      key={index}
-                      className="bg-white dark:border-gray-700 dark:bg-gray-800"
-                    >
-                      <Table.Cell className="p-4">
-                        <Checkbox />
-                      </Table.Cell>
-                      <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                        {data.fullName}
-                      </Table.Cell>
-                      <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                        {data.role}
-                      </Table.Cell>
-                      <Table.Cell>
-                        {data.status === "active" ? (
-                          <Badge className="mx-auto w-fit" color="info">
-                            Active
-                          </Badge>
-                        ) : (
-                          <Badge className="mx-auto w-fit" color="pink">
-                            Not Activated
-                          </Badge>
-                        )}{" "}
-                      </Table.Cell>
-                      <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                        {data.email}
-                      </Table.Cell>
-                      <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                        {data.phone?.length
-                          ? data.phone.map((phone: any) => (
-                              <span key={phone}>{phone}</span>
-                            ))
-                          : "Not Available"}
-                      </Table.Cell>
-                      <Table.Cell>{data.createdBy || `Self Registration`}</Table.Cell>
-                      
-                      <Table.Cell className=" flex gap-3">
-                        <TableActionButtons
-                          editUrl={`/admin/banner/edit/${data._id}`}
-                          deleteAction={deleteBanner}
-                          rowId={data._id}
-                        />
-                      </Table.Cell>
-                    </Table.Row>
-                  )
-                )
+              {data?.result && data?.result.length > 0 ? (
+                data?.result.map((data: any, index: number) => (
+                  <Table.Row
+                    key={index}
+                    className="bg-white dark:border-gray-700 dark:bg-gray-800"
+                  >
+                    <Table.Cell className="p-4">
+                      <Checkbox />
+                    </Table.Cell>
+                    <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                      {data.fullName}
+                    </Table.Cell>
+                    <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                      {data.role}
+                    </Table.Cell>
+                    <Table.Cell>
+                      {data.status === "active" ? (
+                        <Badge className="mx-auto w-fit" color="info">
+                          Active
+                        </Badge>
+                      ) : (
+                        <Badge className="mx-auto w-fit" color="pink">
+                          Not Activated
+                        </Badge>
+                      )}{" "}
+                    </Table.Cell>
+                    <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                      {data.email}
+                    </Table.Cell>
+                    <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                      {data.phone?.length
+                        ? data.phone.map((phone: any) => (
+                            <span key={phone}>{phone}</span>
+                          ))
+                        : "Not Available"}
+                    </Table.Cell>
+                    <Table.Cell>
+                      {data.createdBy || `Self Registration`}
+                    </Table.Cell>
+
+                    <Table.Cell className=" flex gap-3">
+                      <TableActionButtons
+                        editUrl={`/admin/banner/edit/${data._id}`}
+                        deleteAction={removeUser}
+                        rowId={data._id}
+                      />
+                    </Table.Cell>
+                  </Table.Row>
+                ))
               ) : (
                 <Table.Cell
                   colSpan={6}
@@ -165,13 +111,13 @@ const UserTable = () => {
           </span>
           of
           <span className="font-semibold mx-2 text-gray-900 dark:text-white">
-            {usersDataForTable.data?.meta?.total || 0}
+            {data?.meta?.total || 0}
           </span>
         </span>
 
         <Pagination
-          currentPage={1}
-          totalPages={usersDataForTable.data?.meta?.page || 1}
+          currentPage={currentPage}
+          totalPages={data?.meta?.totalPages || 1}
           onPageChange={onPageChange}
           showIcons
         />

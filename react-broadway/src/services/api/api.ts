@@ -21,7 +21,7 @@ export const getCategoryLists = async () => {
 };
 
 export const createProduct = async (data: any) => {
-  return await httpService.postRequest("/product/create-product", {
+  return await httpService.postRequest("/product/create-product",data,{
     auth: true,
     file: true,
   });
@@ -37,8 +37,8 @@ export const getBannersForTable = async (page:number,limit:number) => {
   return await httpService.getRequest(`/banner?page=${page}&limit=${limit}`, { auth: true });
 };
 
-export const getUsersForTable = async () => {
-  return await httpService.getRequest("/users", { auth: true });
+export const getUsersForTable = async (page:number=1,limit:number=5) => {
+  return await httpService.getRequest(`/users?page=${page}&limit=${limit}`, { auth: true });
 };
 
 export const getBrandsForTable = async (page:number,limit:number) => {

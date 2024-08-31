@@ -118,24 +118,23 @@ class UserService {
     }
   };
 
-  getAllUsers = async (limit, page, search = {}) => {
+  getAllUsers = async (page=1, limit=5, search = {}) => {
     try {
-      const users = await UserModel.find(search, "-password")
-        .limit(limit)
-        .skip((parseInt(page, 10) - 1) * limit);
+const skip = (page - 1) * limit;
+      const users = await UserModel.find(search, "-password -activationToken -createdAt -updatedAt").skip(skip).limit(limit);
       return users;
     } catch (error) {
       throw error;
     }
   };
 
-  countUsers = async (limit = 10) => {
+  countUsers = async (limit) => {
     try {
       const total = await UserModel.countDocuments();
       return {
         total,
-        limit,
-        page: Math.ceil(total / limit),
+    
+        totalPages: Math.ceil(total / limit),
       };
     } catch (error) {
       throw error;

@@ -52,18 +52,18 @@ export function useFetchBrandsForTable(page: number, limit: number) {
   });
 }
 
-export function useFetchUsers() {
+export function useFetchUsers(page: number, limit: number) {
   return useQuery({
-    queryKey: ["users"],
-    queryFn: getUsersForTable,
+    queryKey: ["users", { page }],
+    queryFn: () => getUsersForTable(page, limit),
+    placeholderData: keepPreviousData,
   });
 }
 
-
-export function useFetchCategoryForTable(page:number,limit:number) {
+export function useFetchCategoryForTable(page: number, limit: number) {
   return useQuery({
-    queryKey: ["categoryListsForTable",{page}],
-    queryFn:()=> getCategoryForTable(page,limit),
+    queryKey: ["categoryListsForTable", { page }],
+    queryFn: () => getCategoryForTable(page, limit),
     placeholderData: keepPreviousData,
   });
 }
