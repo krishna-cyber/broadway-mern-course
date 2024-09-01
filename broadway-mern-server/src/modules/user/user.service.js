@@ -103,9 +103,7 @@ class UserService {
 
   getSingleUserByFilter = async (filter) => {
     try {
-      const userDetail = await UserModel.findOne({
-        activationToken: filter.token,
-      });
+      const userDetail = await UserModel.findOne(filter);
       if (userDetail) {
         return userDetail;
       } else {

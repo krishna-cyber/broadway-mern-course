@@ -290,7 +290,6 @@ export const UserActivate = () => {
   const params = useParams<{ token: string }>();
   const [msg, setMsg] = useState("");
   const [openModal, setOpenModal] = useState(false);
-  const navigate = useNavigate();
 
   // activate user function
   const activateUser = async () => {
