@@ -11,9 +11,11 @@ import { toast } from "react-toastify";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import httpService from "../../services/http.service";
+import { useCreateUser } from "../../services/mutations/mutations";
 
 const UserCreate = () => {
   const [loading, setLoading] = useState(false);
+  const createUser = useCreateUser();
   const navigate = useNavigate();
   const UserCreateDTO = yup.object({
     fullName: yup
@@ -21,9 +23,9 @@ const UserCreate = () => {
       .min(3, "Title must be at least 3 charactes.")
       .max(50)
       .required(),
-    email:yup.string().email(),
+    email:yup.string().email().required(),
     phone: yup.string().min(10).max(15).required(),
-    image: yup.mixed().required(),
+    profile: yup.mixed().required(),
     password: yup.string().min(6).max(20).required(),
     role: yup.string().oneOf(["customer", "seller"]).required(),
   });
@@ -38,23 +40,8 @@ const UserCreate = () => {
   });
 
 
-  console.log(errors)
   const onSubmit = async (data: any) => {
-    setLoading(true);
-    try {
-      console.log("Banner create data:", data);
-      const response: any = await httpService.postRequest("/banner", data, {
-        auth: true,
-        file: true,
-      });
-      toast.success(response?.message);
-    } catch (error) {
-      toast.error(`Failed to create user`)
-      console.log(error);
-    } finally {
-      setLoading(false);
-      navigate("/admin/user-lists");
-    }
+   createUser.mutate(data)
   };
   return (
     <section className="bg-white dark:bg-gray-900">
@@ -116,14 +103,14 @@ const UserCreate = () => {
             </div>
             <div>
               <div>
-                <Label htmlFor="image" value="Upload file" />
+                <Label htmlFor="profile" value="Upload file" />
               </div>
               <FileInput
-                onChange={(e: any) => setValue("image", e.target.files[0])}
-                id="image"
+                onChange={(e: any) => setValue("profile", e.target.files[0])}
+                id="profile"
                 helperText="SVG, PNG, JPG or GIF (MAX. 800x400px)."
               />
-              {errors.image?.message&& <span className=" text-red-500 text-md italic">Profile picture must be required</span>}
+              {errors.profile?.message&& <span className=" text-red-500 text-md italic">Profile picture must be required</span>}
             </div>
             <div>
               <Label
@@ -158,8 +145,8 @@ const UserCreate = () => {
 
           </div>
           <Button
-            isProcessing={loading}
-            disabled={loading}
+            isProcessing={createUser.isPending}
+            disabled={createUser.isPending}
             type="submit"
             color={""}
             size={"xs"}

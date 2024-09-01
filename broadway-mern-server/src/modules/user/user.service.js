@@ -6,19 +6,16 @@ const { uploadImage } = require("../../config/cloudinary.config");
 
 class UserService {
   generateUserActivationToken = (data) => {
-    // send confirmation email and other verification process
+    // send confirmation email and other verification process 
+    // By default 3 hours activation time given to user
     data.activateToken = randomStringGenerator(20);
-    // set activatedFor date time 3 hours
 
-    data.activatedFor = new Date(new Date().getTime() + 3 * 60 * 60 * 1000);
     return data;
   };
 
   transformUserCreate = async (req) => {
     try {
       let data = req.body; // name , email, password,confirmpassword, address, phone
-      console.log(`Data at transform User Create`, data);
-      console.log(req.uploadPath);
 
       // hash the password
       const salt = bcrypt.genSaltSync(10);
@@ -49,6 +46,7 @@ class UserService {
       data = this.generateUserActivationToken(data);
 
       data.status = "inactive";
+      console.log(`data after transformation`, data);
 
       return data;
     } catch (error) {
@@ -58,7 +56,7 @@ class UserService {
   };
 
   sendActivationEmail = async ({
-    name,
+    fullName,
     email,
     activateToken,
     sub = "User activation token",
@@ -68,7 +66,7 @@ class UserService {
         to: email,
         sub: sub,
         message: `
-            Dear ${name},<br>
+            Dear ${fullName},<br>
             Your account has been created successfully. Please click the link below to activate your account.<br>
             <a href="${process.env.FRONTEND_URL}/activate/${activateToken}">Activate Now</a>
             <p>

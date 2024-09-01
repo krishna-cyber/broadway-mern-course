@@ -1,8 +1,6 @@
 import httpService from "../http.service";
 
-export const getStaticFiles = async (url:string) => {
-  return await httpService.getRequest(`/${url}`);
-}
+
 
 
 export const getLandingPageBanner = async () => {
@@ -32,6 +30,8 @@ export const createProduct = async (data: any) => {
   });
 };
 
+
+
 export const createCategory = async (data: any) => {
   return await httpService.postRequest("/category", data,{
     auth: true,
@@ -57,7 +57,7 @@ export const getOrdersForTable = async (page:number =1,limit:number=5) => {
 };
 
 export const createUser = async (data: any) => {
-   return await httpService.postRequest("/users/create-user",data, {auth:true,file:true});
+   return await httpService.postRequest("/users",data, {auth:true,file:true});
 };
 
 export const createBanner = async (data: any) => {

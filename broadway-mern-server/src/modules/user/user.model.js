@@ -40,7 +40,12 @@ const UserSchema = new mongoose.Schema({
         default: userRoles.CUSTOMER
     },
     activationToken:String,
-    activatedFor:Date,
+    activatedFor:{
+        type: Date,
+        // Default 3 hours
+        default: new Date(new Date().getTime() + 3 * 60 * 60 * 1000)
+
+    },
     phone:[{
         type: String,
     }],

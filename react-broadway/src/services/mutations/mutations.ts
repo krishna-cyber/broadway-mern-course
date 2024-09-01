@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createBanner, createCategory, createProduct,createUser, deleteBanner, deleteBrand, deleteCategory, deleteProduct, deleteUser, editBanner, editCategory, editProduct, editUser } from "../api/api";
 import { toast } from "react-toastify";
+import { Navigate, useNavigate } from "react-router-dom";
 
 export function useCreateProduct() {
   const queryClient = useQueryClient();
@@ -21,6 +22,7 @@ export function useCreateProduct() {
 
 export function useCreateUser() {
   const queryClient = useQueryClient();
+  const Navigate = useNavigate();
   return useMutation({
     mutationFn: (data) => createUser(data),
     onSettled: (data, error, variables, context) => {
@@ -28,6 +30,9 @@ export function useCreateUser() {
       if (error) {
         console.log("Error occured creating product");
       } else {
+        console.log(data)
+        Navigate('/admin/user-lists')
+        toast.success(data?.message)
         queryClient.invalidateQueries({
           queryKey: ["users"],
         });

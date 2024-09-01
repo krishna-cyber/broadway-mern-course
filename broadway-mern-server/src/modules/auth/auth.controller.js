@@ -101,10 +101,14 @@ class AuthController{
             if (token.length !== 20){
                throw {statusCode: 422, message: 'Invalid activationToken'}
             }
-             const user =  await  userService.getSingleUserByFilter(token);
+             const user =  await  userService.getSingleUserByFilter({token});
+             console.log(user);
             
             const today = Date.now();
-            const activateFor = user.activatedFor.getTime();
+            const activateFor = new Date(user.activatedFor).getTime();
+            // change the activateFor to date so we can compare with today variable
+            console.log(today, activateFor);
+            
 
             if (today > activateFor){
                 throw {statusCode: 422, message: 'Token Expired'}

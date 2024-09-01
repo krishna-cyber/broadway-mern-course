@@ -191,7 +191,7 @@ const AdminDashboard = () => {
             className=" cursor-auto hover:bg-green-700 max-w-sm bg-green-600"
           >
             <h5 className="text-2xl font-bold tracking-tight text-white dark:text-white">
-              Total Customers
+              Total Users
             </h5>
             <p className=" text-white font-medium text-2xl dark:text-gray-400">
               1000

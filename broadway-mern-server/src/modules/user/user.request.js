@@ -10,10 +10,7 @@ const userCreateDTO = Joi.object({
   address: Joi.string().optional().empty(),
   phone: Joi.string().min(10).max(15).optional(),
   password: Joi.string().min(6).max(20).required(),
-  confirmPassword: Joi.string().equal(Joi.ref("password")).required().messages({
-    "any.only": "confirm password must match with password",
-    "any.required": "Confirm password must be required",
-  }),
+ role:Joi.string().required(),
   profile: Joi.optional().empty(),
 });
 

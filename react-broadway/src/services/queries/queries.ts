@@ -7,7 +7,6 @@ import {
   getLandingPageBanner,
   getOrdersForTable,
   getProductsForTable,
-  getStaticFiles,
   getUsersForTable,
 } from "../api/api";
 
@@ -73,22 +72,4 @@ export function useFetchCategoryForTable(page: number, limit: number) {
     queryFn: () => getCategoryForTable(page, limit),
     placeholderData: keepPreviousData,
   });
-}
-
-
-
-
-
-
-
-// query that can be used to fetch multiple data usequeries
-export function useFetchStaticFiles (url:[string]) {
-return useQueries({
-  queries: url.map((url) => ({
-    queryKey: ["staticFiles", { url }],
-    queryFn: () => getStaticFiles(url),
-  })),
-
-  
-})
 }
