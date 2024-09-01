@@ -8,9 +8,9 @@ class UserService {
   generateUserActivationToken = (data) => {
     // send confirmation email and other verification process 
     // By default 3 hours activation time given to user
-    data.activateToken = randomStringGenerator(20);
+    const token  = randomStringGenerator(20);
 
-    return data;
+    return {...data,activationToken:token}
   };
 
   transformUserCreate = async (req) => {
