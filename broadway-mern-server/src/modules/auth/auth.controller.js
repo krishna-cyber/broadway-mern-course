@@ -97,11 +97,10 @@ class AuthController{
     activateUser = async (req,res,next)=>{
         try {
             const {token} = req.params;
-            console.log(token);
             if (token.length !== 20){
                throw {statusCode: 422, message: 'Invalid activationToken'}
             }
-             const user =  await  userService.getSingleUserByFilter({token});
+             const user =  await  userService.getSingleUserByFilter({activationToken:token});
              console.log(user);
             
             const today = Date.now();

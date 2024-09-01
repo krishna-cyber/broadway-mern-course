@@ -25,7 +25,8 @@ const loginCheck = async (req,res,next) => {
 
               
                 //TODO
-                let user = await userService.getSingleUserByFilter({id:data.sub});
+                let user = await userService.getSingleUserById({_id:data.sub});
+                
 
 
                 req.authUser = {

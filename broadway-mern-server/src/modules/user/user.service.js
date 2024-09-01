@@ -58,7 +58,7 @@ class UserService {
   sendActivationEmail = async ({
     fullName,
     email,
-    activateToken,
+    activationToken,
     sub = "User activation token",
   }) => {
     try {
@@ -68,7 +68,7 @@ class UserService {
         message: `
             Dear ${fullName},<br>
             Your account has been created successfully. Please click the link below to activate your account.<br>
-            <a href="${process.env.FRONTEND_URL}/activate/${activateToken}">Activate Now</a>
+            <a href="${process.env.FRONTEND_URL}/activate/${activationToken}">Activate Now</a>
             <p>
             <small>This is an auto generated email. Please do not reply to this email.</small>
             </p>
@@ -115,6 +115,19 @@ class UserService {
       throw exception;
     }
   };
+
+  getSingleUserById= async(filter)=>{
+    try {
+      const userDetail = await UserModel.findById(filter)
+      if (userDetail) {
+        return userDetail;
+      } else {
+        throw { statusCode: 422, message: "Unable to process the request" };
+      }
+    } catch (error) {
+      throw error
+    }
+  }
 
   getAllUsers = async (page=1, limit=5, search = {}) => {
     try {
