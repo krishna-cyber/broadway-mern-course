@@ -1,17 +1,16 @@
 import {
   HiArrowSmRight,
   HiChartPie,
-  HiInbox,
   HiShoppingBag,
   HiTable,
-  HiUser,
-  HiViewBoards,
+ 
 } from "react-icons/hi";
 import { GoCodeReview } from "react-icons/go";
 import { Outlet } from "react-router-dom";
 import DashboardFooter from "../../components/common/footer/footer.component";
 import DashboardSidebar from "../../components/dashboard/admin-dashboard-sidebar.component";
 import  { SellerDashboardNavbar } from "../../components/dashboard/dashboard-navbar.component";
+import { FaApple } from "react-icons/fa";
 const SellerDashboardLayout = () => {
   const sideBarMenuLinks = [
     {
@@ -26,9 +25,9 @@ const SellerDashboardLayout = () => {
     },
     
     {
-      menu: "Category Management",
-      icon: HiInbox,
-      link: "/seller/category-lists",
+      menu: "Brand Management",
+      icon: FaApple,
+      link: "/seller/Brand-lists",
     },
     {
       menu: "Product Management",

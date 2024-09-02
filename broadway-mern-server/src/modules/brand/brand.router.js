@@ -13,7 +13,7 @@ const router = require('express').Router();
 router.get('/list-home', brandController.listForHome);
 
 router.route('/')
-    .get(loginCheck,hasPermission(['admin']),brandController.listForDashboard)
+    .get(loginCheck,hasPermission(['admin','seller']),brandController.listForDashboard)
     .post(loginCheck,hasPermission(['admin']), setPath('brands'),uploadFile().single('image'),bodyValidator(brandCreateDTO),brandController.create);
 
     router.route('/:id')

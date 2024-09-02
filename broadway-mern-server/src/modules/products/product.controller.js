@@ -1,4 +1,5 @@
 const { uploadImage } = require("../../config/cloudinary.config");
+const { userRoles } = require("../../config/constants.config");
 const { deleteFile } = require("../../utils/helper");
 const productService = require("./product.service");
 
@@ -31,6 +32,20 @@ class ProductController {
   listForTable = async (req, res, next) => {
     try {
       const {page,limit }= req.query;
+
+      if (req.authUser.role === userRoles.SELLER) {
+        const {data,totalPages,total,currentPage} = await productService.listData(page,limit,{createdBy:req.authUser.id});
+        return res.json({
+          result: data,
+          message: "List of products",
+          meta: {
+            total,
+            currentPage,
+            totalPages,
+            limit
+          },
+        });
+      }
       const {data,totalPages,total,currentPage} = await productService.listData(page,limit);
       res.json({
         result: data,

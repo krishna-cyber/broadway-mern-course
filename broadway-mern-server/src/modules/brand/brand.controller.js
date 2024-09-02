@@ -1,4 +1,5 @@
 const { uploadImage } = require("../../config/cloudinary.config");
+const { userRoles } = require("../../config/constants.config");
 const { deleteFile } = require("../../utils/helper");
 const brandService = require("./brand.service");
 
@@ -129,9 +130,28 @@ class BrandController {
   listForDashboard = async (req, res, next) => {
     try {
       const { page, limit } = req.query;
+      if (req.authUser.role === userRoles.SELLER) {
+        const { data, count, totalPages } = await brandService.listData(
+          page,
+          limit,
+          { createdBy: req.authUser.id }
+        );
+        return res.json({
+          result: data,
+          message: "List of brands",
+          meta: {
+            total: count,
+            page,
+            totalPages,
+          },
+        });
+      }
 
-      console.log(page, limit);
-      const { data, count, totalPages } = await brandService.listData(page,limit);
+      // if admin request this will proceed
+      const { data, count, totalPages } = await brandService.listData(
+        page,
+        limit
+      );
 
       res.json({
         result: data,

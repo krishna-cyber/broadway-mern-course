@@ -10,6 +10,16 @@ const ProductSchema = new mongoose.Schema({
     min:3,
     max:100
     },
+    category:[{
+        type: mongoose.Types.ObjectId,
+        ref: 'Category',
+        required: true
+    }],
+    brand:{
+        type: mongoose.Types.ObjectId,
+        ref: 'Brand',
+        required: true
+    },
     image:{
         type: String,
         required: true,

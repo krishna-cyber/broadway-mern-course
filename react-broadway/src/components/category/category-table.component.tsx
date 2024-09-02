@@ -66,7 +66,7 @@ const deleteBanner = useDeleteCategory()
                     <Table.Cell>{`No Products avilable`}</Table.Cell>
                     <Table.Cell>
                       <NavLink to={data?.image} target="_data?.image">
-                      <img className=" w-20 h-20 " src={data?.image} />
+                      <img className=" w-20 h-20 " src={`http://localhost:3000/${data.image}`} />
                       </NavLink>
                     </Table.Cell>
                 
