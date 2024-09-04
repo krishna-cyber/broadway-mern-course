@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Outlet } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LandingPage from "../pages/landing/landing.page";
 import {
   RegisterPage,
@@ -111,33 +111,25 @@ const RouterConfig = () => {
             </Route>
 
             {/* seller dashboard routes */}
-            {/* <Route
+            <Route
               path="/seller"
               element={
                 <CheckPermission allowedBy={UserRoles.SELLER}>
-                  <SellerDashboard />
+                  <SellerDashboardLayout />
                 </CheckPermission>
               }
-            > */}
-            <Route path="/seller" element={<SellerDashboardLayout />}>
+            >
+            {/* <Route path="/seller" element={<SellerDashboardLayout />}> */}
               <Route index element={<SellerDashboard />} />
-              <Route path="/seller/category-lists" element={<CategoryList />} />
-              <Route
-                path="/seller/category-create"
-                element={<CategoryCreate />}
-              />
-              <Route
-                path="/seller/category/edit/:id"
-                element={<CategoryEdit />}
-              />
+      
+              <Route path="/seller/brand-lists" element={<BrandList />} />{" "}
+              <Route path="/seller/brand-create" element={<BrandCreate />} />
+              <Route path="/seller/brand/edit/:id" element={<BrandEdit />} />
                <Route path="/seller/product-lists" element={<ProductList />} />
               <Route path="/seller/Product-create" element={<ProductCreate />} />
               <Route path="/seller/Product/edit/:id" element={<ProductEdit />} />
               <Route path="/seller/order-lists" element={<ProductList />} />
               <Route path="/seller/order/edit/:id" element={<ProductEdit />} />
-              <Route path="/seller/brand-lists" element={<BrandList />} />{" "}
-              <Route path="/seller/brand-create" element={<BrandCreate />} />
-              <Route path="/seller/brand/edit/:id" element={<BrandEdit />} />
               <Route
                 path="*"
                 element={<ErrorPage url="/seller" label="Back to Dashboard" />}

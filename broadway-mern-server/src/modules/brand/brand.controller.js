@@ -11,16 +11,17 @@ class BrandController {
       const image = req.file;
       //uploadimage and more
       const imageUrl = await uploadImage(
-        `./public/uploads/banner/${image.filename}`
+        `./public/uploads/${req.uploadPath}/${image.filename}`
       );
       data.image = imageUrl;
-      deleteFile(`./public/uploads/banner/${image.filename}`);
+      data.createdBy = req.authUser.id;
+      deleteFile(`./public/uploads/${req.uploadPath}/${image.filename}`);
 
-      const response = await brandService.crateBanner(data);
+      const response = await brandService.createBrand(data);
       console.log(response);
       res.json({
         result: response,
-        message: "Banner created successfully",
+        message: "Brand created successfully",
         meta: null,
       });
     } catch (exception) {

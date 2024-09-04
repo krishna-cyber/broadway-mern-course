@@ -14,7 +14,6 @@ const BrandTable = () => {
   const deleteBrand = useDeleteBrand();
 
 
-  console.log(`Data of brand table component`,data);
   const onPageChange = (page: number) => setCurrentPage(page);
 
   // Delete banner
@@ -63,7 +62,7 @@ const BrandTable = () => {
                     </Table.Cell>
                     <Table.Cell>
                       <NavLink to={data.image} target="_data.image">
-                        <img className=" w-40 h-16 " src={data.image} />
+                        <img className=" w-8 h-8 " src={data.image} />
                       </NavLink>
                     </Table.Cell>
                     <Table.Cell>{data.link || `No link avilable`}</Table.Cell>

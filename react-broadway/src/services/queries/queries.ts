@@ -52,7 +52,7 @@ export function useFetchBannersForTable(page: number, limit: number) {
 
 export function useFetchBrandsForTable(page: number, limit: number) {
   return useQuery({
-    queryKey: ["bannerListsForTable", { page }],
+    queryKey: ["brandListForTable", { page }],
     queryFn: () => getBrandsForTable(page, limit),
     placeholderData: keepPreviousData,
   });

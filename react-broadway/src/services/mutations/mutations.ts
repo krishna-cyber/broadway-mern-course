@@ -1,10 +1,12 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createBanner, createCategory, createProduct,createUser, deleteBanner, deleteBrand, deleteCategory, deleteProduct, deleteUser, editBanner, editCategory, editProduct, editUser } from "../api/api";
+import { createBanner, createBrand, createCategory, createProduct,createUser, deleteBanner, deleteBrand, deleteCategory, deleteProduct, deleteUser, editBanner, editCategory, editProduct, editUser } from "../api/api";
 import { toast } from "react-toastify";
-import { Navigate, useNavigate } from "react-router-dom";
+
 
 export function useCreateProduct() {
   const queryClient = useQueryClient();
+ 
+    
   return useMutation({
     mutationFn: (data) => createProduct(data),
     onSettled: (data, error, variables, context) => {
@@ -22,7 +24,7 @@ export function useCreateProduct() {
 
 export function useCreateUser() {
   const queryClient = useQueryClient();
-  const Navigate = useNavigate();
+ 
   return useMutation({
     mutationFn: (data) => createUser(data),
     onSettled: (data, error, variables, context) => {
@@ -31,8 +33,7 @@ export function useCreateUser() {
         console.log("Error occured creating product");
       } else {
         console.log(data)
-        Navigate('/admin/user-lists')
-        toast.success(data?.message)
+             toast.success(data?.message)
         queryClient.invalidateQueries({
           queryKey: ["users"],
         });
@@ -43,6 +44,7 @@ export function useCreateUser() {
 
 export function useCreateBanner() {
   const queryClient = useQueryClient();
+ 
   return useMutation({
     mutationFn: (data) => createBanner(data),
     onSettled: (data, error, variables, context) => {
@@ -53,29 +55,34 @@ export function useCreateBanner() {
         queryClient.invalidateQueries({
           queryKey: ["productLists"],
         });
+      
       }
     },
   });
 }
 export function useCreateBrand() {
   const queryClient = useQueryClient();
+ 
   return useMutation({
-    mutationFn: (data) => createBanner(data),
+    mutationFn: (data) => createBrand(data),
     onSettled: (data, error, variables, context) => {
       console.log("on settled");
       if (error) {
+        toast.error("Error occured creating Brand");
         console.log("Error occured creating product");
       } else {
+        toast.success("Brand created successfully");
         queryClient.invalidateQueries({
-          queryKey: ["productLists"],
+          queryKey: ["brandListForTable"],
         });
-      }
+            }
     },
   });
 }
 
 export function useCreateCategory() {
   const queryClient = useQueryClient();
+ 
   return useMutation({
     mutationFn: (data) => createCategory(data),
     onSettled: (data, error, variables, context) => {

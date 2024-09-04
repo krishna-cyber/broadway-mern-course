@@ -1,27 +1,26 @@
 import { Button, Label, FileInput, Select } from "flowbite-react";
 import {
-  TextAreaComponent,
   TextInputComponent,
 } from "../../components/common/form/form.components";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { GrSend } from "react-icons/gr";
-import { toast } from "react-toastify";
-import { useState } from "react";
+import { useCreateBrand } from "../../services/mutations/mutations";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import httpService from "../../services/http.service";
 
-const BannerCreate = () => {
-  const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
-  const BannerCreateDTO = yup.object({
+const BrandCreate = () => {
+  const {loggedInUser} = useSelector((state: any) => state.user);
+  const navigate= useNavigate();
+    
+  const brandCreate = useCreateBrand();
+  const brandCreateDTO = yup.object({
     title: yup
       .string()
       .min(3, "Title must be at least 3 charactes.")
       .max(50)
       .required(),
-    description: yup.string().min(10).max(500).required(),
     link: yup.string().url().nullable().optional().default(null),
     status: yup.string().oneOf(["active", "inactive"]).required(),
     image: yup.mixed().required(),
@@ -33,30 +32,21 @@ const BannerCreate = () => {
     setValue,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(BannerCreateDTO),
+    resolver: yupResolver(brandCreateDTO),
   });
 
   const onSubmit = async (data: any) => {
-    setLoading(true);
-    try {
-      console.log("Banner create data:", data);
-      const response: any = await httpService.postRequest("/banner", data, {
-        auth: true,
-        file: true,
-      });
-      toast.success(response?.message);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setLoading(false);
-      navigate("/admin/banner-lists");
-    }
+    brandCreate.mutate(data,{
+      onSuccess:(data)=>{
+        navigate(`/${loggedInUser.role}/brand-lists`)
+      }
+    })
   };
   return (
     <section className="bg-white dark:bg-gray-900">
       <div className="py-8 px-4 max-w-2xl lg:py-8">
         <h2 className="mb-4 text-xl font-bold text-gray-900 dark:text-white">
-          Create new Banner
+          Create new Brand
         </h2>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="grid gap-4 sm:grid-cols-2 sm:gap-6">
@@ -65,13 +55,13 @@ const BannerCreate = () => {
                 htmlFor="title"
                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
               >
-                Banner Title
+               Brand name
               </Label>
 
               <TextInputComponent
                 name="title"
                 control={control}
-                placeholder="Banner Title"
+                placeholder="Brand Name"
                 errMsg={errors.title?.message}
               />
             </div>
@@ -116,31 +106,18 @@ const BannerCreate = () => {
               />
             </div>
 
-            <div className="sm:col-span-2">
-              <Label
-                htmlFor="description"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
-                Description
-              </Label>
-
-              <TextAreaComponent
-                name="description"
-                control={control}
-                errMsg={errors.description?.message}
-              />
-            </div>
+          
           </div>
           <Button
-            isProcessing={loading}
-            disabled={loading}
+            isProcessing={brandCreate.isPending}
+            disabled={brandCreate.isPending}
             type="submit"
             color={""}
             size={"xs"}
             className="inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-primary-700 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800"
           >
             <GrSend className="mr-2 h-5 w-5" />
-            Create Banner
+            Create Brand
           </Button>
         </form>
       </div>
@@ -148,4 +125,4 @@ const BannerCreate = () => {
   );
 };
 
-export default BannerCreate;
+export default BrandCreate;

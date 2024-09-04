@@ -3,12 +3,14 @@ import { Button, Pagination } from "flowbite-react";
 import { Link } from "react-router-dom";
 import BrandTable from "../../components/brand/brand-table.component";
 import { useFetchBrandsForTable } from "../../services/queries/queries";
+import { useSelector } from "react-redux";
 
 
 
 
 const BrandList = () => {
   const {data,isError,isLoading} = useFetchBrandsForTable(1,5);
+  const {loggedInUser} = useSelector((state: any) => state.user);
  
   return (
     <section className="bg-gray-50 dark:bg-gray-900 py-3 sm:py-5">
@@ -26,7 +28,7 @@ const BrandList = () => {
               </h5>
             </div>
             <div className="flex flex-col flex-shrink-0 space-y-3 md:flex-row md:items-center lg:justify-end md:space-y-0 md:space-x-3">
-              <Link to={"/admin/banner-create"}>
+              <Link to={`/${loggedInUser.role}/brand-create`}>
                 <Button
                   size={"xs"}
                   color={""}

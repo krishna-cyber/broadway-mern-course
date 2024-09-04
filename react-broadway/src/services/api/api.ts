@@ -29,6 +29,13 @@ export const createProduct = async (data: any) => {
     file: true,
   });
 };
+export const createBrand = async (data: any) => {
+  return await httpService.postRequest("/brand",data,{
+    auth: true,
+    file: true,
+  });
+};
+
 
 
 
