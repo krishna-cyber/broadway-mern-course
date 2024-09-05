@@ -5,12 +5,14 @@ import { Link } from "react-router-dom";
 import ProductTable from "../../components/productDashboard/product-table.component";
 
 import { useFetchProductsForTable } from "../../services/queries/queries";
+import { useSelector } from "react-redux";
 
 
 
 
 
 const ProductList = () => {
+  const {loggedInUser} = useSelector((state: any) => state.user);
  const {data} = useFetchProductsForTable(1,5)
   return (
     <section className="bg-gray-50 dark:bg-gray-900 py-3 sm:py-5">
@@ -28,7 +30,7 @@ const ProductList = () => {
               </h5>
             </div>
             <div className="flex flex-col flex-shrink-0 space-y-3 md:flex-row md:items-center lg:justify-end md:space-y-0 md:space-x-3">
-              <Link to={"/admin/product-create"}>
+              <Link to={`/${loggedInUser.role}/product-create`}>
                 <Button
                   size={"xs"}
                   color={""}

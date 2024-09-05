@@ -67,7 +67,7 @@ const BrandTable = () => {
                     </Table.Cell>
                     <Table.Cell>{data.link || `No link avilable`}</Table.Cell>
                     <Table.Cell>
-                      {data.status === "ACTIVE" ? (
+                      {data.status === "ACTIVE" ||"active" ? (
                         <Badge className="mx-auto w-fit" color="info">
                           Published
                         </Badge>

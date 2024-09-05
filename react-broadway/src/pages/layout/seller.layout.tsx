@@ -35,11 +35,6 @@ const SellerDashboardLayout = () => {
       link: "/seller/product-lists",
     },
 
-    {
-      menu: "Order Management",
-      icon: HiTable,
-      link: "/seller/order-lists",
-    },
     
     {
       menu: "Reviews Management",

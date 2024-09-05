@@ -15,7 +15,7 @@ export function useCreateProduct() {
         console.log("Error occured creating product");
       } else {
         queryClient.invalidateQueries({
-          queryKey: ["productLists"],
+          queryKey: ["productListsForTable"],
         });
       }
     },

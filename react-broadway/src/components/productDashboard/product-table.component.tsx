@@ -7,17 +7,12 @@ import { SearchParams } from "../../config/constants";
 
 import TableActionButtons from "../common/table/table-action-buttons.component";
 import { NavLink } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
-import {
-  countTotalProducts,
-  getProductsForTable,
-} from "../../services/api/api";
+
 import { useFetchProductsForTable } from "../../services/queries/queries";
 
 const ProductTable = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const { data, isError, error, isLoading, isFetching } =
-    useFetchProductsForTable(currentPage, 5);
+  const { data } = useFetchProductsForTable(currentPage, 5);
 
   const [loading, setLoading] = useState(false);
 
