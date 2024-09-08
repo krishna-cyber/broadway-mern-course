@@ -24,7 +24,7 @@ const BrandSchema = new mongoose.Schema({
         default: statusType.ACTIVE
     },
     createdBy:{
-        type: mongoose.Types.ObjectId,
+        type:mongoose.Types.ObjectId,
         ref: 'User',
         default: null
     }

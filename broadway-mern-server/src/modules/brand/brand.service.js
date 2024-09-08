@@ -1,6 +1,6 @@
 const Brandmodel = require("./brand.model");
 
-class BannerService {
+class BrandService {
   createBrand = async (data) => {
     try {
       const banner = new Brandmodel(data);
@@ -12,8 +12,8 @@ class BannerService {
 
   listData = async (currentPage,limit,filter={})=>{
     try {
-      console.log(currentPage,limit,filter);
         //calculate skip based on current page and limit
+  
         const count = await Brandmodel.countDocuments(filter);
         const skip = (currentPage - 1) * limit;
         const data = await Brandmodel.find(filter).populate('createdBy',["_id","fullName","email","role"]).skip(skip).limit(limit).sort({_id:'desc'});
@@ -77,8 +77,18 @@ class BannerService {
       throw exception;
     }
   };
+  listAllBrands = async () => {
+    try {
+      return await Brandmodel.find({ status: true }, { name: 1 });
+    } catch (exception) {
+      throw exception;
+    }
+  };
+
+
+ 
 }
 
-const bannerService = new BannerService();
+const brandService = new BrandService();
 
-module.exports = bannerService;
+module.exports = brandService;

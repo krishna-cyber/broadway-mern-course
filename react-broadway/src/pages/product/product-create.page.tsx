@@ -7,18 +7,42 @@ import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { GrSend } from "react-icons/gr";
-import httpService from "../../services/http.service";
-import { toast } from "react-toastify";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Select from "react-select";
-import makeAnimated from "react-select/animated";
+import { useFetchAllCategories } from "../../services/queries/queries";
+import { useCreateProduct } from "../../services/mutations/mutations";
+import { useSelector } from "react-redux";
+const ProductCreateDTO = yup.object({
+  title: yup
+    .string()
+    .min(3, "Title must be at least 3 charactes.")
+    .max(50)
+    .required(),
+  description: yup.string().min(10).max(500).required(),
+  // status: yup.string().oneOf(["active", "inactive"]).required(),
+  status: yup.mixed().required(),
+  category: yup.array().min(1).required(),
+  image: yup.mixed().required(),
+  price: yup.number().required("Price is required"),
+  stock: yup.number().required(),
+  discount: yup.number().required(),
+});
 
 const ProductCreate = () => {
+  const {loggedInUser} = useSelector((state: any) => state.user);
+  const categories = useFetchAllCategories();
+  const createProduct = useCreateProduct();
+  const navigate = useNavigate();
+  
+  const categoryOptions = (categories.data?.result) ? (categories.data?.result.map((c)=>{
+    return {label:c.name,value:c.id}
+  })) : [];
+
+
   let status = [
     { label: "active", value: "active" },
     { label: "inactive", value: "inactive" },
-   
   ];
   const [loading, setLoading] = useState(false);
   const [isClearable, setIsClearable] = useState(true);
@@ -26,47 +50,23 @@ const ProductCreate = () => {
   const [isDisabled, setIsDisabled] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isRtl, setIsRtl] = useState(false);
-  const navigate = useNavigate();
-  const ProductCreateDTO = yup.object({
-    title: yup
-      .string()
-      .min(3, "Title must be at least 3 charactes.")
-      .max(50)
-      .required(),
-    description: yup.string().min(10).max(500).required(),
-    // status: yup.string().oneOf(["active", "inactive"]).required(),
-    status: yup.mixed().required(),
-    image: yup.mixed().required(),
-    price: yup.number().required("Price is required"),
-    stock: yup.number().required(),
-    discount: yup.number().required(),
-  });
   const {
     control,
-    register,
     handleSubmit,
     setValue,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(ProductCreateDTO),
   });
-  console.log("errors", errors);
   const onSubmit = async (data: any) => {
-    console.log("Product create data:", data);
-    // setLoading(true);
-    // try {
-    //   console.log("Product create data:", data);
-    //   const response: any = await httpService.postRequest("/Product", data, {
-    //     auth: true,
-    //     file: true,
-    //   });
-    //   toast.success(response?.message);
-    // } catch (error) {
-    //   console.log(error);
-    // } finally {
-    //   setLoading(false);
-    //   navigate("/admin/Product-lists");
-    // }
+    const categories = data.category.map((option:any)=>option.value)
+    data.category = categories;
+    createProduct.mutate(data,{
+      onSuccess: ()=>{
+        navigate(`/${loggedInUser.role}/product-lists`)
+      }
+    })
+   navigate(`/${loggedInUser.role}/product-lists`);
   };
   return (
     <section className="bg-white dark:bg-gray-900">
@@ -117,7 +117,9 @@ const ProductCreate = () => {
                 id="image"
                 helperText="SVG, PNG, JPG or GIF (MAX. 800x400px)."
               />
-              <span className=" text-red-500 text-sm">{errors.image?.message}</span>
+              <span className=" text-red-500 text-sm">
+                {errors.image?.message}
+              </span>
             </div>
             <div>
               <Label
@@ -147,18 +149,14 @@ const ProductCreate = () => {
                 <Controller
                   name="status"
                   control={control}
-                  render={({ field,fieldState }) => (
+                  render={({ field, fieldState }) => (
                     <Select
                       {...field}
                       value={status.find((c) => c.value == fieldState)}
                       options={status}
-
-                      onChange={(selectedOption:any) =>{
-
-                        console.log(selectedOption.value) 
-                        field.onChange(selectedOption.value)
-                      }
-                      } // Update the form state
+                      onChange={(selectedOption: any) => {
+                        field.onChange(selectedOption.value);
+                      }} // Update the form state
                     />
                   )}
                 />
@@ -183,18 +181,19 @@ const ProductCreate = () => {
                 categories
               </Label>
               <div className="max-w-md">
-                {/* <Select
-                  className="basic-single"
-                  classNamePrefix="select"
-                  defaultValue={colourOptions[0]}
-                  isDisabled={isDisabled}
-                  isLoading={isLoading}
-                  isClearable={isClearable}
-                  isRtl={isRtl}
-                  isSearchable={isSearchable}
-                  name="color"
-                  options={colourOptions}
-                /> */}
+                <Controller
+                  name="category"
+                  control={control}
+                  render={({ field, fieldState,formState }) => (
+                    <Select
+                      isMulti
+                      {...field}
+                      options={categoryOptions}
+                     
+                    />
+                  )}
+                />
+              <span className=" text-red-400 text-sm">{errors.category?.message}</span>
               </div>
             </div>
 
@@ -215,8 +214,8 @@ const ProductCreate = () => {
             </div>
           </div>
           <Button
-            isProcessing={loading}
-            disabled={loading}
+            isProcessing={createProduct.isPending}
+            disabled={createProduct.isPending}
             type="submit"
             color={""}
             size={"xs"}

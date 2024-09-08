@@ -1,19 +1,32 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createBanner, createBrand, createCategory, createProduct,createUser, deleteBanner, deleteBrand, deleteCategory, deleteProduct, deleteUser, editBanner, editCategory, editProduct, editUser } from "../api/api";
+import {
+  createBanner,
+  createBrand,
+  createCategory,
+  createProduct,
+  createUser,
+  deleteBanner,
+  deleteBrand,
+  deleteCategory,
+  deleteProduct,
+  deleteUser,
+  editBanner,
+  editCategory,
+  editProduct,
+  editUser,
+} from "../api/api";
 import { toast } from "react-toastify";
-
 
 export function useCreateProduct() {
   const queryClient = useQueryClient();
- 
-    
+
   return useMutation({
     mutationFn: (data) => createProduct(data),
     onSettled: (data, error, variables, context) => {
-      console.log("on settled");
       if (error) {
-        console.log("Error occured creating product");
+        toast.error("Error occured creating Product");
       } else {
+        toast.success("Product created successfully");
         queryClient.invalidateQueries({
           queryKey: ["productListsForTable"],
         });
@@ -24,16 +37,16 @@ export function useCreateProduct() {
 
 export function useCreateUser() {
   const queryClient = useQueryClient();
- 
+
   return useMutation({
     mutationFn: (data) => createUser(data),
     onSettled: (data, error, variables, context) => {
       console.log("on settled");
       if (error) {
-        console.log("Error occured creating product");
+        console.log("Error occured creating User");
       } else {
-        console.log(data)
-             toast.success(data?.message)
+        console.log(data);
+        toast.success(data?.message);
         queryClient.invalidateQueries({
           queryKey: ["users"],
         });
@@ -44,45 +57,42 @@ export function useCreateUser() {
 
 export function useCreateBanner() {
   const queryClient = useQueryClient();
- 
+
   return useMutation({
     mutationFn: (data) => createBanner(data),
     onSettled: (data, error, variables, context) => {
       console.log("on settled");
       if (error) {
-        console.log("Error occured creating product");
+        console.log("Error occured creating Banner");
       } else {
         queryClient.invalidateQueries({
           queryKey: ["productLists"],
         });
-      
       }
     },
   });
 }
 export function useCreateBrand() {
   const queryClient = useQueryClient();
- 
+
   return useMutation({
     mutationFn: (data) => createBrand(data),
     onSettled: (data, error, variables, context) => {
-      console.log("on settled");
       if (error) {
         toast.error("Error occured creating Brand");
-        console.log("Error occured creating product");
       } else {
         toast.success("Brand created successfully");
         queryClient.invalidateQueries({
           queryKey: ["brandListForTable"],
         });
-            }
+      }
     },
   });
 }
 
 export function useCreateCategory() {
   const queryClient = useQueryClient();
- 
+
   return useMutation({
     mutationFn: (data) => createCategory(data),
     onSettled: (data, error, variables, context) => {
@@ -97,7 +107,6 @@ export function useCreateCategory() {
     },
   });
 }
-
 
 export function useEditProduct() {
   const queryClient = useQueryClient();
@@ -150,7 +159,6 @@ export function useeditBanner() {
   });
 }
 
-
 export function useeditBrand() {
   const queryClient = useQueryClient();
   return useMutation({
@@ -189,7 +197,7 @@ export function useeditCategory() {
 export function useDeleteProduct() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (data:string) => deleteProduct(data),
+    mutationFn: (data: string) => deleteProduct(data),
     onSettled: (data, error, variables, context) => {
       if (error) {
         toast.error("Error occured deleting product");
@@ -224,7 +232,7 @@ export function useDeleteUser() {
 export function useDeleteBanner() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (data:string) => deleteBanner(data),
+    mutationFn: (data: string) => deleteBanner(data),
     onSettled: (data, error, variables, context) => {
       console.log("on settled");
       if (error) {
@@ -239,11 +247,10 @@ export function useDeleteBanner() {
   });
 }
 
-
 export function useDeleteBrand() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (data:number) => deleteBrand(data),
+    mutationFn: (data: number) => deleteBrand(data),
     onSettled: (data, error, variables, context) => {
       console.log("on settled");
       if (error) {
@@ -261,11 +268,11 @@ export function useDeleteBrand() {
 export function useDeleteCategory() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (data:string) => deleteCategory(data),
+    mutationFn: (data: string) => deleteCategory(data),
     onSettled: (data, error, variables, context) => {
       console.log("on settled");
       if (error) {
-        console.log (error)
+        console.log(error);
         toast.error("Error occured deleting Category");
       } else {
         toast.success(data?.message);

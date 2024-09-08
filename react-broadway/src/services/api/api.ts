@@ -22,9 +22,11 @@ export const getproductsForLandingPage = async () => {
 export const getCategoryLists = async () => {
   return await httpService.getRequest("/category/list-home");
 };
-
+export const getAllCategories = async () => {
+  return await httpService.getRequest("/category/lists",{auth:true});
+}
 export const createProduct = async (data: any) => {
-  return await httpService.postRequest("/product/create-product",data,{
+  return await httpService.postRequest("/product",data,{
     auth: true,
     file: true,
   });

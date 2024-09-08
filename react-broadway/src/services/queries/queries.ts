@@ -1,5 +1,6 @@
 import { keepPreviousData, useQueries, useQuery } from "@tanstack/react-query";
 import {
+  getAllCategories,
   getBannersForTable,
   getBrandsForTable,
   getCategoryForTable,
@@ -29,10 +30,16 @@ export function useFetchCategoryList() {
     queryFn: getCategoryLists,
   });
 }
+export function useFetchAllCategories() {
+  return useQuery({
+    queryKey: ["categories"],
+    queryFn: getAllCategories,
+  });
+}
 export function useFetchOrdersList(page: number, limit: number) {
   return useQuery({
     queryKey: ["ordersLists"],
-    queryFn:()=> getOrdersForTable(page, limit),
+    queryFn: () => getOrdersForTable(page, limit),
   });
 }
 export function useFetchProductsForLandingPage() {

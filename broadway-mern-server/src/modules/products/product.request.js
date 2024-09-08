@@ -9,7 +9,9 @@ const productCreateDTO = joi.object({
     description: joi.string().required().min(4),
     status : joi.string().valid(...Object.values(statusType)).required(),
     image: joi.string().required(),
-stock: joi.number().required()
+stock: joi.number().required(),
+category: joi.array().min(1).required(),
+
 });
 
 const productUpdateDTO= joi.object({

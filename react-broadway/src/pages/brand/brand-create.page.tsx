@@ -37,7 +37,7 @@ const BrandCreate = () => {
 
   const onSubmit = async (data: any) => {
     brandCreate.mutate(data,{
-      onSuccess:(data)=>{
+      onSuccess:()=>{
         navigate(`/${loggedInUser.role}/brand-lists`)
       }
     })

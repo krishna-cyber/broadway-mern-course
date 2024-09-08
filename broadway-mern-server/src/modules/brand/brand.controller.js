@@ -191,6 +191,7 @@ class BrandController {
       next(exception);
     }
   };
+  
 }
 
 // create object of brandController

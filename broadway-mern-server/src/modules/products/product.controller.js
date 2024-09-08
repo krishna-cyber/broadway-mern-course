@@ -16,9 +16,7 @@ class ProductController {
       data.image = imageUrl;
       data.createdBy = req.authUser.id;
       deleteFile(`./public/uploads/products/${image.filename}`);
-
       const response = await productService.createProduct(data);
-      console.log(response);
       res.json({
         result: response,
         message: "product created successfully",

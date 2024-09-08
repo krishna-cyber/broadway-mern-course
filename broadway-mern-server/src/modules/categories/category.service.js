@@ -40,7 +40,10 @@ class CategoryService{
     listAll = async ()=>{
         try {
             const result = await CategoryModel.find().select('name image _id');
-            return result;
+            // replace _id with id others are same
+            return (
+                result.map(item=>({...item._doc,id:item._doc._id}))
+            )
             
         } catch (error) {
             throw error;
