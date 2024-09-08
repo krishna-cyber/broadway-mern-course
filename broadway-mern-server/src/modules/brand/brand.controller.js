@@ -108,6 +108,11 @@ class BrandController {
     try {
       const { id } = req.params;
       const response = await brandService.deleteById(id);
+      res.json({
+        result: null,
+        message: "Banner deleted successfully",
+        meta: null,
+      });
     } catch (error) {
       next(error);
     }

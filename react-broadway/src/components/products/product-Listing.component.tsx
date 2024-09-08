@@ -10,7 +10,7 @@ const ProductViewLandingPage = () => {
     queryFn: getproductsForLandingPage,
   });
 
-  console.log(data);
+  // console.log(data?.result);
 
   return (
     <section className="bg-gray-50 py-8 antialiased dark:bg-gray-900 md:py-2">
@@ -18,13 +18,13 @@ const ProductViewLandingPage = () => {
         <h2 className="my-3 text-xl font-semibold text-gray-900 dark:text-white sm:text-2xl">
           Products
         </h2>
-
+        
         <div className="mb-4 grid gap-4 sm:grid-cols-2 md:mb-8 lg:grid-cols-3 xl:grid-cols-4">
-          <ProductCardComponent />
-          <ProductCardComponent /> <ProductCardComponent />{" "}
-          <ProductCardComponent /> <ProductCardComponent />{" "}
-          <ProductCardComponent /> <ProductCardComponent />{" "}
-          <ProductCardComponent />
+
+          {data?.result.map((product:any) => (
+            <ProductCardComponent key={product._id} product={product} />
+          ))} 
+         
         </div>
         {/* show more button */}
         <div className="w-full items-center justify-center flex">

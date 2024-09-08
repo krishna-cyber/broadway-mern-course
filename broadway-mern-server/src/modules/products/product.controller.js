@@ -163,10 +163,8 @@ class ProductController {
   };
   listForHome = async (req, res, next) => {
     try {
-      const {data,totalPages} = await productService.listData({
-        pageSize: 10,
-        filter: { status: 'ACTIVE' },
-      });
+      const { page } = req.query;
+      const {data,totalPages} = await productService.listData(page,8,{status:"ACTIVE"});
       res.json({
         result: data,
         message: "List of products",

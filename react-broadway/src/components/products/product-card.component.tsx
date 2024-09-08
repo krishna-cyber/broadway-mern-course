@@ -1,32 +1,30 @@
 import { Badge, Button, Rating, Tooltip } from "flowbite-react";
-import React from "react";
 import { AiOutlineEye } from "react-icons/ai";
-import { FaCartPlus, FaDollarSign, FaHeartbeat, FaMoneyCheck, FaShoppingBasket } from "react-icons/fa";
+import { FaCartPlus, FaDollarSign } from "react-icons/fa";
 import { GrDeliver } from "react-icons/gr";
-import { HiHeart, HiOutlineHeart } from "react-icons/hi";
-import { HiEye } from "react-icons/hi2";
+import {  HiOutlineHeart } from "react-icons/hi";
 import { Link } from "react-router-dom";
 
-const ProductCardComponent = () => {
+const ProductCardComponent = ({product}:any) => {
   return (
     <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800">
       <div className="h-56 w-full">
         <a href="#">
           <img
             className="mx-auto h-full dark:hidden"
-            src="https://flowbite.s3.amazonaws.com/blocks/e-commerce/imac-front.svg"
+            src={product.image}
             alt=""
           />
           <img
             className="mx-auto hidden h-full dark:block"
-            src="https://flowbite.s3.amazonaws.com/blocks/e-commerce/imac-front-dark.svg"
+            src={product.image}
             alt=""
           />
         </a>
       </div>
       <div className="pt-6">
         <div className="mb-4 flex items-center justify-between gap-4">
-          <Badge color="info"> Up to 35% off </Badge>
+          <Badge color="info"> Up to {product.discount}% off </Badge>
           <div className="flex items-center justify-end gap-1">
             <Tooltip content="Quick look" placement="top">
               <Button color={""} size={"xs"}>
@@ -45,7 +43,7 @@ const ProductCardComponent = () => {
           to="/product/:product-name"
           className="text-lg font-semibold leading-tight text-gray-900 hover:underline dark:text-white"
         >
-          Apple iMac 27", 1TB HDD, Retina 5K Display, M3 Max
+         {product.title}
         </Link>
         <Rating>
           <Rating.Star />
@@ -76,9 +74,9 @@ const ProductCardComponent = () => {
           </li>
         </ul>
 
-        <div className="mt-4 flex items-center justify-between gap-4">
-          <p className="text-2xl font-extrabold leading-tight text-gray-900 dark:text-white">
-            $1,699
+        <div className="mt-4 flex items-center justify-between gap-3">
+          <p className="text-xl font-extrabold leading-tight text-gray-900 dark:text-white">
+           Rs.{product.price}
           </p>
 
 
