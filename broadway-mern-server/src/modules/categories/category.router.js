@@ -16,13 +16,14 @@ router.get('/list-home', categoryController.listForHome);
 
 router.route('/')
     .get(loginCheck,hasPermission(['admin','seller']),categoryController.listForDashboard)
-    .post(loginCheck,hasPermission(['admin']), setPath('categories'),uploadFile().single('image'),bodyValidator(categoryCreateDTO),categoryController.create);
-
+    .post(loginCheck,hasPermission(['admin']), setPath('icons'),uploadFile().single('image'),bodyValidator(categoryCreateDTO),categoryController.create);
+    
     router.route('/:id')
     .get(loginCheck,hasPermission(['admin']))
     .delete(loginCheck,hasPermission(['admin']),categoryController.delete)
-    .put(loginCheck,hasPermission(['admin']), setPath('categories'),bodyValidator(categoryUpdateDTO),categoryController.edit)
-
+    .put(loginCheck,hasPermission(['admin']), setPath('icons'),bodyValidator(categoryUpdateDTO),categoryController.edit)
+    
+    router.get('/lists',loginCheck,hasPermission(['admin','seller']),categoryController.list)
 
 
 

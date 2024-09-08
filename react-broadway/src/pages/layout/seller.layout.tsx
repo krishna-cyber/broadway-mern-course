@@ -9,7 +9,7 @@ import { GoCodeReview } from "react-icons/go";
 import { Outlet } from "react-router-dom";
 import DashboardFooter from "../../components/common/footer/footer.component";
 import DashboardSidebar from "../../components/dashboard/admin-dashboard-sidebar.component";
-import  { SellerDashboardNavbar } from "../../components/dashboard/dashboard-navbar.component";
+import  { DashboardNavbar, SellerDashboardNavbar } from "../../components/dashboard/dashboard-navbar.component";
 import { FaApple } from "react-icons/fa";
 const SellerDashboardLayout = () => {
   const sideBarMenuLinks = [
@@ -44,7 +44,7 @@ const SellerDashboardLayout = () => {
   ];
   return (
     <div className="antialiased bg-gray-50 dark:bg-gray-900">
-      <SellerDashboardNavbar />
+      <DashboardNavbar />
 
       <DashboardSidebar sideBarMenuLinks={sideBarMenuLinks} />
 

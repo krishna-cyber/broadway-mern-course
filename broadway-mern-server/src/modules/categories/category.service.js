@@ -37,6 +37,15 @@ class CategoryService{
             throw exception;  // Propagate the exception if something goes wrong
         }
     };
+    listAll = async ()=>{
+        try {
+            const result = await CategoryModel.find().select('name image _id');
+            return result;
+            
+        } catch (error) {
+            throw error;
+        }
+    }
     getDetailByFilter = async (filter)=>{
         try {
             const bannerDetail = await CategoryModel.findOne(filter);

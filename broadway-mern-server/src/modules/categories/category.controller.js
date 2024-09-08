@@ -7,17 +7,12 @@ class CategoryController {
   create = async (req, res, next) => {
     try {
       const data = req.body;
-      const image = req.file;
-      //uploadimage and more
-      const imageUrl = await uploadImage(
-        `./public/uploads/categories/${image.filename}`
-      );
-      data.image = imageUrl;
+      const {path} = req.file;
+
+      data.image = path.replace('public\\','');
       data.createdBy = req.authUser.id;
-      deleteFile(`./public/uploads/categories/${image.filename}`);
 
       const response = await categoryService.createCategory(data);
-      console.log(response);
       res.json({
         result: response,
         message: "Category added successfully",
@@ -157,6 +152,21 @@ class CategoryController {
       next(exception);
     }
   };
+  list = async (req,res,next)=>{
+    try {
+     
+      const  result  = await categoryService.listAll();
+  
+        res.json({
+          result,
+          message: "All categories",
+          meta: null,
+        });
+
+    } catch (error) {
+     next(error) 
+    }
+  }
 }
 
 // create object of categoryController
