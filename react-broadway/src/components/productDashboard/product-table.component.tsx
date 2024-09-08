@@ -9,59 +9,27 @@ import TableActionButtons from "../common/table/table-action-buttons.component";
 import { NavLink } from "react-router-dom";
 
 import { useFetchProductsForTable } from "../../services/queries/queries";
+import { useDeleteProduct } from "../../services/mutations/mutations";
 
 const ProductTable = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const { data } = useFetchProductsForTable(currentPage, 5);
+  const { data,isLoading } = useFetchProductsForTable(currentPage, 5);
+  const deleteProduct = useDeleteProduct();
 
-  const [loading, setLoading] = useState(false);
 
   const paginationChange = (page: number) => {
     setCurrentPage(page);
     console.log("Page: ", page);
   };
 
-  // only triggers when currentPage changes otherwise it will not trigger , this callback prevents when some user click on same pagination
-  // number it will not trigger the api call again
-  const getAllBanners = useCallback(
-    async ({ page = 1, limit = 10, search = "" }: SearchParams) => {
-      setLoading(true);
-      try {
-        const banners: any = await httpService.getRequest("/banner", {
-          auth: true,
-          params: { page: page, limit: limit, search: search },
-        });
-        setBannerData(banners?.result);
-        console.log({ page, limit, search });
-        console.log("Banners: ", banners);
-      } catch (error: any) {
-        console.error("Error fetching banners: ", error);
-        toast.warning(error?.message);
-      } finally {
-        setLoading(false);
-      }
-    },
-    [currentPage]
-  );
 
-  // Delete banner
-  const deleteBanner = async (id: string) => {
-    try {
-      const response = await httpService.deleteRequest(`/banner/${id}`, {
-        auth: true,
-      });
-      console.log("Delete banner response: ", response);
-      toast.success("Banner deleted successfully");
-      getAllBanners({});
-    } catch (error: any) {
-      console.error("Error deleting banner: ", error);
-      toast.warning("Error deleting banner, please try again");
-    }
+
+  // Delete PRODUCT
+  const deleteById = async (id: string) => {
+   deleteProduct.mutate(id);
   };
 
-  useEffect(() => {
-    // getAllBanners({});
-  }, []);
+ 
 
   return (
     <div className="overflow-x-auto">
@@ -80,7 +48,7 @@ const ProductTable = () => {
           <Table.HeadCell>Action</Table.HeadCell>
         </Table.Head>
         <Table.Body className="divide-y">
-          {loading ? (
+          {isLoading ? (
             <RowSkeleton rows={4} cols={5} />
           ) : (
             <>
@@ -126,7 +94,7 @@ const ProductTable = () => {
                     <Table.Cell className=" flex gap-3">
                       <TableActionButtons
                         editUrl={`/admin/banner/edit/${data._id}`}
-                        deleteAction={deleteBanner}
+                        deleteAction={deleteById}
                         rowId={data._id}
                       />
                     </Table.Cell>

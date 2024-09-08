@@ -144,12 +144,22 @@ class ProductController {
         message: "product updated successfully",
         meta: null,
       });
-    } catch (exception) {}
+    } catch (exception) {
+      next(exception);
+    }
   };
   deleteProduct = async (req, res, next) => {
-    //delete product by id
-    //also delete image from cloudinary
-    //response result response meta null messge product deleted successfully
+ try {
+  const {id} = req.params;
+  await productService.deleteById(id);
+  res.json({
+    result:null,
+    message:"product deleted successfully",
+    meta:null
+  });
+ } catch (error) {
+  next(error);
+ }
   };
   listForHome = async (req, res, next) => {
     try {

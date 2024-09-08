@@ -78,16 +78,14 @@ interface HeaderConfigProps {
   };
   deleteRequest = async (url: string, config: any = null) => {
     try {
-      console.log("delete request http service", url, config);
       this.#setHeaders(config);
 
       //TODO params for delete request
-      const response : AxiosResponse = await axiosInstance.delete(url, {
+      const response = await axiosInstance.delete(url, {
         headers: { ...this.headers },
        
       });
 
-      console.log("success delete request http service", response);
       return response;
     } catch (error: any) {
       console.log("delete request error", error);

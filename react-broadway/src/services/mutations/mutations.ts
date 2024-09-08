@@ -189,9 +189,8 @@ export function useeditCategory() {
 export function useDeleteProduct() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (data) => deleteProduct(data),
+    mutationFn: (data:string) => deleteProduct(data),
     onSettled: (data, error, variables, context) => {
-      console.log("on settled");
       if (error) {
         toast.error("Error occured deleting product");
       } else {

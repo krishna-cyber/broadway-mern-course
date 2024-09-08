@@ -36,11 +36,11 @@ class ProductService{
 
     deleteById = async (id)=>{
         try {
-        const response = await ProductModel.findByIdAndDelete(id);
+       const response= await ProductModel.findByIdAndDelete(id);
         if(!response){
-            throw {statusCode:404,message:"Banner not found"};
+            throw {statusCode:404,message:"product not found"};
         }
-        return response;
+       
         } catch (exception) {
             throw exception;
         }
