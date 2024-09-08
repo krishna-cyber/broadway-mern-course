@@ -161,16 +161,13 @@ class ProductController {
   };
   listForHome = async (req, res, next) => {
     try {
-      const { page } = req.query;
-      const {data,totalPages} = await productService.listData(page,8,{status:"ACTIVE"});
+      const page = +req.query.page || 1;
+      const limit = +req.query.limit || 8;
+      console.log(page,limit);
+      const {result,hasMore} = await productService.landingPageData(page,limit,{status:"ACTIVE"});
       res.json({
-        result: data,
-        message: "List of products",
-        meta: {
-          page: 1,
-          pageSize: 10,
-          totalPages
-        },
+        result,
+        hasMore
       });
     } catch (exception) {
       next(exception);

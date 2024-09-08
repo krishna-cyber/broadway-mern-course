@@ -10,14 +10,24 @@ class ProductService{
             throw exception;
         }
     }
-
-    listData = async (currentPage=1,limit=5,filter={})=>{
+listData = async (currentPage=1,limit=5,filter={})=>{
+    try {
+        const skip = (currentPage - 1) * limit;
+        const total = await ProductModel.countDocuments(filter);
+        const totalPages = Math.ceil(total/limit);
+        const data = await ProductModel.find(filter).populate('createdBy',["_id","name","email","role"]).skip(skip).limit(limit).sort({_id:'desc'});
+        return {data,totalPages,total,limit,currentPage}
+    } catch (exception) {
+        throw exception;
+    }
+}
+    landingPageData = async (currentPage=1,limit=5,filter={})=>{
         try {
             const skip = (currentPage - 1) * limit;
-            const total = await ProductModel.countDocuments(filter);
-            const totalPages = Math.ceil(total/limit);
-            const data = await ProductModel.find(filter).populate('createdBy',["_id","name","email","role"]).skip(skip).limit(limit).sort({_id:'desc'});
-            return {data,totalPages,total,limit,currentPage}
+            const totalProducts = await ProductModel.countDocuments(filter);
+            const result = await ProductModel.find(filter).skip(skip).limit(limit);
+            const hasMore = skip + limit < totalProducts;
+            return {result,hasMore}
         } catch (exception) {
             throw exception;
         }

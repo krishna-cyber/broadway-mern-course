@@ -1,4 +1,9 @@
-import { keepPreviousData, useQueries, useQuery } from "@tanstack/react-query";
+import {
+  keepPreviousData,
+  useInfiniteQuery,
+  useQueries,
+  useQuery,
+} from "@tanstack/react-query";
 import {
   getAllCategories,
   getBannersForTable,
@@ -7,10 +12,33 @@ import {
   getCategoryLists,
   getLandingPageBanner,
   getOrdersForTable,
+  getproductsForLandingPage,
   getProductsForTable,
   getUsersForTable,
 } from "../api/api";
 
+export function useProducts() {
+  return useInfiniteQuery({
+    queryKey: ["productListsForHome"],
+    queryFn: ({pageParam=1}) => getproductsForLandingPage(pageParam),
+    initialPageParam: 1,
+
+    getNextPageParam: (lastPage, allPages, lastPageParam, allPagesParam) => {
+      return lastPage.hasMore ? lastPageParam+1 : undefined;
+    },
+    getPreviousPageParam: (
+      firstPage,
+      allPages,
+      firstPageParam,
+      allPagesParam
+    ) => {
+      if (firstPageParam <= 1) {
+        return undefined;
+      }
+      return firstPageParam - 1;
+    },
+  });
+}
 export function useFetchProductsForTable(page: number, limit: number) {
   return useQuery({
     queryKey: ["productListsForTable", { page }],

@@ -15,8 +15,9 @@ export const countTotalProducts = async () => {
   return await httpService.getRequest("/product/count");
 };
 
-export const getproductsForLandingPage = async () => {
-  return await httpService.getRequest("/product/list-home");
+export const getproductsForLandingPage = async (pageParam:number) => {
+  console.log(`pageparm infine query`,{pageParam});
+  return await httpService.getRequest(`/product/list-home?page=${pageParam}&limit=8`);
 };
 
 export const getCategoryLists = async () => {
