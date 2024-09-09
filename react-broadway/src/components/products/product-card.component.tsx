@@ -40,7 +40,7 @@ const ProductCardComponent = ({product}:any) => {
         </div>
 
         <Link
-          to="/product/:product-name"
+          to={`/product/${product.title}`}
           className="text-lg font-semibold leading-tight text-gray-900 hover:underline dark:text-white"
         >
          {product.title}

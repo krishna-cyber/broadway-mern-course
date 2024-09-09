@@ -163,7 +163,6 @@ class ProductController {
     try {
       const page = +req.query.page || 1;
       const limit = +req.query.limit || 8;
-      console.log(page,limit);
       const {result,hasMore} = await productService.landingPageData(page,limit,{status:"ACTIVE"});
       res.json({
         result,

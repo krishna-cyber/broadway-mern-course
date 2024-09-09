@@ -6,15 +6,8 @@ import { getproductsForLandingPage } from "../../services/api/api";
 import { useProducts } from "../../services/queries/queries";
 
 const ProductViewLandingPage = () => {
-  // const { data, isError, error, isLoading, isFetching } = useQuery({
-  //   queryKey: ["productsForLandingPage"],
-  //   queryFn: getproductsForLandingPage,
-  // });
-
   const { hasNextPage, data, fetchNextPage, isFetching, isFetchingNextPage } =
     useProducts();
-
-  // console.log(data?.result);
 
   return (
     <section className="bg-gray-50 py-8 antialiased dark:bg-gray-900 md:py-2">
@@ -24,25 +17,35 @@ const ProductViewLandingPage = () => {
         </h2>
 
         <div className="mb-4 grid gap-4 sm:grid-cols-2 md:mb-8 lg:grid-cols-3 xl:grid-cols-4">
-          {data?.pages.map((page:any)=>
-          page.result.map((product:any)=>(
-            <ProductCardComponent key={product._id} product={product} />
-          )))}
-        
+          {data?.pages.map((page: any) =>
+            page.result.map((product: any) => (
+              <ProductCardComponent key={product._id} product={product} />
+            ))
+          )}
         </div>
-        {/* show more button */}
+       
         <div className="w-full items-center justify-center flex">
           {hasNextPage && (
-
-          <Button
-            size={"md"}
-            className=" self-center border-gray-200 bg-white px-5 py-2.5  font-semibold text-gray-900 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700"
-            color={""}
-            type="button"
-            onClick={fetchNextPage}
-          >
-            {isFetchingNextPage ? "Loading..." : "Show More"}
-          </Button>
+            <Button
+              size={"md"}
+              className=" self-center border-gray-200 bg-white px-5 py-2.5  font-semibold text-gray-900 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700"
+              color={""}
+              type="button"
+              onClick={fetchNextPage}
+            >
+              {isFetchingNextPage ? "Loading..." : "Show More"}
+            </Button>
+          )}
+          {!hasNextPage && (
+            <Button
+              size={"md"}
+              className=" self-center border-gray-200 bg-white px-5 py-2.5  font-semibold text-gray-900 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700"
+              color={""}
+              type="button"
+              disabled
+            >
+              No more products to show
+            </Button>
           )}
         </div>
       </div>
