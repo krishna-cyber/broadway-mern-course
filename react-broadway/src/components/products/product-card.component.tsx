@@ -3,9 +3,16 @@ import { AiOutlineEye } from "react-icons/ai";
 import { FaCartPlus, FaDollarSign } from "react-icons/fa";
 import { GrDeliver } from "react-icons/gr";
 import {  HiOutlineHeart } from "react-icons/hi";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
+import { selectProduct } from "../../store/reducer/productView.reducer";
+
 
 const ProductCardComponent = ({product}:any) => {
+  const dispatch = useDispatch();
+  const handleSelectProduct = () => {
+    dispatch(selectProduct(product._id));
+  }
   return (
     <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800">
       <div className="h-56 w-full">
@@ -43,7 +50,9 @@ const ProductCardComponent = ({product}:any) => {
           to={`/product/${product.title}`}
           className="text-lg font-semibold leading-tight text-gray-900 hover:underline dark:text-white"
         >
+          <Button color={""} size={"xxl"} onClick={handleSelectProduct}>
          {product.title}
+          </Button>
         </Link>
         <Rating>
           <Rating.Star />
@@ -80,7 +89,7 @@ const ProductCardComponent = ({product}:any) => {
           </p>
 
 
-            <Button color={"blue"} size={"sm"}>
+            <Button color={"blue"} size={"sm"}  >
               <FaCartPlus className="h-5 w-5 mr-3" />
               Add to cart
             </Button>

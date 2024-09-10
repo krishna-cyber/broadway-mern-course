@@ -12,6 +12,7 @@ import {
   getCategoryLists,
   getLandingPageBanner,
   getOrdersForTable,
+  getProductsById,
   getproductsForLandingPage,
   getProductsForTable,
   getUsersForTable,
@@ -44,6 +45,12 @@ export function useFetchProductsForTable(page: number, limit: number) {
     queryKey: ["productListsForTable", { page }],
     queryFn: () => getProductsForTable(page, limit),
     placeholderData: keepPreviousData,
+  });
+}
+export function useFetchProductById(id: string) {
+  return useQuery({
+    queryKey: ["product", { id }],
+    queryFn: () => getProductsById(id),
   });
 }
 export function useFetchLandingPageBanners() {

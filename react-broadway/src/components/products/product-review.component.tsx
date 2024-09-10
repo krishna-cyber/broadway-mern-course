@@ -3,7 +3,8 @@ import UserReview from "./product-single-review.component";
 import { HiStar } from "react-icons/hi2";
 import ProductReviewForm from "./product-review-form.component";
 
-const ProductReview = () => {
+const ProductReview = ({productId}) => {
+  console.log(productId)
   return (
     <>
       <section className="bg-white py-8 antialiased dark:bg-gray-900 md:py-16">

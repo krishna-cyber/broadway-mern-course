@@ -1,8 +1,5 @@
-import React from "react";
 import ProductCardComponent from "./product-card.component";
 import { Button } from "flowbite-react";
-import { useQuery } from "@tanstack/react-query";
-import { getproductsForLandingPage } from "../../services/api/api";
 import { useProducts } from "../../services/queries/queries";
 
 const ProductViewLandingPage = () => {

@@ -2,6 +2,7 @@ import { createSlice, Slice } from "@reduxjs/toolkit";
 
 const initialState = {
   cart: null,
+  wishList: null,
 };
 
 export const cartSlice: Slice = createSlice({
@@ -12,6 +13,10 @@ export const cartSlice: Slice = createSlice({
       // Add user to the state array
       state.cart = action.payload;
     },
+    addItemsToWishList: (state, action) => {
+      // Add user to the state array
+      state.cart = action.payload;
+    }
   },
 });
 

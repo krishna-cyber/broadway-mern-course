@@ -14,6 +14,9 @@ export const getProductsForTable = async (page:number,limit:number) => {
 export const countTotalProducts = async () => {
   return await httpService.getRequest("/product/count");
 };
+export const getProductsById = async (id: string) => {
+  return await httpService.getRequest(`/product/${id}`);
+}
 
 export const getproductsForLandingPage = async (pageParam:number) => {
   console.log(`pageparm infine query`,{pageParam});
