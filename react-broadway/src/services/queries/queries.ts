@@ -12,7 +12,7 @@ import {
   getCategoryLists,
   getLandingPageBanner,
   getOrdersForTable,
-  getProductsById,
+  getProductsByName,
   getproductsForLandingPage,
   getProductsForTable,
   getUsersForTable,
@@ -47,10 +47,10 @@ export function useFetchProductsForTable(page: number, limit: number) {
     placeholderData: keepPreviousData,
   });
 }
-export function useFetchProductById(id: string) {
+export function useFetchProductByName(name: string) {
   return useQuery({
-    queryKey: ["product", { id }],
-    queryFn: () => getProductsById(id),
+    queryKey: ["product", { name }],
+    queryFn: () => getProductsByName(name),
   });
 }
 export function useFetchLandingPageBanners() {

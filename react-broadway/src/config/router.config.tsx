@@ -35,6 +35,7 @@ import UserEdit from "../pages/users/user-edit.page copy";
 import { CategoryCreate, CategoryEdit, CategoryList } from "../pages/category";
 import { BrandCreate, BrandEdit, BrandList } from "../pages/brand";
 import { OrderList } from "../pages/order";
+import CartPage from "../pages/cart/cart.page";
 
 const RouterConfig = () => {
   // const [loggedInUser, setLoggedInUser] = useState(null);
@@ -70,6 +71,7 @@ const RouterConfig = () => {
               <Route path="/categories" element={<div>category</div>} />
               <Route path="/product/:productName" element={<ProductPage />} />
               <Route path="/category/:slug" element={<CategoryDetail />} />
+              <Route path = "/cart" element = {<CartPage/>}/>
             </Route>
 
             {/* Admin dashboard routes */}

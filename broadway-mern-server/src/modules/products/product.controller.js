@@ -102,11 +102,11 @@ class ProductController {
   };
   viewProduct = async (req, res, next) => {
     try {
-      const id = req.params.id;
-      if (!id) {
-        throw { statusCode: 400, message: "Id is required" };
+      const productName = req.params.product;
+      if (!productName) {
+        throw { statusCode: 400, message: "productName is required" };
       }
-      const productDetail = await productService.getDetailByFilter({ _id: id });
+      const productDetail = await productService.getDetailByFilter({ title: productName });
       if (!productDetail) {
         throw { statusCode: 404, message: "product not found" };
       }

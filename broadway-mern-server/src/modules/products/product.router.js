@@ -21,7 +21,7 @@ router.route('/')
     .get(loginCheck,hasPermission(['admin','seller']),productController.listForTable)
     .post(loginCheck,hasPermission(['admin','seller']), setPath('products'),uploadFile().single('image'),bodyValidator(productCreateDTO),productController.createProduct);
 
-    router.route('/:id')
+    router.route('/:product')
     .get(productController.viewProduct)
     .put(loginCheck,hasPermission(['admin','seller']), setPath('banners'),bodyValidator(productUpdateDTO),productController.editProduct)
     .delete(loginCheck,hasPermission(['admin','seller']),productController.deleteProduct);

@@ -1,13 +1,14 @@
 import ProductReview from '../../components/products/product-review.component'
 
 import ProductOverview from '../../components/products/product-overview.component'
-import { useSelector } from 'react-redux';
-import { useFetchProductById } from '../../services/queries/queries';
+import {  useFetchProductByName } from '../../services/queries/queries';
 import { ErrorPage } from '../error/error.page';
+import { useParams } from 'react-router-dom';
 
 const ProductPage = () => {
-  const { product } = useSelector((state: any) => state.productView);
-  const { data, isLoading, isError } = useFetchProductById(product);
+  const {productName}= useParams();
+  
+  const { data, isLoading, isError } = useFetchProductByName(productName);
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -20,7 +21,7 @@ const ProductPage = () => {
     return (
     <>
      <ProductOverview product = {data?.result}/>
-    <ProductReview productId ={product} />
+    <ProductReview productId ={data?.result._id} />
     </>
     
     );
