@@ -3,7 +3,7 @@ import { Button } from "flowbite-react";
 import { useProducts } from "../../services/queries/queries";
 
 const ProductViewLandingPage = () => {
-  const { hasNextPage, data, fetchNextPage, isFetching, isFetchingNextPage } =
+  const { hasNextPage, data, fetchNextPage,  isFetchingNextPage } =
     useProducts();
 
   return (

@@ -6,12 +6,16 @@ import {  HiOutlineHeart } from "react-icons/hi";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { selectProduct } from "../../store/reducer/productView.reducer";
+import { useSelector } from "react-redux";
+import { addToCart } from "../../store/reducer/cart.reducer";
 
 
 const ProductCardComponent = ({product}:any) => {
+  const {loggedInUser} = useSelector((state: any) => state.user);
   const dispatch = useDispatch();
-  const handleSelectProduct = () => {
-    dispatch(selectProduct(product._id));
+ 
+  const handleCartItems = () => {
+    dispatch(addToCart(product));
   }
   return (
     <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800">
@@ -50,7 +54,7 @@ const ProductCardComponent = ({product}:any) => {
           to={`/product/${product.title}`}
           className="text-lg font-semibold leading-tight text-gray-900 hover:underline dark:text-white"
         >
-          <Button color={""} size={"xxl"} onClick={handleSelectProduct}>
+          <Button color={""} size={"xxl"} >
          {product.title}
           </Button>
         </Link>
@@ -89,7 +93,7 @@ const ProductCardComponent = ({product}:any) => {
           </p>
 
 
-            <Button color={"blue"} size={"sm"}  >
+            <Button disabled={!(loggedInUser.role=='customer')} onClick={handleCartItems} color={"blue"} size={"sm"}  >
               <FaCartPlus className="h-5 w-5 mr-3" />
               Add to cart
             </Button>

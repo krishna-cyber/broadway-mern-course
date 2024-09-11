@@ -8,11 +8,13 @@ import { Badge } from "flowbite-react";
 import { useSelector } from "react-redux";
 
 const Header = () => {
+  const items = useSelector((state: any) => state.cart.items);
+ 
   
   const {loggedInUser} = useSelector((state: any) => state.user);
   // let {loggedInUser}:any = useContext(AuthContext);
   return (
-    <Navbar fluid rounded className=" p-4 shadow-2xl">
+    <Navbar fluid rounded className=" p-4 shadow-2xl sticky top-0 z-10">
       <Navbar.Brand href="#">
         <img
           src={logo_full}
@@ -35,7 +37,7 @@ const Header = () => {
                 
               <CiShoppingCart className="text-2xl" />
               <Badge  className="relative bg-red-500 -top-8 -right-4 text-xs">
-          {3}
+      {items.length}
         </Badge>
             </NavLink>
           )}
