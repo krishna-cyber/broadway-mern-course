@@ -15,7 +15,7 @@ import LoadingPage from "../loading/loading.page";
 
 const ProductEdit = () => {
   const params = useParams();
-  const [loading,setLoading]  = useState(true);
+  const [loading,setLoading]  = useState(false);
   const ProductEditDTO = yup.object({
     title: yup
       .string()

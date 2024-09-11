@@ -15,7 +15,7 @@ import LoadingPage from "../loading/loading.page";
 
 const BannerEdit = () => {
   const params = useParams();
-  const [loading,setLoading]  = useState(true);
+  const [loading,setLoading]  = useState(false);
   const BannerEditDTO = yup.object({
     title: yup
       .string()

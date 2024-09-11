@@ -1,4 +1,3 @@
-import { AxiosResponse } from "axios";
 import { axiosInstance } from "../config/axios.config";
 import { SearchParams } from "../config/constants";
 
@@ -43,7 +42,6 @@ interface HeaderConfigProps {
     if (config && config.params) {
       this.params = { ...config.params };
     }
-    console.log(`header set `, this.headers);
   };
   postRequest = async (url: string, data: any = {}, config: any = null) => {
     try {
@@ -52,7 +50,6 @@ interface HeaderConfigProps {
         headers: { ...this.headers },
       });
 
-      console.log("success post request", response);
       return response;
     } catch (error) {
       throw error;
@@ -60,7 +57,6 @@ interface HeaderConfigProps {
   };
   getRequest = async (url: string, config: any = null) => {
     try {
-      console.log("get request http service", url, config);
       this.#setHeaders(config);
 
       //TODO params for get request
@@ -69,10 +65,8 @@ interface HeaderConfigProps {
         params: { ...this.params },
       });
 
-      console.log("success get request http service", response);
       return response;
     } catch (error: any) {
-      console.log("get request error", error);
       throw error?.data;
     }
   };
@@ -88,12 +82,10 @@ interface HeaderConfigProps {
 
       return response;
     } catch (error: any) {
-      console.log("delete request error", error);
       throw error?.data;
     }
   };
   patchRequest = async (url: string, data: any = {}, config: any = null) => {
-    console.log("post request httprequest", url, data, config);
 
     try {
       this.#setHeaders(config);
@@ -102,7 +94,6 @@ interface HeaderConfigProps {
         params: { ...this.params },
       });
 
-      console.log("success post request", response);
       return response;
     } catch (error) {
       throw error;

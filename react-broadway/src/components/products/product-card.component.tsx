@@ -93,7 +93,7 @@ const ProductCardComponent = ({product}:any) => {
           </p>
 
 
-            <Button disabled={!(loggedInUser.role=='customer')} onClick={handleCartItems} color={"blue"} size={"sm"}  >
+            <Button disabled={loggedInUser &&!(loggedInUser.role=='customer')} onClick={handleCartItems} color={"blue"} size={"sm"}  >
               <FaCartPlus className="h-5 w-5 mr-3" />
               Add to cart
             </Button>
