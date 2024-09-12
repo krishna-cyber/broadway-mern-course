@@ -25,14 +25,25 @@ class BannerService{
     }
     getDetailByFilter = async (filter)=>{
         try {
-            const bannerDetail = await BannerModel.findByIdAndDelete(filter, { new: true });
+            const bannerDetail = await BannerModel.find(filter);
           console.log(bannerDetail);
             return bannerDetail;
         } catch (exception) {
             throw exception;
         }
     }
+getDetailById = async (id)=>{
 
+    try {
+        const bannerDetail = await BannerModel.findById(id);
+        if(!bannerDetail){
+            throw {statusCode:404,message:"Banner not found"};
+        }
+        return bannerDetail;
+    } catch (exception) {
+        throw exception;
+    }
+}
     deleteById = async (id)=>{
         try {
         const response = await BannerModel.findByIdAndDelete(id);

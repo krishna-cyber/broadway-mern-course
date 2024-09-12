@@ -1,6 +1,5 @@
 import { Badge, Checkbox, Pagination, Table } from "flowbite-react";
 import RowSkeleton from "../common/table/row-skeleton.component";
-
 import TableActionButtons from "../common/table/table-action-buttons.component";
 import { NavLink } from "react-router-dom";
 import { useFetchBannersForTable } from "../../services/queries/queries";
@@ -9,7 +8,7 @@ import { useDeleteBanner } from "../../services/mutations/mutations";
 
 const BannerTable = () => {
   const [page, setpage] = useState(1);
-  const bannersDataForTable = useFetchBannersForTable(page, 5); //current page and limit
+  const bannersDataForTable = useFetchBannersForTable(page, 5);    //current page and limit
   const deleteBannerById = useDeleteBanner();
 
   const onPageChange = (page: number) => setpage(page);

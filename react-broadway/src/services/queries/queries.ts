@@ -6,6 +6,7 @@ import {
 } from "@tanstack/react-query";
 import {
   getAllCategories,
+  getBannerById,
   getBannersForTable,
   getBrandsForTable,
   getCategoryForTable,
@@ -91,6 +92,14 @@ export function useFetchBannersForTable(page: number, limit: number) {
     placeholderData: keepPreviousData,
   });
 }
+export function useFetchBannerById(id: string) {
+  return useQuery({
+    queryKey: ["banner", { id }],
+    queryFn: () => getBannerById(id),
+    
+  });
+}
+
 
 export function useFetchBrandsForTable(page: number, limit: number) {
   return useQuery({

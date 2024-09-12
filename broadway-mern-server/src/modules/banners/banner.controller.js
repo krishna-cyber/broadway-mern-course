@@ -84,7 +84,7 @@ class BannerController{
                         if(!id){
                                 throw {statusCode:400,message:"Id is required"};
                         }
-                        const bannerDetail = await BannerService.getDetailByFilter({_id:id});
+                        const bannerDetail = await bannerService.getDetailById({_id:id});
                         if(!bannerDetail){
                                 throw {statusCode:404,message:"Banner not found"};
                         }

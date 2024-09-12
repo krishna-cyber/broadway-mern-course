@@ -1,13 +1,8 @@
 import { Badge, Checkbox, Pagination, Table } from "flowbite-react";
-import { useCallback, useEffect, useState } from "react";
+import {   useState } from "react";
 import RowSkeleton from "../common/table/row-skeleton.component";
-import { toast } from "react-toastify";
-import httpService from "../../services/http.service";
-import { SearchParams } from "../../config/constants";
-
 import TableActionButtons from "../common/table/table-action-buttons.component";
 import { NavLink } from "react-router-dom";
-
 import { useFetchProductsForTable } from "../../services/queries/queries";
 import { useDeleteProduct } from "../../services/mutations/mutations";
 
@@ -19,7 +14,6 @@ const ProductTable = () => {
 
   const paginationChange = (page: number) => {
     setCurrentPage(page);
-    console.log("Page: ", page);
   };
 
 

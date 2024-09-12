@@ -21,10 +21,9 @@ const TableActionButtons = ({
   const [openModal, setOpenModal] = useState(false);
   return (
     <>
-      <NavLink  to={editUrl}>
+      <NavLink to={editUrl}>
         <Button
           color={"green"}
-          
           className=" bg-green-600 w-fit text-white hover:text-black"
         >
           <HiPencil className=" h-4 w-4" />

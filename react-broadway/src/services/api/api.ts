@@ -54,6 +54,9 @@ export const createCategory = async (data: any) => {
 export const getBannersForTable = async (page:number,limit:number) => {
   return await httpService.getRequest(`/banner?page=${page}&limit=${limit}`, { auth: true });
 };
+export const getBannerById = async (id: string) => {
+  return await httpService.getRequest(`/banner/${id}`,{auth:true});
+}
 
 export const getUsersForTable = async (page:number=1,limit:number=5) => {
   return await httpService.getRequest(`/users?page=${page}&limit=${limit}`, { auth: true });
