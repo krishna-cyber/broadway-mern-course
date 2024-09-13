@@ -4,8 +4,10 @@ import RowSkeleton from "../common/table/row-skeleton.component";
 
 import TableActionButtons from "../common/table/table-action-buttons.component";
 import { useFetchUsers } from "../../services/queries/queries";
+import { useSelector } from "react-redux";
 
 const UserTable = () => {
+  const {loggedInUser} = useSelector((state: any) => state.user);
   const [currentPage, setCurrentPage] = useState(1);
 
   const { data, isLoading, isError } = useFetchUsers(currentPage, 5);
@@ -81,7 +83,7 @@ const UserTable = () => {
 
                     <Table.Cell className=" flex gap-3">
                       <TableActionButtons
-                        editUrl={`/admin/banner/edit/${data._id}`}
+                        editUrl={`/${loggedInUser?.role}/banner/edit/${data._id}`}
                         deleteAction={removeUser}
                         rowId={data._id}
                       />

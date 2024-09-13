@@ -99,7 +99,6 @@ export const createBanner = async (data: any) => {
 };
 
 export const updateBanner = async ({ id, ...data }: any) => {
-  console.log(`data before update banner `, data);
 
   return await httpService.patchRequest(`/banner/${id}`, data, {
     auth: true,
@@ -107,8 +106,18 @@ export const updateBanner = async ({ id, ...data }: any) => {
   });
 };
 
-export const updateProduct = async (data: any) => {};
-export const updateCategory = async (data: any) => {};
+export const updateProduct = async ({id,...data}: any) => {
+  return await httpService.patchRequest(`/product/${id}`, data, {
+    auth: true,
+    file: true,
+  });
+};
+export const updateCategory = async ({id,...data}: any) => {
+  return await httpService.patchRequest(`/category/${id}`, data, {
+    auth: true,
+    file: true,
+  });
+};
 
 export const updateUser = async (data: any) => {};
 

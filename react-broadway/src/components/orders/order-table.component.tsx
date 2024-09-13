@@ -4,8 +4,10 @@ import RowSkeleton from "../common/table/row-skeleton.component";
 import { useState } from "react";
 import { DateTime } from "luxon";
 import { useFetchOrdersList } from "../../services/queries/queries";
+import { useSelector } from "react-redux";
 
 const OrderTable = () => {
+  const {loggedInUser} = useSelector((state: any) => state.user);
   const [page, setpage] = useState(1);
   const {data,isLoading,isError} = useFetchOrdersList();
   const sampleOrders = [

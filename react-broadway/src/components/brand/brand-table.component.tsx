@@ -7,8 +7,10 @@ import TableActionButtons from "../common/table/table-action-buttons.component";
 import { NavLink } from "react-router-dom";
 import { useFetchBrandsForTable } from "../../services/queries/queries";
 import { useDeleteBrand } from "../../services/mutations/mutations";
+import { useSelector } from "react-redux";
 
 const BrandTable = () => {
+  const {loggedInUser} = useSelector((state: any) => state.user);
   const [currentPage, setCurrentPage] = useState(1);
   const { data, isLoading, isError } = useFetchBrandsForTable(currentPage,5);
   const deleteBrand = useDeleteBrand();
@@ -82,7 +84,7 @@ const BrandTable = () => {
                     </Table.Cell>
                     <Table.Cell className=" flex gap-3">
                       <TableActionButtons
-                        editUrl={`/admin/banner/edit/${data._id}`}
+                        editUrl={`/${loggedInUser?.role}/banner/edit/${data._id}`}
                         deleteAction={deleteBanner}
                         rowId={data._id}
                       />

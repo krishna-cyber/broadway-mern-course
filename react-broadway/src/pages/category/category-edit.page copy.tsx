@@ -15,17 +15,15 @@ import LoadingPage from "../loading/loading.page";
 
 const CategoryEdit = () => {
   const params = useParams();
-  const [loading,setLoading]  = useState(true);
   const CategoryEditDTO = yup.object({
     title: yup
       .string()
       .min(3, "Title must be at least 3 charactes.")
       .max(50)
-      .required(),
-    description: yup.string().min(10).max(500).required(),
+      .optional(),
+    description: yup.string().min(10).max(500).optional(),
     link: yup.string().url().nullable().optional().default(null),
-    status: yup.string().oneOf(["active", "inactive"]).required(),
-    image: yup.mixed().required(),
+    status: yup.string().oneOf(["active", "inactive"]).optional(),
   });
   
   const {
@@ -112,7 +110,7 @@ const CategoryEdit = () => {
                 Active Status
               </Label>
               <div className="max-w-md">
-                <Select {...register("status")} id="status" required>
+                <Select {...register("status")} id="status" optional>
                   <option>active</option>
                   <option>inactive</option>
                 </Select>

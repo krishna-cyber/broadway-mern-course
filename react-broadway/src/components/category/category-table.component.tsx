@@ -14,9 +14,10 @@ import TableActionButtons from "../common/table/table-action-buttons.component";
 import { NavLink } from "react-router-dom";
 import { useFetchCategoryForTable } from "../../services/queries/queries";
 import { useDeleteCategory } from "../../services/mutations/mutations";
+import { useSelector } from "react-redux";
 
 const CategoryTable = () => {
-
+  const {loggedInUser} = useSelector((state: any) => state.user);
   const [currentPage, setCurrentPage] = useState(1);
 
 const categoryList = useFetchCategoryForTable(currentPage,5);
@@ -71,7 +72,7 @@ const deleteBanner = useDeleteCategory()
                     </Table.Cell>
                 
                     <Table.Cell className=" flex gap-3">
-                      <TableActionButtons editUrl={`/admin/banner/edit/${data?._id}`} deleteAction={deleteCategory} rowId={data?._id} />
+                      <TableActionButtons editUrl={`/${loggedInUser?.role}/category/edit/${data?._id}`} deleteAction={deleteCategory} rowId={data?._id} />
                     
                     </Table.Cell>
                   </Table.Row>

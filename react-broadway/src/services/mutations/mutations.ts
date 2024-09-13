@@ -15,6 +15,8 @@ import {
   // editProduct,
   // editUser,
   updateBanner,
+  updateCategory,
+  updateProduct,
 } from "../api/api";
 import { toast } from "react-toastify";
 
@@ -108,10 +110,10 @@ export function useCreateCategory() {
   });
 }
 
-export function useEditProduct() {
+export function useUpdateParoduct() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (data) => editProduct(data),
+    mutationFn: (data) => updateProduct(data),
     onSettled: (data, error, variables, context) => {
       console.log("on settled");
       if (error) {
@@ -125,7 +127,7 @@ export function useEditProduct() {
   });
 }
 
-export function useeditUser() {
+export function useUpdateUser() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (data) => editUser(data),
@@ -161,7 +163,7 @@ export function useUpdateBanner() {
   });
 }
 
-export function useeditBrand() {
+export function useUpdateBrand() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (data) => editBanner(data),
@@ -178,10 +180,10 @@ export function useeditBrand() {
   });
 }
 
-export function useeditCategory() {
+export function useUpdateCategory() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (data) => editCategory(data),
+    mutationFn: (data) => updateCategory(data),
     onSettled: (data, error, variables, context) => {
       console.log("on settled");
       if (error) {

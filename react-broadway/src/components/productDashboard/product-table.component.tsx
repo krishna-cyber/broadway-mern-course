@@ -5,8 +5,10 @@ import TableActionButtons from "../common/table/table-action-buttons.component";
 import { NavLink } from "react-router-dom";
 import { useFetchProductsForTable } from "../../services/queries/queries";
 import { useDeleteProduct } from "../../services/mutations/mutations";
+import { useSelector } from "react-redux";
 
 const ProductTable = () => {
+  const {loggedInUser} = useSelector((state: any) => state.user);
   const [currentPage, setCurrentPage] = useState(1);
   const { data,isLoading } = useFetchProductsForTable(currentPage, 5);
   const deleteProduct = useDeleteProduct();
@@ -87,7 +89,7 @@ const ProductTable = () => {
                     </Table.Cell>
                     <Table.Cell className=" flex gap-3">
                       <TableActionButtons
-                        editUrl={`/admin/banner/edit/${data._id}`}
+                        editUrl={`/${loggedInUser?.role}/product/edit/${data._id}`}
                         deleteAction={deleteById}
                         rowId={data._id}
                       />

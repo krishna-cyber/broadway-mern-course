@@ -5,8 +5,10 @@ import { NavLink } from "react-router-dom";
 import { useFetchBannersForTable } from "../../services/queries/queries";
 import { useState } from "react";
 import { useDeleteBanner } from "../../services/mutations/mutations";
+import { useSelector } from "react-redux";
 
 const BannerTable = () => {
+  const {loggedInUser} = useSelector((state: any) => state.user);
   const [page, setpage] = useState(1);
   const bannersDataForTable = useFetchBannersForTable(page, 5);    //current page and limit
   const deleteBannerById = useDeleteBanner();
@@ -73,7 +75,7 @@ const BannerTable = () => {
                       </Table.Cell>
                       <Table.Cell className=" flex gap-3">
                         <TableActionButtons
-                          editUrl={`/admin/banner/edit/${data._id}`}
+                          editUrl={`/${loggedInUser?.role}/banner/edit/${data._id}`}
                           deleteAction={deleteBanner}
                           rowId={data._id}
                         />
