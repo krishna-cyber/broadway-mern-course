@@ -110,7 +110,7 @@ class BannerController{
                         }
                        console.log(data,id)
                         if(image){
-                                const imageUrl = await uploadImage(`./public/uploads/banner/${image.filename}`);
+                                const imageUrl = await uploadImage(`./public/uploads/${req.uploadPath}/${image.filename}`);
                                 data.image = imageUrl;
                                 deleteFile(`./public/uploads/banner/${image.filename}`);
                         }

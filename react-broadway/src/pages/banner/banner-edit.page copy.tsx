@@ -56,7 +56,7 @@ const BannerEdit = () => {
     await updateBanner.mutate(data, {
       onSuccess: (data) => {
         navigate(`/${loggedInUser?.role}/banner-lists`);
-        toast.success(`Banner Update successfully`);
+        toast.success(`${data?.message}`);
       },
     });
   };
@@ -128,8 +128,9 @@ const BannerEdit = () => {
                 <div>
                   <Label htmlFor="image" value="Upload file" />
                 </div>
+
                 <FileInput
-                  {...register("image")}
+                  onChange={(e: any) => setValue("image", e.target.files[0])}
                   id="image"
                   helperText="SVG, PNG, JPG or GIF (MAX. 800x400px)."
                 />
@@ -143,6 +144,7 @@ const BannerEdit = () => {
             </div>
             <Button
               type="submit"
+              isProcessing={updateBanner.isPending}
               disabled={updateBanner.isPending}
               color={""}
               size={"xs"}
