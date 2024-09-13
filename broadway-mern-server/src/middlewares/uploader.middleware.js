@@ -34,7 +34,6 @@ const uploadFile = (fileType = fileFilterType.IMAGE) => {
     storage: storage,
     fileFilter: (req, file, cb) => {
       let fileExt = file.originalname.split(".").pop(); //maybe sometimes mahe uppercase extension
-        console.log(fileExt);
       if (allowedExt.includes(fileExt.toLowerCase())) {
         cb(null, true);
       } else {

@@ -19,7 +19,8 @@ router.route('/')
 
     router.route('/:id')
     .get(loginCheck,hasPermission(['admin']),bannerController.getSingleBannerById)
-    .put(loginCheck,hasPermission(['admin']), setPath('banners'),bodyValidator(BannerUpdateDTO),bannerController.updateSingleBannerById)
+    .put(loginCheck,hasPermission(['admin']), setPath('banners'),uploadFile().single('image'),bodyValidator(BannerUpdateDTO),bannerController.updateSingleBannerById)
+    .patch(loginCheck,hasPermission(['admin']), setPath('banners'),uploadFile().single('image'),bodyValidator(BannerUpdateDTO),bannerController.updateSingleBannerById)
     .delete(loginCheck,hasPermission(['admin']),bannerController.deleteSingleBannerById);
 
 module.exports = router;

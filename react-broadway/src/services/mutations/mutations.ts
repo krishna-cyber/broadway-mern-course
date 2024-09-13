@@ -10,10 +10,11 @@ import {
   deleteCategory,
   deleteProduct,
   deleteUser,
-  editBanner,
-  editCategory,
-  editProduct,
-  editUser,
+  // editBanner,
+  // editCategory,
+  // editProduct,
+  // editUser,
+  updateBanner,
 } from "../api/api";
 import { toast } from "react-toastify";
 
@@ -61,7 +62,6 @@ export function useCreateBanner() {
   return useMutation({
     mutationFn: (data) => createBanner(data),
     onSettled: (data, error, variables, context) => {
-      console.log("on settled");
       if (error) {
         console.log("Error occured creating Banner");
       } else {
@@ -142,18 +142,20 @@ export function useeditUser() {
   });
 }
 
-export function useeditBanner() {
+export function useUpdateBanner() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (data) => editBanner(data),
-    onSettled: (data, error, variables, context) => {
-      console.log("on settled");
+    mutationFn: (data) => updateBanner(data),
+    onSettled: async (data, error, variables, context) => {
       if (error) {
-        console.log("Error occured creating product");
+        console.log("Error occured updating banner");
       } else {
-        queryClient.invalidateQueries({
-          queryKey: ["productLists"],
+      await   queryClient.invalidateQueries({
+          queryKey: ["bannerListsForTable"],
         });
+        await queryClient.invalidateQueries({
+          queryKey : ["banner", { id:variables?.id }]
+        })
       }
     },
   });

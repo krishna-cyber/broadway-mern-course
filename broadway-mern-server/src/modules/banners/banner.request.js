@@ -12,9 +12,9 @@ const BannerCreateDTO = joi.object({
 });
 
 const BannerUpdateDTO= joi.object({
-    title : joi.string().min(3).max(50).required(),
+    title : joi.string().min(3).max(50).optional(),
     link : joi.string().uri().empty(null,'').optional().default(null),
-    status : joi.string().valid(...Object.values(statusType)).required(),
+    status : joi.string().valid(...Object.values(statusType)).optional(),
     image: joi.string(),
     description: joi.string().empty(null,'').optional().default(null)
 });

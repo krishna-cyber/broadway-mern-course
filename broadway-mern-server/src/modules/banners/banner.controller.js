@@ -100,14 +100,15 @@ class BannerController{
         }
         updateSingleBannerById = async (req,res,next)=>{
                 // get banner by id , validate and update banner details
+                const data = req.body;
+                const image = req.file;
+                
                 try {
-                        const id = req.params.id;
+                        const {id} = req.params;
                         if(!id){
                                 throw {statusCode:400,message:"Id is required"};
                         }
-                        const data = req.body;
-                        const image = req.file;
-                       
+                       console.log(data,id)
                         if(image){
                                 const imageUrl = await uploadImage(`./public/uploads/banner/${image.filename}`);
                                 data.image = imageUrl;

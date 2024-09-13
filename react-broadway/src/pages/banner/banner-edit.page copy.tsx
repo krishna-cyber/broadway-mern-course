@@ -7,14 +7,16 @@ import { set, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { GrSend } from "react-icons/gr";
-import { DateTime } from "luxon";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import LoadingPage from "../loading/loading.page";
 import { useFetchBannerById } from "../../services/queries/queries";
+import { useUpdateBanner } from "../../services/mutations/mutations";
+import { useSelector } from "react-redux";
 
 const BannerEdit = () => {
+  const { loggedInUser } = useSelector((state: any) => state.user);
   const params = useParams();
   const {
     data: bannerData,
@@ -23,19 +25,17 @@ const BannerEdit = () => {
     isSuccess,
     error,
   } = useFetchBannerById(params.id);
-
-  
-  const [loading, setLoading] = useState(false);
+  const updateBanner = useUpdateBanner();
+  const navigate = useNavigate();
   const BannerEditDTO = yup.object({
     title: yup
-    .string()
-    .min(3, "Title must be at least 3 charactes.")
+      .string()
+      .min(3, "Title must be at least 3 charactes.")
       .max(50)
       .required(),
-    description: yup.string().min(10).max(500).required(),
     link: yup.string().url().nullable().optional().default(null),
     status: yup.string().oneOf(["active", "inactive"]).required(),
-    image: yup.mixed().required(),
+    image: yup.mixed().optional(),
   });
 
   const {
@@ -48,24 +48,17 @@ const BannerEdit = () => {
     resolver: yupResolver(BannerEditDTO),
   });
 
-  const getDetailsOfBanner = async (id: string) => {
-    try {
-    } catch (error) {
-      toast.error("Error fetching product details");
-      console.log("Error fetching banner details", error);
+  const onSubmit = async (data: any) => {
+    if (data.image && data.image.length === 0) {
+      delete data.image;
     }
-  };
-
-  const onSubmit = (data: any) => {
-    try {
-      let date = DateTime.now().toISODate();
-      console.log(date);
-      console.log("Banner create data:", data);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      // Todo
-    }
+    data.id = params.id;
+    await updateBanner.mutate(data, {
+      onSuccess: (data) => {
+        navigate(`/${loggedInUser?.role}/banner-lists`);
+        toast.success(`Banner Update successfully`);
+      },
+    });
   };
 
   useEffect(() => {
@@ -81,7 +74,7 @@ const BannerEdit = () => {
         <h2 className="mb-4 text-xl font-bold text-gray-900 dark:text-white">
           Update Banner Details
         </h2>
-        {loading ? (
+        {isLoading ? (
           <LoadingPage />
         ) : (
           <form onSubmit={handleSubmit(onSubmit)}>
@@ -150,6 +143,7 @@ const BannerEdit = () => {
             </div>
             <Button
               type="submit"
+              disabled={updateBanner.isPending}
               color={""}
               size={"xs"}
               className="inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-primary-700 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800"

@@ -7,17 +7,17 @@ interface HeaderConfigProps {
   params?: SearchParams;
 }
 
- class HttpService {
+class HttpService {
   private headers = {};
   private params = {};
 
   #setHeaders = (config: HeaderConfigProps) => {
     // if config null set headers to default application/json
-
     if (!config) {
       this.headers = {
         ...this.headers,
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
+        // "Content-Type": "application/json",
       };
     }
     // if config is auth config set headers to bearer token
@@ -34,7 +34,7 @@ interface HeaderConfigProps {
     if (config && config.file) {
       this.headers = {
         ...this.headers,
-        "Content-Type": "multipart/form-data",
+        'Content-Type': 'multipart/form-data',
       };
     }
 
@@ -77,7 +77,6 @@ interface HeaderConfigProps {
       //TODO params for delete request
       const response = await axiosInstance.delete(url, {
         headers: { ...this.headers },
-       
       });
 
       return response;
@@ -85,13 +84,26 @@ interface HeaderConfigProps {
       throw error?.data;
     }
   };
-  patchRequest = async (url: string, data: any = {}, config: any = null) => {
-
+  putRequest = async (url: string, data: any = {}, config: any = null) => {
     try {
       this.#setHeaders(config);
-      const response = await axiosInstance.patch(url, data, {
+      const response = await axiosInstance.put(url, data, {
         headers: { ...this.headers },
-        params: { ...this.params },
+      });
+
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  };
+  patchRequest = async (url: string, data: any = {}, config: any = null) => {
+    try {
+      this.#setHeaders(config);
+
+      console.log("data", data);
+      console.log("headers", this.headers);
+      const response = await axiosInstance.patch(url, data, {
+        headers: {...this.headers},
       });
 
       return response;
