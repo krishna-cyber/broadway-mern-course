@@ -3,26 +3,32 @@ import {
   TextAreaComponent,
   TextInputComponent,
 } from "../../components/common/form/form.components";
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { GrSend } from "react-icons/gr";
-import { DateTime } from "luxon";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { toast } from "react-toastify";
+import { useNavigate, useParams } from "react-router-dom";
 import LoadingPage from "../loading/loading.page";
+import { useFetchCategoryById } from "../../services/queries/queries";
+import { useUpdateCategory } from "../../services/mutations/mutations";
+import { useSelector } from "react-redux";
 
 const CategoryEdit = () => {
-  const params = useParams();
+  const {loggedInUser} = useSelector((state: any) => state.user);
+  const {id} = useParams();
+  const navigate = useNavigate();
+  const {data:categoryData,isLoading,isSuccess}=useFetchCategoryById(id);
+  const updateCategory=useUpdateCategory();
   const CategoryEditDTO = yup.object({
-    title: yup
+    name: yup
       .string()
-      .min(3, "Title must be at least 3 charactes.")
+      .min(3, "Name must be at least 3 charactes.")
       .max(50)
       .optional(),
-    description: yup.string().min(10).max(500).optional(),
     link: yup.string().url().nullable().optional().default(null),
+    image : yup.mixed().optional(),
+    description : yup.string().optional(),
     status: yup.string().oneOf(["active", "inactive"]).optional(),
   });
   
@@ -31,44 +37,35 @@ const CategoryEdit = () => {
     register,
     handleSubmit,
     watch,
+    setValue, 
     formState: { errors },
   } = useForm({
     resolver: yupResolver(CategoryEditDTO),
   });
 
-  const getDetailsOfBanner = async (id: string) => {
-
-    try {
-      
-    } catch (error) {
-      toast.error("Error fetching banner details");
-      console.log("Error fetching banner details", error);
-    }
-
-  };
-
   const onSubmit = (data: any) => {
-    try {
-        let date = DateTime.now().toISODate();
-        console.log(date);
-        console.log("Banner create data:",data);
-    } catch (error) {
-        console.log(error);
-    }finally{
-        // Todo
+    data.id = id;
+  updateCategory.mutate(data,{
+    onSuccess:()=>{
+      navigate(`/${loggedInUser?.role}/category-lists`);
     }
+  })
   }
 
   useEffect(() => {
-    console.log("Banner edit params", params);
-  }, [params]);
+    if (isSuccess) {
+      setValue("name", categoryData.result.name);
+      setValue("status", categoryData.result.status);
+      setValue("description", categoryData.result.description);
+    }
+  }, [isSuccess]);
   return (
     <section className="bg-white dark:bg-gray-900">
       <div className="py-8 px-4 max-w-2xl lg:py-8">
         <h2 className="mb-4 text-xl font-bold text-gray-900 dark:text-white">
-         Update Banner Details
+         Update category Details
         </h2>
-        {loading ? 
+        {isLoading ? 
         <LoadingPage/>: <form onSubmit={handleSubmit(onSubmit)}>
           <div className="grid gap-4 sm:grid-cols-2 sm:gap-6">
             <div className="sm:col-span-2">
@@ -76,54 +73,30 @@ const CategoryEdit = () => {
                 htmlFor="title"
                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
               >
-                Banner Title
+                category Title
               </Label>
 
               <TextInputComponent
-                name="title"
+                name="name"
                 control={control}
-                placeholder="Banner Title"
-                errMsg={errors.title?.message}
+                placeholder="category Title"
+                errMsg={errors.name?.message}
               />
-            </div>
-            <div className="sm:col-span-2">
-              <Label
-                htmlFor="title"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
-                Link
-              </Label>
-
-              <TextInputComponent
-                name="link"
-                control={control}
-                placeholder="https://"
-                errMsg={errors.link?.message}
-              />
-            </div>
-
-            <div>
-              <Label
-                htmlFor="category"
-                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-              >
-                Active Status
-              </Label>
-              <div className="max-w-md">
-                <Select {...register("status")} id="status" optional>
-                  <option>active</option>
-                  <option>inactive</option>
-                </Select>
-              </div>
             </div>
             <div>
               <div>
                 <Label htmlFor="image" value="Upload file" />
               </div>
               <FileInput
-              {...register("image")}
-                id="image"
-                helperText="SVG, PNG, JPG or GIF (MAX. 800x400px)."
+                  onChange={(e: any) => setValue("image", e.target.files[0])}
+                  id="image"
+                  helperText="SVG, PNG, JPG or GIF (MAX. 800x400px)."
+                />
+             
+                   <img
+               src={`http://localhost:3000/${categoryData.result.image}`} 
+                alt="banner"
+                className="w-400 shadow-xl h-40"
               />
             </div>
 
@@ -144,12 +117,14 @@ const CategoryEdit = () => {
           </div>
           <Button
             type="submit"
+            isProcessing={updateCategory.isPending}
+            disabled={updateCategory.isPending}
             color={""}
             size={"xs"}
             className="inline-flex items-center px-5 py-2.5 mt-4 sm:mt-6 text-sm font-medium text-center text-white bg-primary-700 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800"
           >
               <GrSend className="mr-2 h-5 w-5" />
-           Update Banner
+           Update category
           </Button>
         </form>}
        

@@ -9,6 +9,7 @@ import {
   getBannerById,
   getBannersForTable,
   getBrandsForTable,
+  getCategoryById,
   getCategoryForTable,
   getCategoryLists,
   getLandingPageBanner,
@@ -96,6 +97,13 @@ export function useFetchBannerById(id: string) {
   return useQuery({
     queryKey: ["banner", { id }],
     queryFn: () => getBannerById(id),
+    
+  });
+}
+export function useFetchCategoryById(id: string) {
+  return useQuery({
+    queryKey: ["category", { id }],
+    queryFn: () => getCategoryById(id),
     
   });
 }

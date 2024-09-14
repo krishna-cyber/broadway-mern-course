@@ -1,5 +1,6 @@
 const { uploadImage } = require("../../config/cloudinary.config");
 const { deleteFile } = require("../../utils/helper");
+const CategoryModel = require("./category.model");
 const categoryService = require("./category.service");
 
 class CategoryController {
@@ -7,9 +8,9 @@ class CategoryController {
   create = async (req, res, next) => {
     try {
       const data = req.body;
-      const {path} = req.file;
+      const { path } = req.file;
 
-      data.image = path.replace('public\\','');
+      data.image = path.replace("public\\", "");
       data.createdBy = req.authUser.id;
 
       const response = await categoryService.createCategory(data);
@@ -30,7 +31,7 @@ class CategoryController {
       if (!id) {
         throw { statusCode: 400, message: "Id is required" };
       }
-      this.bannerId = id;
+      this.categoryId = id;
       next();
     } catch (exception) {
       next(exception);
@@ -141,32 +142,46 @@ class CategoryController {
           meta: meta,
         });
       }
-      const { data, meta } = await categoryService.listData(page,limit);
-  
-        res.json({
-          result: data,
-          message: "List of category",
-          meta: meta,
-        });
+      const { data, meta } = await categoryService.listData(page, limit);
+
+      res.json({
+        result: data,
+        message: "List of category",
+        meta: meta,
+      });
     } catch (exception) {
       next(exception);
     }
   };
-  list = async (req,res,next)=>{
+  list = async (req, res, next) => {
     try {
-     
-      const  result  = await categoryService.listAll();
-  
-        res.json({
-          result,
-          message: "All categories",
-          meta: null,
-        });
+      const result = await categoryService.listAll();
 
+      res.json({
+        result,
+        message: "All categories",
+        meta: null,
+      });
     } catch (error) {
-     next(error) 
+      next(error);
     }
-  }
+  };
+  getDetailById = async (req, res, next) => {
+    const id = req.params.id;
+    try {
+      const categoryDetail = await categoryService.getCategoryById({ _id: id });
+      if (!categoryDetail) {
+        throw { statusCode: 404, message: "Category not found" };
+      }
+      res.json({
+        result: categoryDetail,
+        message: "Category detail",
+        meta: null,
+      });
+    } catch (exception) {
+      next(exception);
+    }
+  };
 }
 
 // create object of categoryController

@@ -14,9 +14,8 @@ const categoryCreateDTO = joi.object({
 
 const categoryUpdateDTO= joi.object({
     name : joi.string().min(3).max(50).required(),
-    link : joi.string().uri().empty(null,'').optional().default(null),
-    status : joi.string().valid(...Object.values(statusType)).required(),
-    image: joi.string().optional()
+    image: joi.string().optional(),
+    description: joi.string().min(3).max(100).optional(),
 });
 
 module.exports = {

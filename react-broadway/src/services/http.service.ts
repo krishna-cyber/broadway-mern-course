@@ -100,8 +100,7 @@ class HttpService {
     try {
       this.#setHeaders(config);
 
-      console.log("data", data);
-      console.log("headers", this.headers);
+    
       const response = await axiosInstance.patch(url, data, {
         headers: {...this.headers},
       });

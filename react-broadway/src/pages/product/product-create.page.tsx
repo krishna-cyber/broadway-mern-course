@@ -44,12 +44,7 @@ const ProductCreate = () => {
     { label: "active", value: "active" },
     { label: "inactive", value: "inactive" },
   ];
-  const [loading, setLoading] = useState(false);
-  const [isClearable, setIsClearable] = useState(true);
-  const [isSearchable, setIsSearchable] = useState(true);
-  const [isDisabled, setIsDisabled] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isRtl, setIsRtl] = useState(false);
+ 
   const {
     control,
     handleSubmit,

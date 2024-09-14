@@ -41,9 +41,10 @@ class CategoryService{
         try {
             const result = await CategoryModel.find().select('name image _id');
             // replace _id with id others are same
-            return (
-                result.map(item=>({...item._doc,id:item._doc._id}))
-            )
+            return result.map(item => {
+                const itemObj = item.toObject(); // Convert to plain object
+                return { ...itemObj, id: itemObj._id }; // Add new id field
+            });
             
         } catch (error) {
             throw error;
@@ -51,6 +52,7 @@ class CategoryService{
     }
     getDetailByFilter = async (filter)=>{
         try {
+            console.log(filter);
             const bannerDetail = await CategoryModel.findOne(filter);
             if(!bannerDetail){
                 throw {statusCode:404,message:"Banner not found"};
@@ -77,6 +79,17 @@ class CategoryService{
             const response = await CategoryModel.findByIdAndUpdate(id,data,{new:true});
             if(!response){
                 throw {statusCode:404,message:"Banner not found"};
+            }
+            return response;
+        } catch (exception) {
+            throw exception;
+        }
+    }
+    getCategoryById = async (id)=>{
+        try {
+            const response = await CategoryModel.findById(id);
+            if(!response){
+                throw {statusCode:404,message:"Category not found"};
             }
             return response;
         } catch (exception) {

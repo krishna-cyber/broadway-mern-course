@@ -184,15 +184,17 @@ export function useUpdateCategory() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (data) => updateCategory(data),
-    onSettled: (data, error, variables, context) => {
-      console.log("on settled");
+    onSettled:async  (data, error, variables, context) => {
       if (error) {
         toast.error("Error occured updating Category");
       } else {
         toast.success("Category updated successfully");
-        queryClient.invalidateQueries({
-          queryKey: ["productLists"],
+      await   queryClient.invalidateQueries({
+          queryKey: ["categoryListsForTable"],
         });
+        await queryClient.invalidateQueries({
+          queryKey : ["category", { id:variables?.id }]
+        })
       }
     },
   });
