@@ -1,82 +1,102 @@
-import { Button, Label, FileInput, Select } from "flowbite-react";
+import { Button, Label, FileInput } from "flowbite-react";
 import {
   TextAreaComponent,
   TextInputComponent,
 } from "../../components/common/form/form.components";
-import { Controller, useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { GrSend } from "react-icons/gr";
-import { DateTime } from "luxon";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { toast } from "react-toastify";
-import LoadingPage from "../loading/loading.page";
-import { useFetchAllCategories } from "../../services/queries/queries";
-import { useCreateProduct } from "../../services/mutations/mutations";
+import { useNavigate, useParams } from "react-router-dom";
+import Select from "react-select";
+import {
+  useFetchAllCategories,
+  useFetchProductByName,
+} from "../../services/queries/queries";
+import {
+  useCreateProduct,
+  useUpdateParoduct,
+} from "../../services/mutations/mutations";
+import { useSelector } from "react-redux";
+const ProductUpdateDTO = yup.object({
+  title: yup
+    .string()
+    .min(3, "Title must be at least 3 charactes.")
+    .max(50)
+    .optional(),
+  description: yup.string().min(10).max(500).optional(),
+  // status: yup.string().oneOf(["active", "inactive"]).optional(),
+  status: yup.mixed().optional(),
+  category: yup.array().min(1).optional(),
+  image: yup.mixed().optional(),
+  price: yup.number().optional("Price is optional"),
+  stock: yup.number().optional(),
+  discount: yup.number().optional(),
+});
 
-const ProductEdit = () => {
+const ProductUpdate = () => {
   const params = useParams();
+  const { loggedInUser } = useSelector((state: any) => state.user);
   const categories = useFetchAllCategories();
-  const categoryOptions = (categories.data?.result) ? (categories.data?.result.map((c)=>{
-    return {label:c.name,value:c.id}
-  })) : [];
-  const [loading,setLoading]  = useState(false);
-  const ProductEditDTO = yup.object({
-    title: yup
-      .string()
-      .min(3, "Title must be at least 3 charactes.")
-      .max(50)
-      .optional(),
-    description: yup.string().min(10).max(500).optional(),
-    price: yup.number().optional(),
-    stock: yup.number().optional(),
-    discount: yup.number().optional(),
-    link: yup.string().url().nullable().optional().default(null),
-    status: yup.string().oneOf(["active", "inactive"]).optional(),
-    image: yup.mixed().optional(),
-  });
+  const createProduct = useCreateProduct();
+  const {
+    data: productDetail,
+    isLoading,
+    isSuccess,
+  } = useFetchProductByName(params.name);
+  const updateProduct = useUpdateParoduct();
+  const navigate = useNavigate();
+
+  const categoryOptions = categories.data?.result
+    ? categories.data?.result.map((c) => {
+        return { label: c.name, value: c.id };
+      })
+    : [];
+
   let status = [
-    { label: "active", value: "active" },
-    { label: "inactive", value: "inactive" },
+    { label: "active", value: "ACTIVE" },
+    { label: "inactive", value: "INACTIVE" },
   ];
-  
+
   const {
     control,
-    register,
-  setValue,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(ProductEditDTO),
+    resolver: yupResolver(ProductUpdateDTO),
   });
-
-  const getDetailsOfBanner = async (id: string) => {
-
-    try {
-      
-    } catch (error) {
-      toast.error("Error fetching banner details");
-      console.log("Error fetching banner details", error);
-    }
-
+  const onSubmit = async (data: any) => {
+    const categories = data.category.map((option: any) => option.value);
+    data.category = categories;
+    console.log(`Data to be updated`, data);
+    //   createProduct.mutate(data,{
+    //     onSuccess: ()=>{
+    //       navigate(`/${loggedInUser.role}/product-lists`)
+    //     }
+    //   })
+    //  navigate(`/${loggedInUser.role}/product-lists`);
   };
 
-  const onSubmit = (data: any) => {
-    try {
-        let date = DateTime.now().toISODate();
-        console.log(date);
-        console.log("Banner create data:",data);
-    } catch (error) {
-        console.log(error);
-    }finally{
-        // Todo
-    }
-  }
-
   useEffect(() => {
-    console.log("Banner edit params", params);
-  }, [params]);
+    if (isSuccess) {
+      setValue("title", productDetail?.result.title);
+      setValue("description", productDetail?.result.description);
+      setValue("status", productDetail?.result.status);
+      setValue("price", productDetail?.result.price);
+      setValue("stock", productDetail?.result.stock);
+      setValue("discount", productDetail?.result.discount);
+      console.log(`productDetail`, productDetail.result.category);
+      setValue(
+        "category",
+        productDetail.result?.category.map((c: any) => ({
+          label: c.name,
+          value: c.id,
+        }))
+      );
+    }
+  }, [isSuccess]);
   return (
     <section className="bg-white dark:bg-gray-900">
       <div className="py-8 px-4 max-w-2xl lg:py-8">
@@ -126,6 +146,12 @@ const ProductEdit = () => {
                 id="image"
                 helperText="SVG, PNG, JPG or GIF (MAX. 800x400px)."
               />
+
+              <img
+                src={productDetail?.result.image}
+                alt="product image"
+                className="w-40 h-16"
+              />
               <span className=" text-red-500 text-sm">
                 {errors.image?.message}
               </span>
@@ -161,10 +187,10 @@ const ProductEdit = () => {
                   render={({ field, fieldState }) => (
                     <Select
                       {...field}
-                      value={status.find((c) => c.value == fieldState)}
+                      value={status.find((c) => c.value == field.value)}
                       options={status}
                       onChange={(selectedOption: any) => {
-                        field.onChange(selectedOption.value);
+                        setValue("status", selectedOption.value);
                       }} // Update the form state
                     />
                   )}
@@ -193,16 +219,18 @@ const ProductEdit = () => {
                 <Controller
                   name="category"
                   control={control}
-                  render={({ field, fieldState,formState }) => (
+                  render={({ field, fieldState, formState }) => (
                     <Select
-                      isMulti
                       {...field}
+                      isMulti
+                      value={field.value || []}
                       options={categoryOptions}
-                     
                     />
                   )}
                 />
-              <span className=" text-red-400 text-sm">{errors.category?.message}</span>
+                <span className=" text-red-400 text-sm">
+                  {errors.category?.message}
+                </span>
               </div>
             </div>
 
@@ -223,8 +251,8 @@ const ProductEdit = () => {
             </div>
           </div>
           <Button
-            // isProcessing={createProduct.isPending}
-            // disabled={createProduct.isPending}
+            isProcessing={createProduct.isPending}
+            disabled={createProduct.isPending}
             type="submit"
             color={""}
             size={"xs"}
@@ -239,4 +267,4 @@ const ProductEdit = () => {
   );
 };
 
-export default ProductEdit;
+export default ProductUpdate;

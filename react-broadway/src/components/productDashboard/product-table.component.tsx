@@ -89,7 +89,7 @@ const ProductTable = () => {
                     </Table.Cell>
                     <Table.Cell className=" flex gap-3">
                       <TableActionButtons
-                        editUrl={`/${loggedInUser?.role}/product/edit/${data._id}`}
+                        editUrl={`/${loggedInUser?.role}/product/edit/${data.title}`}
                         deleteAction={deleteById}
                         rowId={data._id}
                       />

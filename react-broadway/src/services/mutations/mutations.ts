@@ -10,10 +10,6 @@ import {
   deleteCategory,
   deleteProduct,
   deleteUser,
-  // editBanner,
-  // editCategory,
-  // editProduct,
-  // editUser,
   updateBanner,
   updateCategory,
   updateProduct,
@@ -114,14 +110,17 @@ export function useUpdateParoduct() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (data) => updateProduct(data),
-    onSettled: (data, error, variables, context) => {
+    onSettled:async (data, error, variables, context) => {
       console.log("on settled");
       if (error) {
-        console.log("Error occured creating product");
+        console.log("Error occured updating product");
       } else {
-        queryClient.invalidateQueries({
+       await  queryClient.invalidateQueries({
           queryKey: ["productLists"],
         });
+        await queryClient.invalidateQueries({
+          queryKey : ["product", { name: variables?.name } ]
+        })
       }
     },
   });

@@ -36,6 +36,7 @@ import { CategoryCreate, CategoryEdit, CategoryList } from "../pages/category";
 import { BrandCreate, BrandEdit, BrandList } from "../pages/brand";
 import { OrderList } from "../pages/order";
 import CartPage from "../pages/cart/cart.page";
+import ProductUpdate from "../pages/product/product-edit.page";
 
 const RouterConfig = () => {
   // const [loggedInUser, setLoggedInUser] = useState(null);
@@ -89,7 +90,7 @@ const RouterConfig = () => {
               <Route path="/admin/banner/edit/:id" element={<BannerEdit />} />
               <Route path="/admin/product-lists" element={<ProductList />} />
               <Route path="/admin/Product-create" element={<ProductCreate />} />
-              <Route path="/admin/Product/edit/:id" element={<ProductEdit />} />
+              <Route path="/admin/Product/edit/:name" element={<ProductUpdate />} />
               <Route path="/admin/user-lists" element={<UserList />} />
               <Route path="/admin/user-create" element={<UserCreate />} />
               <Route path="/admin/user/edit/:id" element={<UserEdit />} />
