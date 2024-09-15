@@ -19,6 +19,8 @@ const productUpdateDTO= joi.object({
     price: joi.number().optional(),
     discount: joi.number().optional().empty(null,'').default(null), 
     description: joi.string().optional().min(4),
+    stock: joi.number().optional(),
+    category: joi.array().min(1).optional(),
     status : joi.string().valid(...Object.values(statusType)).optional(),
     image: joi.string().optional(),
     parentId : joi.string().optional().empty(null,'').default(null),

@@ -23,7 +23,7 @@ router.route('/')
 
     router.route('/:product')
     .get(productController.viewProduct)
-    .patch(loginCheck,hasPermission(['admin','seller']), setPath('banners'),bodyValidator(productUpdateDTO),productController.editProduct)
+    .patch(loginCheck,hasPermission(['admin','seller']), setPath('products'),uploadFile().single('image'),bodyValidator(productUpdateDTO),productController.editProduct)
     .delete(loginCheck,hasPermission(['admin','seller']),productController.deleteProduct);
 
 module.exports = router;

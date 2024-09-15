@@ -12,8 +12,8 @@ const userRoles = {
 }
 
 const statusType ={
-    ACTIVE:'active',
-    INACTIVE:'inactive'
+    ACTIVE:'ACTIVE',
+    INACTIVE:'INACTIVE'
 }
 
 module.exports = {

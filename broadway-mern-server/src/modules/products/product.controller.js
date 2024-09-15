@@ -121,22 +121,22 @@ class ProductController {
   };
   editProduct = async (req, res, next) => {
     // get product by id , validate and update product details
+    const data = req.body;
+    const image = req.file;
     try {
-      const id = req.params.id;
-      if (!id) {
-        throw { statusCode: 400, message: "Id is required" };
+      const {product} = req.params;
+      if (!product) {
+        throw { statusCode: 400, message: "Product name is required" };
       }
-      const data = req.body;
-      const image = req.file;
 
       if (image) {
         const imageUrl = await uploadImage(
-          `./public/uploads/product/${image.filename}`
+          `./public/uploads/${req.uploadPath}/${image.filename}`
         );
         data.image = imageUrl;
-        deleteFile(`./public/uploads/product/${image.filename}`);
+        deleteFile(`./public/uploads/${req.uploadPath}/${image.filename}`);
       }
-      const response = await productService.updateById(id, data);
+      const response = await productService.updateProductByName(product, data);
       res.json({
         result: response,
         message: "product updated successfully",

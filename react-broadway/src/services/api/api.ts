@@ -110,8 +110,8 @@ export const updateBanner = async ({ id, ...data }: any) => {
   });
 };
 
-export const updateProduct = async ({id,...data}: any) => {
-  return await httpService.patchRequest(`/product/${id}`, data, {
+export const updateProduct = async ({name,...data}: any) => {
+  return await httpService.patchRequest(`/product/${name}`, data, {
     auth: true,
     file: true,
   });

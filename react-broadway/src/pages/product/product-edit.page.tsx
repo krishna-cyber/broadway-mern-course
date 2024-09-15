@@ -7,7 +7,7 @@ import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { GrSend } from "react-icons/gr";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Select from "react-select";
 import {
@@ -19,6 +19,7 @@ import {
   useUpdateParoduct,
 } from "../../services/mutations/mutations";
 import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
 const ProductUpdateDTO = yup.object({
   title: yup
     .string()
@@ -39,7 +40,7 @@ const ProductUpdate = () => {
   const params = useParams();
   const { loggedInUser } = useSelector((state: any) => state.user);
   const categories = useFetchAllCategories();
-  const createProduct = useCreateProduct();
+ const productUpdate= useUpdateParoduct();
   const {
     data: productDetail,
     isLoading,
@@ -70,13 +71,15 @@ const ProductUpdate = () => {
   const onSubmit = async (data: any) => {
     const categories = data.category.map((option: any) => option.value);
     data.category = categories;
-    console.log(`Data to be updated`, data);
-    //   createProduct.mutate(data,{
-    //     onSuccess: ()=>{
-    //       navigate(`/${loggedInUser.role}/product-lists`)
-    //     }
-    //   })
-    //  navigate(`/${loggedInUser.role}/product-lists`);
+    data.name = params.name;
+    productUpdate.mutate(data,{
+      onSuccess:(data, variables, context) =>{
+          toast.success(data.message);
+          navigate(`/${loggedInUser.role}/product-lists`)
+          
+      },
+    });
+    
   };
 
   useEffect(() => {
@@ -87,7 +90,6 @@ const ProductUpdate = () => {
       setValue("price", productDetail?.result.price);
       setValue("stock", productDetail?.result.stock);
       setValue("discount", productDetail?.result.discount);
-      console.log(`productDetail`, productDetail.result.category);
       setValue(
         "category",
         productDetail.result?.category.map((c: any) => ({
@@ -251,8 +253,8 @@ const ProductUpdate = () => {
             </div>
           </div>
           <Button
-            isProcessing={createProduct.isPending}
-            disabled={createProduct.isPending}
+            isProcessing={updateProduct.isPending}
+            disabled={updateProduct.isPending}
             type="submit"
             color={""}
             size={"xs"}

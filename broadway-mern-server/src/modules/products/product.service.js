@@ -55,11 +55,13 @@ listData = async (currentPage=1,limit=5,filter={})=>{
             throw exception;
         }
     }
-    updateById = async (id,data)=>{
+    updateProductByName = async (name,data)=>{
         try {
-            const response = await ProductModel.findByIdAndUpdate(id,data,{new:true});
+            console.log(name,data);
+            const response = await ProductModel.findOneAndUpdate({title:name},data,{new:true});
+            console.log(response);
             if(!response){
-                throw {statusCode:404,message:"Banner not found"};
+                throw {statusCode:404,message:"Product not found"};
             }
             return response;
         } catch (exception) {
