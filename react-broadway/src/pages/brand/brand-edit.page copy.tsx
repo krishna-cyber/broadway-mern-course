@@ -7,7 +7,6 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { GrSend } from "react-icons/gr";
-import { DateTime } from "luxon";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -15,7 +14,6 @@ import LoadingPage from "../loading/loading.page";
 import { useSelector } from "react-redux";
 import { useFetchBrandById } from "../../services/queries/queries";
 import { useUpdateBrand } from "../../services/mutations/mutations";
-import { updateBrand } from "../../services/api/api";
 
 const BrandUpdate = () => {
   const params = useParams();
@@ -51,17 +49,9 @@ const BrandUpdate = () => {
   } = useForm({
     resolver: yupResolver(brandEditDTO),
   });
-console.log(errors)
-  const getDetailsOfbrand = async (id: string) => {
-    try {
-    } catch (error) {
-      toast.error("Error fetching brand details");
-      console.log("Error fetching brand details", error);
-    }
-  };
+
 
   const onSubmit = (data: any) => {
-    console.log("data", data);
     data.id = params.id;
     updateBrand.mutate(data,{
       onSuccess:(data, variables, context)=> {

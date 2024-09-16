@@ -4,7 +4,7 @@ import httpService from '../../services/http.service';
 
 export const getLoggedInUserForRedux :any = createAsyncThunk(
   'User/getLoggedInUserForRedux',
-  async (data) => {
+  async () => {
     try {
       const response: any = await httpService.getRequest("/auth/me", {
         auth: true,

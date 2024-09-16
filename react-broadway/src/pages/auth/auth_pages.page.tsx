@@ -17,6 +17,8 @@ import { HiLogin, HiOutlineExclamationCircle } from "react-icons/hi";
 import { MessageConstants } from "../../config/constants";
 import { FaFacebook, FaGoogle } from "react-icons/fa";
 import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { getLoggedInUserForRedux, setLoggedInUserForRedux } from "../../store/reducer/user.reducer";
 
 export const RegisterPage = () => {
   const [loading, setLoading] = useState(false);
@@ -390,6 +392,7 @@ export const UserActivate = () => {
 export const LoginPage = () => {
   const [loading, setLoading] = useState(false);
   const {loggedInUser} = useSelector((state: any) => state.user);
+  const dispatch = useDispatch();
   // const { loggedInUser, setLoggedInUser }: any = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -413,6 +416,7 @@ export const LoginPage = () => {
     resolver: yupResolver(LoginDTO),
   });
 
+
   const onSubmit = async (data: LoginProps) => {
     try {
       console.log(data);
@@ -421,9 +425,11 @@ export const LoginPage = () => {
         "/auth/login",
         data
       );
+      
       // setLoggedInUser(response?.result?.userDetail);
       localStorage.setItem("_at", response?.result?.token);
       localStorage.setItem("_rt", response?.result?.refreshToken);
+       dispatch(getLoggedInUserForRedux());
       toast.success("User logged in successfully");
       navigate(`/${response?.result?.userDetail?.role}`);
     } catch (error: any) {

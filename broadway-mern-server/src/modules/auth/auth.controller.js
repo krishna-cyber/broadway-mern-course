@@ -16,7 +16,7 @@ class AuthController{
             const user = await userService.getSingleUserByFilter({email})
                 console.log(user);
             if (bcrypt.compareSync(password,user.password)==true) {
-                if(user.status==statusType.ACTIVE){
+                if(user.status==statusType.ACTIVE || 'active'){
                     const token = jwt.sign({sub:user._id}
                     ,process.env.JWT_SECRET,
                     // {expiresIn:'1 day',algorithm:}
