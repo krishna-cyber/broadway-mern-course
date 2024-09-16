@@ -11,6 +11,7 @@ import {
   deleteProduct,
   deleteUser,
   updateBanner,
+  updateBrand,
   updateCategory,
   updateProduct,
 } from "../api/api";
@@ -110,17 +111,17 @@ export function useUpdateParoduct() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (data) => updateProduct(data),
-    onSettled:async (data, error, variables, context) => {
+    onSettled: async (data, error, variables, context) => {
       console.log("on settled");
       if (error) {
         console.log("Error occured updating product");
       } else {
-       await  queryClient.invalidateQueries({
+        await queryClient.invalidateQueries({
           queryKey: ["productLists"],
         });
         await queryClient.invalidateQueries({
-          queryKey : ["product", { name: variables?.name } ]
-        })
+          queryKey: ["product", { name: variables?.name }],
+        });
       }
     },
   });
@@ -151,12 +152,12 @@ export function useUpdateBanner() {
       if (error) {
         console.log("Error occured updating banner");
       } else {
-      await   queryClient.invalidateQueries({
+        await queryClient.invalidateQueries({
           queryKey: ["bannerListsForTable"],
         });
         await queryClient.invalidateQueries({
-          queryKey : ["banner", { id:variables?.id }]
-        })
+          queryKey: ["banner", { id: variables?.id }],
+        });
       }
     },
   });
@@ -165,14 +166,17 @@ export function useUpdateBanner() {
 export function useUpdateBrand() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (data) => editBanner(data),
-    onSettled: (data, error, variables, context) => {
+    mutationFn: (data) => updateBrand(data),
+    onSettled: async (data, error, variables, context) => {
       console.log("on settled");
       if (error) {
         console.log("Error occured creating product");
       } else {
-        queryClient.invalidateQueries({
-          queryKey: ["productLists"],
+        await queryClient.invalidateQueries({
+          queryKey: ["brandListForTable"],
+        });
+        await queryClient.invalidateQueries({
+          queryKey: ["brand", { id: variables?.id }],
         });
       }
     },
@@ -183,17 +187,17 @@ export function useUpdateCategory() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (data) => updateCategory(data),
-    onSettled:async  (data, error, variables, context) => {
+    onSettled: async (data, error, variables, context) => {
       if (error) {
         toast.error("Error occured updating Category");
       } else {
         toast.success("Category updated successfully");
-      await   queryClient.invalidateQueries({
+        await queryClient.invalidateQueries({
           queryKey: ["categoryListsForTable"],
         });
         await queryClient.invalidateQueries({
-          queryKey : ["category", { id:variables?.id }]
-        })
+          queryKey: ["category", { id: variables?.id }],
+        });
       }
     },
   });

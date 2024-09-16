@@ -32,9 +32,10 @@ router
 router
   .route("/:id")
   .get(loginCheck, hasPermission(["admin", "seller"]), brandController.getById)
-  .put(
+  .patch(
     loginCheck,
     hasPermission(["admin", "seller"]),
+    uploadFile().single("image"),
     setPath("brands"),
     bodyValidator(brandUpdateDTO),
     brandController.edit

@@ -84,7 +84,7 @@ const BrandTable = () => {
                     </Table.Cell>
                     <Table.Cell className=" flex gap-3">
                       <TableActionButtons
-                        editUrl={`/${loggedInUser?.role}/banner/edit/${data._id}`}
+                        editUrl={`/${loggedInUser?.role}/brand/edit/${data._id}`}
                         deleteAction={deleteBanner}
                         rowId={data._id}
                       />

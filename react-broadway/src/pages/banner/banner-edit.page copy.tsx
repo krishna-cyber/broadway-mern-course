@@ -53,7 +53,7 @@ const BannerEdit = () => {
       delete data.image;
     }
     data.id = params.id;
-    await updateBanner.mutate(data, {
+     updateBanner.mutate(data, {
       onSuccess: (data) => {
         navigate(`/${loggedInUser?.role}/banner-lists`);
         toast.success(`${data?.message}`);
@@ -135,12 +135,14 @@ const BannerEdit = () => {
                   helperText="SVG, PNG, JPG or GIF (MAX. 800x400px)."
                 />
               </div>
-
-              <img
+              {
+                bannerData?.result.image && <img
                 src={bannerData?.result.image}
                 alt="banner"
                 className="w-400 shadow-xl h-40"
               />
+              }
+             
             </div>
             <Button
               type="submit"

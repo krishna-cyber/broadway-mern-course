@@ -8,6 +8,7 @@ import {
   getAllCategories,
   getBannerById,
   getBannersForTable,
+  getBrandById,
   getBrandsForTable,
   getCategoryById,
   getCategoryForTable,
@@ -130,5 +131,13 @@ export function useFetchCategoryForTable(page: number, limit: number) {
     queryKey: ["categoryListsForTable", { page }],
     queryFn: () => getCategoryForTable(page, limit),
     placeholderData: keepPreviousData,
+  });
+}
+
+export function useFetchBrandById (id: string) {
+  return useQuery({
+    queryKey: ["brand", { id }],
+    queryFn: () => getBrandById(id),
+    
   });
 }

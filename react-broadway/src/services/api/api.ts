@@ -123,6 +123,13 @@ export const updateCategory = async ({id,...data}: any) => {
   });
 };
 
+export const updateBrand = async ({id,...data}: any) => {
+  return await httpService.patchRequest(`/brand/${id}`, data, {
+    auth: true,
+    file: true,
+  });
+};
+
 export const updateUser = async (data: any) => {};
 
 export const deleteBanner = async (data: any) => {
@@ -144,3 +151,8 @@ export const deleteUser = async (data: any) => {
 export const deleteBrand = async (data: any) => {
   return await httpService.deleteRequest(`/brand/${data}`, { auth: true });
 };
+
+
+export const getBrandById = async (id: string) => {
+  return await httpService.getRequest(`/brand/${id}`, { auth: true });
+}

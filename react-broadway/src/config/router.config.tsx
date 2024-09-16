@@ -37,6 +37,7 @@ import { BrandCreate, BrandEdit, BrandList } from "../pages/brand";
 import { OrderList } from "../pages/order";
 import CartPage from "../pages/cart/cart.page";
 import ProductUpdate from "../pages/product/product-edit.page";
+import BrandUpdate from "../pages/brand/brand-edit.page copy";
 
 const RouterConfig = () => {
   // const [loggedInUser, setLoggedInUser] = useState(null);
@@ -106,7 +107,7 @@ const RouterConfig = () => {
               <Route path="/admin/order-lists" element={<OrderList />} />
               <Route path="/admin/brand-lists" element={<BrandList />} />{" "}
               <Route path="/admin/brand-create" element={<BrandCreate />} />
-              <Route path="/admin/brand/edit/:id" element={<BrandEdit />} />
+              <Route path="/admin/brand/edit/:id" element={<BrandUpdate />} />
               <Route
                 path="*"
                 element={<ErrorPage url="/admin" label="Back to Dashboard" />}
