@@ -14,7 +14,8 @@ import {
 
 import RouterConfig from "./config/router.config";
 import { Provider } from "react-redux";
-import { store } from "./store/store";
+import { persistor, store } from "./store/store";
+import { PersistGate } from "redux-persist/integration/react";
 
 // Create a client
 const queryClient = new QueryClient()
@@ -24,8 +25,11 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
   <StrictMode>
      <QueryClientProvider client={queryClient}>
     <Provider store={store}>
+      
+    <PersistGate loading={null} persistor={persistor}>
     <ToastContainer autoClose={1000} limit={2} transition={Slide} />
     <RouterConfig />
+    </PersistGate>
     </Provider>
     </QueryClientProvider>
   </StrictMode>
