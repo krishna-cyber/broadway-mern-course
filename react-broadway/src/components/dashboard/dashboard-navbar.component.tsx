@@ -43,7 +43,7 @@ export const DashboardNavbar = () => {
               <>
                 <Avatar
                   alt="User settings"
-                  img={loggedInUser.profile}
+                  img={loggedInUser?.profile}
                   rounded
                 />
               </>
@@ -57,7 +57,7 @@ export const DashboardNavbar = () => {
           <Dropdown.Header>
             <span className="block font-semibold text-sm">{loggedInUser?.fullName}</span>
             <span className="block truncate text-sm font-medium">
-             {loggedInUser.email}
+             {loggedInUser?.email}
             </span>
           </Dropdown.Header>
           <Dropdown.Item icon={HiSquaresPlus}>Dashboard</Dropdown.Item>
