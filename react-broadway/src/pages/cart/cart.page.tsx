@@ -4,7 +4,8 @@ import { HiArrowCircleRight } from "react-icons/hi";
 import { useSelector } from "react-redux";
 
 const CartPage = () => {
-  const { items } = useSelector((state: any) => state.cart);
+  const { items, originalPrice, storePickup, taxAmount, totalAmount } =
+    useSelector((state: any) => state.cart);
 
   if (items.length === 0) {
     return (
@@ -52,16 +53,7 @@ const CartPage = () => {
                         Original price
                       </dt>
                       <dd className="text-base font-medium text-gray-900 dark:text-white">
-                        $7,592.00
-                      </dd>
-                    </dl>
-
-                    <dl className="flex items-center justify-between gap-4">
-                      <dt className="text-base font-normal text-gray-500 dark:text-gray-400">
-                        Savings
-                      </dt>
-                      <dd className="text-base font-medium text-green-600">
-                        -$299.00
+                        $ {originalPrice}
                       </dd>
                     </dl>
 
@@ -70,7 +62,7 @@ const CartPage = () => {
                         Store Pickup
                       </dt>
                       <dd className="text-base font-medium text-gray-900 dark:text-white">
-                        $99
+                        $ {storePickup}
                       </dd>
                     </dl>
 
@@ -79,7 +71,7 @@ const CartPage = () => {
                         Tax
                       </dt>
                       <dd className="text-base font-medium text-gray-900 dark:text-white">
-                        $799
+                        ${taxAmount}
                       </dd>
                     </dl>
                   </div>
@@ -89,7 +81,7 @@ const CartPage = () => {
                       Total
                     </dt>
                     <dd className="text-base font-bold text-gray-900 dark:text-white">
-                      $8,191.00
+                      ${totalAmount}
                     </dd>
                   </dl>
                 </div>
