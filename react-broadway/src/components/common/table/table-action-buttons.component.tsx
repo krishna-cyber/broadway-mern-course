@@ -26,6 +26,7 @@ const TableActionButtons = ({
     <>
       <NavLink to={editUrl}>
         <Button
+         disabled={disabled}
     
           color={"green"}
           className=" bg-green-600 w-fit text-white hover:text-black"
