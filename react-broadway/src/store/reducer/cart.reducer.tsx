@@ -1,3 +1,4 @@
+import { reduce } from "@ant-design/plots/es/core/utils";
 import { createSlice, Slice } from "@reduxjs/toolkit";
 
 const initialState = {
@@ -20,6 +21,13 @@ export const cartSlice: Slice = createSlice({
         state.items.push({ ...action.payload, quantity: 1 });
       }
     },
+    reduceFromCart: (state, action) => {
+      const existingItem = state.items.find(item => item._id === action.payload);
+      if (existingItem) {
+        // If the item already exists, decrease the quantity
+        existingItem.quantity -= 1;
+      } 
+    },
     removeFromCart: (state, action) => {
       console.log(action.payload);
       state.items = state.items.filter(item => item._id !== action.payload);
@@ -31,6 +39,6 @@ export const cartSlice: Slice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { addToCart,removeFromCart,clearCart } = cartSlice.actions;
+export const { addToCart,removeFromCart,clearCart,reduceFromCart } = cartSlice.actions;
 
 export default cartSlice.reducer;
