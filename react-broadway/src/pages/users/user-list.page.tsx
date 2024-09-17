@@ -1,7 +1,6 @@
-import { useEffect, useState } from "react";
-import BannerTable from "../../components/banner/banner-table.component";
+
 import { FaFileExport, FaLongArrowAltDown, FaPlus } from "react-icons/fa";
-import { Button, Pagination } from "flowbite-react";
+import { Button } from "flowbite-react";
 import { Link } from "react-router-dom";
 import UserTable from "../../components/users/user-table.component";
 

@@ -223,7 +223,7 @@ export function useDeleteProduct() {
 export function useDeleteUser() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (data) => deleteUser(data),
+    mutationFn: (id:string) => deleteUser(id),
     onSettled: (data, error, variables, context) => {
       console.log("on settled");
       if (error) {

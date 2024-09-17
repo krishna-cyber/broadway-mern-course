@@ -5,10 +5,12 @@ import RowSkeleton from "../common/table/row-skeleton.component";
 import TableActionButtons from "../common/table/table-action-buttons.component";
 import { useFetchUsers } from "../../services/queries/queries";
 import { useSelector } from "react-redux";
+import { useDeleteUser } from "../../services/mutations/mutations";
 
 const UserTable = () => {
   const {loggedInUser} = useSelector((state: any) => state.user);
   const [currentPage, setCurrentPage] = useState(1);
+  const deleteUser = useDeleteUser();
 
   const { data, isLoading, isError } = useFetchUsers(currentPage, 5);
   console.log(`users data for table: `, data);
@@ -19,7 +21,9 @@ const UserTable = () => {
   // number it will not trigger the api call again
 
   // Delete banner
-  const removeUser = async (id: string) => {};
+  const removeUser = async (id: string) => {
+    deleteUser.mutate(id);
+  };
 
   return (
     <div className="overflow-x-auto">
@@ -83,6 +87,7 @@ const UserTable = () => {
 
                     <Table.Cell className=" flex gap-3">
                       <TableActionButtons
+                      disabled ={data.role=='admin'?true:false}
                         editUrl={`/${loggedInUser?.role}/banner/edit/${data._id}`}
                         deleteAction={removeUser}
                         rowId={data._id}

@@ -11,18 +11,22 @@ type TableActionButtonsProps = {
   editUrl: string;
   deleteAction: any;
   rowId: string;
+  disabled:boolean
 };
+
 
 const TableActionButtons = ({
   editUrl,
   deleteAction,
   rowId,
+  disabled
 }: TableActionButtonsProps) => {
   const [openModal, setOpenModal] = useState(false);
   return (
     <>
       <NavLink to={editUrl}>
         <Button
+    
           color={"green"}
           className=" bg-green-600 w-fit text-white hover:text-black"
         >
@@ -32,6 +36,7 @@ const TableActionButtons = ({
       <Button
         className=" bg-red-700 text-white w-fit hover:text-black"
         color={"red"}
+        disabled={disabled}
         onClick={() => {
           setOpenModal(true);
         }}
@@ -54,6 +59,7 @@ const TableActionButtons = ({
             <div className="flex justify-center gap-4">
               <Button
                 color="failure"
+              
                 onClick={() => {
                   deleteAction(rowId);
                   setOpenModal(false);

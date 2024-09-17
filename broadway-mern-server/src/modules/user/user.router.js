@@ -43,7 +43,7 @@ router.use(loginCheck);
   router.route('/:id')
     .get(userController.userDetailById)
     .put(userController.userUpdate)
-    .delete(userController.userRemove);
+    .delete(loginCheck,hasPermission(['admin']),userController.userRemove);
 
 
 module.exports = router;

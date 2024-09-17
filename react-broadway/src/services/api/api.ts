@@ -144,8 +144,8 @@ export const deleteProduct = async (data: any) => {
   return await httpService.deleteRequest(`/product/${data}`, { auth: true });
 };
 
-export const deleteUser = async (data: any) => {
-  return await httpService.deleteRequest(`/users/${data}`, { auth: true });
+export const deleteUser = async (id: any) => {
+  return await httpService.deleteRequest(`/users/${id}`, { auth: true });
 };
 
 export const deleteBrand = async (data: any) => {

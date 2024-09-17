@@ -2,6 +2,7 @@ const bcrypt = require('bcryptjs');
 const mailService = require('../../services/mail.service');
 const { randomStringGenerator } = require('../../utils/helper');
 const userService = require('./user.service');
+const UserModel = require('./user.model');
 
 
 class UserController{
@@ -77,13 +78,20 @@ userUpdate = (req,res,next)=>{
 }
 
 // remove user by id
-userRemove = (req,res,next)=>{
+userRemove =async (req,res,next)=>{
     const id = req.params.id;
-    res.status(200).json({
-         result: id,
-         message: 'Remove user by id',
-         meta: null
-})
+    try {
+
+        await UserModel.findByIdAndDelete(id);
+        res.status(200).json({
+             result: id,
+             message: 'Remove user by id',
+             meta: null
+    })
+        
+    } catch (error) {
+        
+    }
 }
 }
 
