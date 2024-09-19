@@ -2,10 +2,36 @@ import { Button } from "flowbite-react";
 import CartItem from "../../components/cart/cartItem.component";
 import { HiArrowCircleRight } from "react-icons/hi";
 import { useSelector } from "react-redux";
+import { useCreateOrder } from "../../services/mutations/mutations";
+import { useDispatch } from "react-redux";
+import { clearCart } from "../../store/reducer/cart.reducer";
 
 const CartPage = () => {
-  const { items, originalPrice, storePickup, taxAmount, totalAmount } =
+  const { items, originalPrice, storePickup, taxAmount, totalAmount,cartNumber } =
     useSelector((state: any) => state.cart);
+    const dispatch = useDispatch();
+    
+
+   const orderItems= useCreateOrder();
+
+
+  const handleOrder = () => {
+    let data: any = {};
+    data.items = items.map((item: any) => {
+      return {
+        productId: item._id,
+        quantity: item.quantity,
+        price: item.price,
+      };
+    });
+    data.originalPrice = originalPrice;
+    data.totalItems = cartNumber,
+    data.storePickUp = storePickup;
+    data.taxAmount = taxAmount;
+    data.totalAmount = totalAmount;
+    orderItems.mutate (data)
+    dispatch(clearCart());
+  };
 
   if (items.length === 0) {
     return (
@@ -87,6 +113,8 @@ const CartPage = () => {
                 </div>
 
                 <Button
+                  onClick={handleOrder}
+                  disabled={!items}
                   color={""}
                   size={"md"}
                   className="flex w-full items-center justify-center rounded-lg bg-primary-700 px-5  text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
@@ -129,6 +157,7 @@ const CartPage = () => {
                     />
                   </div>
                   <Button
+                    disabled={items.length}
                     type="submit"
                     className="flex w-full items-center justify-center rounded-lg bg-primary-700 px-5  text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
                   >

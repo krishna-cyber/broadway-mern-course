@@ -1,43 +1,17 @@
-import {  Button, Checkbox, Pagination, Table } from "flowbite-react";
+import { Badge, Button, Checkbox, Pagination, Table } from "flowbite-react";
 import RowSkeleton from "../common/table/row-skeleton.component";
+import { Avatar } from "flowbite-react";
+import * as dayjs from "dayjs";
 
 import { useState } from "react";
-import { DateTime } from "luxon";
 import { useFetchOrdersList } from "../../services/queries/queries";
 import { useSelector } from "react-redux";
-
+import { Link } from "react-router-dom";
 const OrderTable = () => {
-  const {loggedInUser} = useSelector((state: any) => state.user);
+  const { loggedInUser } = useSelector((state: any) => state.user);
   const [page, setpage] = useState(1);
-  const {data,isLoading,isError} = useFetchOrdersList();
-  const sampleOrders = [
-    {
-      orderId: "ORD123456",
-      placedOn: "2023-10-01T10:30:00Z",
-      totalItems: 3, // 2 Wireless Headphones + 1 Bluetooth Speaker
-      total: 500.0,
-    },
-    {
-      orderId: "ORD123457",
-      placedOn: "2023-10-02T12:15:00Z",
-      totalItems: 3, // 3 Smartphones
-      total: 225.0,
-    },
-    {
-      orderId: "ORD123458",
-      placedOn: "2023-10-03T14:45:00Z",
-      totalItems: 3, // 1 Laptop + 2 Mice
-      total: 400.0,
-    },
-    {
-      orderId: "ORD123459",
-      placedOn: "2023-10-04T09:00:00Z",
-      totalItems: 6, // 5 Gaming Consoles + 1 Game Controller
-      total: 200.0,
-    },
-  ];
+  const { data, isLoading, isError } = useFetchOrdersList(page, 5);
 
-  console.log(sampleOrders);
 
   const onPageChange = (page: number) => setpage(page);
 
@@ -45,56 +19,96 @@ const OrderTable = () => {
     console.log(`Error: `, isError);
   }
 
- 
-
   return (
     <div className="overflow-x-auto">
       <Table hoverable striped>
         <Table.Head>
-          <Table.HeadCell className="p-4">
-            <Checkbox />
-          </Table.HeadCell>
           <Table.HeadCell>OrderID</Table.HeadCell>
           <Table.HeadCell>Placed on</Table.HeadCell>
           <Table.HeadCell>Items</Table.HeadCell>
-          <Table.HeadCell>Total</Table.HeadCell>
-          <Table.HeadCell>Action</Table.HeadCell>
+          <Table.HeadCell>TotalItems</Table.HeadCell>
+          <Table.HeadCell>TotalAmount</Table.HeadCell>
+          <Table.HeadCell>Status</Table.HeadCell>
+          <Table.HeadCell>PaymentMethod</Table.HeadCell>
+          <Table.HeadCell>PaymentStatus</Table.HeadCell>
         </Table.Head>
 
         <Table.Body className="divide-y">
           {isLoading ? (
-            <RowSkeleton rows={4} cols={5} />
+            <RowSkeleton rows={4} cols={7} />
           ) : (
             <>
-              {data && data?.length > 0 ? (
-                data?.map((data, index: number) => {
-                  const placedOnDate = DateTime.fromISO(data.placedOn);
-
+              {data && data?.result.length > 0 ? (
+                data?.result.map((data, index: number) => {
                   return (
                     <Table.Row
                       key={index}
                       className="bg-white dark:border-gray-700 dark:bg-gray-800"
                     >
-                      <Table.Cell className="p-4">
-                        <Checkbox />
-                      </Table.Cell>
-                      <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                        {data.orderId}
+                      <Link to={`/${loggedInUser.role}/order/${data._id}`} className="flex-1">
+                        <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                          {data._id}
+                        </Table.Cell>
+                      </Link>
+
+                      <Table.Cell>
+                        {dayjs
+                          .default(data.result?.createdAt)
+                          .format("DD-MM-YYYY")}
                       </Table.Cell>
                       <Table.Cell>
-                        {placedOnDate.toLocaleString(DateTime.DATETIME_MED)}
+                        {data.items.length > 3 ? (
+                          <Avatar.Group>
+                            <Avatar
+                              img={data.items[0].productId?.image}
+                              rounded
+                              stacked
+                            />
+                            <Avatar
+                              img={data.items[1].productId?.image}
+                              rounded
+                              stacked
+                            />
+                            <Avatar
+                              img={data.items[2].productId?.image}
+                              rounded
+                              stacked
+                            />
+                            <Avatar.Counter
+                              total={data.items.length}
+                              href="#"
+                            />
+                          </Avatar.Group>
+                        ) : (
+                          <Avatar.Group>
+                            {data.items.map((item: any, index: number) => {
+                              return (
+                                <Avatar
+                                  key={index}
+                                  img={item.productId?.image}
+                                  size={"md"}
+                                  stacked
+                                />
+                              );
+                            })}
+                          </Avatar.Group>
+                        )}
                       </Table.Cell>
                       <Table.Cell>{data.totalItems}</Table.Cell>
-                      <Table.Cell>{data.total}</Table.Cell>
+                      <Table.Cell>{data.totalAmount}</Table.Cell>
                       <Table.Cell className=" flex gap-3">
-                        <Button
-                          color={"green"}
-                          type={"button"}
-                          className=" bg-green-600 w-fit text-white hover:text-black"
-                        >
-                        Manage
-                        </Button>
+                        {data.status === "Shipped" ? (
+                          <Badge color="success">Shipped</Badge>
+                        ) : data.status === "Processing" ? (
+                          <Badge color="blue">Processing</Badge>
+                        ) : data.status === "Delivered" ? (
+                          <Badge color="info">Delivered</Badge>
+                        ) : (
+                          <Badge color="failure">Cancelled</Badge>
+                        )}
                       </Table.Cell>
+                      <Table.Cell>{data.paymentType}</Table.Cell>
+                      <Table.Cell>{data.paymentStatus}</Table.Cell>
                     </Table.Row>
                   );
                 })

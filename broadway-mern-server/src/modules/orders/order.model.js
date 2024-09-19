@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const statusType = require("../../config/constants.config");
+const { required } = require("joi");
 
 const OrderSchema = new mongoose.Schema(
   {
@@ -25,6 +26,14 @@ const OrderSchema = new mongoose.Schema(
         },
       },
     ],
+    taxAmount:{
+      type:Number,
+      required:true
+    },
+    storePickUp:{
+      type:Number,
+      required:true
+    },
     totalItems: {
       type: Number,
       required: true,
@@ -33,28 +42,7 @@ const OrderSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
-    shippingAddress: {
-      state: {
-        type: String,
-        required: true,
-      },
-      district: {
-        type: String,
-        required: true,
-      },
-      muncipality: {
-        type: String,
-        required: true,
-      },
-      wardNo: {
-        type: String,
-        required: true,
-      },
-      city: {
-        type: String,
-        required: true,
-      },
-    },
+   
     orderStatus: {
       type: String,
       enum: ["confirmed", "shipped", "delivered", "cancelled"],
@@ -68,6 +56,7 @@ const OrderSchema = new mongoose.Schema(
     paymentType: {
       type: String,
       enum: ["cash", "card", "eSewa", "Khalti"],
+      default: "cash",
     },
   },
   {

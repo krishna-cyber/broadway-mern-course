@@ -2,10 +2,10 @@ const orderModel = require("./order.model");
 
 class OrderService{
 
-    createProduct= async (data)=>{
+    createOrder= async (data)=>{
         try {
-            const product = new orderModel(data);
-            return await product.save();
+            const order = new orderModel(data);
+            return await order.save();
         } catch (exception) {
             throw exception;
         }
@@ -16,7 +16,14 @@ class OrderService{
             const skip = (currentPage - 1) * limit;
             const total = await orderModel.countDocuments(filter);
             const totalPages = Math.ceil(total/limit);
-            const data = await orderModel.find(filter).populate('createdBy',["_id","name","email","role"]).skip(skip).limit(limit).sort({_id:'desc'});
+            const data = await orderModel.find(filter).select(
+                'createdAt items totalItems totalAmount orderStatus paymentStatus paymentType'
+            )
+            .populate({
+                path:'items.productId',
+                select:'name image'
+            })
+            .skip(skip).limit(limit).sort({_id:'desc'});
             return {data,totalPages,total,limit,currentPage}
         } catch (exception) {
             throw exception;

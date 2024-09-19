@@ -5,7 +5,6 @@ import { GrDeliver } from "react-icons/gr";
 import {  HiOutlineHeart } from "react-icons/hi";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import { selectProduct } from "../../store/reducer/productView.reducer";
 import { useSelector } from "react-redux";
 import { addToCart } from "../../store/reducer/cart.reducer";
 

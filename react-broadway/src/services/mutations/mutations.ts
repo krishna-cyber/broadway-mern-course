@@ -10,6 +10,7 @@ import {
   deleteCategory,
   deleteProduct,
   deleteUser,
+  placeOrder,
   updateBanner,
   updateBrand,
   updateCategory,
@@ -101,6 +102,24 @@ export function useCreateCategory() {
       } else {
         queryClient.invalidateQueries({
           queryKey: ["categoryListsForTable"],
+        });
+      }
+    },
+  });
+}
+
+export function useCreateOrder () {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (data) => placeOrder(data),
+    onSettled: (data, error, variables, context) => {
+      console.log("on settled");
+      if (error) {
+        console.log("Error occured creating order");
+      } else {
+        toast.success("Order placed successfully");
+        queryClient.invalidateQueries({
+          queryKey: ["orderLists"],
         });
       }
     },

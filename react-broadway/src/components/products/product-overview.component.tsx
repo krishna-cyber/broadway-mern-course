@@ -1,12 +1,14 @@
 import { Button } from "flowbite-react";
 import { FaCartPlus } from "react-icons/fa";
 import { HiOutlineHeart } from "react-icons/hi2";
-import { useSelector } from "react-redux";
-import { useFetchProductById } from "../../services/queries/queries";
-import { ErrorPage } from "../../pages/error/error.page";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../../store/reducer/cart.reducer";
 
-const ProductOverview = ({product}) => {
-
+const ProductOverview = ({product}:{product:any}) => {
+const dispatch = useDispatch();
+  const handleCartItems = () => {
+    dispatch(addToCart(product));
+  }
 
     return (
       <>
@@ -117,7 +119,7 @@ const ProductOverview = ({product}) => {
                     Add to favorites
                   </Button>
   
-                  <Button size={"lg"} color={"blue"} role="button">
+                  <Button size={"lg"} onClick={handleCartItems} color={"blue"} role="button">
                     <FaCartPlus className="h-5 w-5 mr-3" />
                     Add to cart
                   </Button>

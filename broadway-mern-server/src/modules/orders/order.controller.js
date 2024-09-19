@@ -4,20 +4,13 @@ const orderService = require("./order.service");
 
 class OrderController {
   productId;
-  createProduct = async (req, res, next) => {
+  createOrder = async (req, res, next) => {
     try {
       const data = req.body;
-      const image = req.file;
-      //uploadimage and more
-      const imageUrl = await uploadImage(
-        `./public/uploads/products/${image.filename}`
-      );
-      data.image = imageUrl;
-      data.createdBy = req.authUser.id;
-      deleteFile(`./public/uploads/products/${image.filename}`);
-
-      const response = await orderService.createProduct(data);
-      console.log(response);
+     
+      data.userId = req.authUser.id;
+    
+      const response = await orderService.createOrder(data);
       res.json({
         result: response,
         message: "product created successfully",
@@ -29,8 +22,22 @@ class OrderController {
     }
   };
   listForTable = async (req, res, next) => {
+    const {page,limit }= req.query;
     try {
-      const {page,limit }= req.query;
+      if(req.authUser.role === 'customer'){
+        const {data,totalPages,total,currentPage} = await orderService.listData(page,limit,{userId:req.authUser.id});
+        return res.json({
+          result: data,
+          message: "List of orders",
+          meta: {
+            total,
+            currentPage,
+            totalPages,
+            limit
+          },
+        });
+      }
+      
       const {data,totalPages,total,currentPage} = await orderService.listData(page,limit);
       res.json({
         result: data,

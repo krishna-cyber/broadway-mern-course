@@ -76,8 +76,9 @@ export function useFetchAllCategories() {
 }
 export function useFetchOrdersList(page: number, limit: number) {
   return useQuery({
-    queryKey: ["ordersLists"],
+    queryKey: ["ordersLists",{page}],
     queryFn: () => getOrdersForTable(page, limit),
+    placeholderData: keepPreviousData,
   });
 }
 export function useFetchProductsForLandingPage() {

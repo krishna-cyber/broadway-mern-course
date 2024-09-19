@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { GrSend } from "react-icons/gr";
-import { DateTime } from "luxon";
+
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -51,8 +51,6 @@ const UserEdit = () => {
 
   const onSubmit = (data: any) => {
     try {
-        let date = DateTime.now().toISODate();
-        console.log(date);
         console.log("Banner create data:",data);
     } catch (error) {
         console.log(error);

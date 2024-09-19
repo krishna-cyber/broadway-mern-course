@@ -18,8 +18,8 @@ router.get('/count',orderController.countProducts);
 // protected routes
 
 router.route('/')
-    .get(loginCheck,hasPermission(['admin','customer','seller']),orderController.listForTable)
-    .post(loginCheck,hasPermission(['admin','seller']), setPath('products'),uploadFile().single('image'),bodyValidator(orderCreateDTO),orderController.createProduct);
+    .get(loginCheck,hasPermission(['admin','customer']),orderController.listForTable)
+    .post(loginCheck,hasPermission(['customer']), bodyValidator(orderCreateDTO),orderController.createOrder);
 
     router.route('/:id')
     .get(orderController.viewProduct)

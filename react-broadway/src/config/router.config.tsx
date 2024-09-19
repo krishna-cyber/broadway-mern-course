@@ -38,6 +38,8 @@ import { OrderList } from "../pages/order";
 import CartPage from "../pages/cart/cart.page";
 import ProductUpdate from "../pages/product/product-edit.page";
 import BrandUpdate from "../pages/brand/brand-edit.page copy";
+import { OrderDetail } from "../pages/order/order-detail.page";
+import { ReviewsHistory } from "../pages/reviews/reviews-history";
 
 const RouterConfig = () => {
   // const [loggedInUser, setLoggedInUser] = useState(null);
@@ -73,7 +75,7 @@ const RouterConfig = () => {
               <Route path="/categories" element={<div>category</div>} />
               <Route path="/product/:productName" element={<ProductPage />} />
               <Route path="/category/:slug" element={<CategoryDetail />} />
-              <Route path = "/cart" element = {<CartPage/>}/>
+              <Route path="/cart" element={<CartPage />} />
             </Route>
 
             {/* Admin dashboard routes */}
@@ -91,7 +93,10 @@ const RouterConfig = () => {
               <Route path="/admin/banner/edit/:id" element={<BannerEdit />} />
               <Route path="/admin/product-lists" element={<ProductList />} />
               <Route path="/admin/Product-create" element={<ProductCreate />} />
-              <Route path="/admin/Product/edit/:name" element={<ProductUpdate />} />
+              <Route
+                path="/admin/Product/edit/:name"
+                element={<ProductUpdate />}
+              />
               <Route path="/admin/user-lists" element={<UserList />} />
               <Route path="/admin/user-create" element={<UserCreate />} />
               <Route path="/admin/user/edit/:id" element={<UserEdit />} />
@@ -123,15 +128,20 @@ const RouterConfig = () => {
                 </CheckPermission>
               }
             >
-            {/* <Route path="/seller" element={<SellerDashboardLayout />}> */}
+              {/* <Route path="/seller" element={<SellerDashboardLayout />}> */}
               <Route index element={<SellerDashboard />} />
-      
               <Route path="/seller/brand-lists" element={<BrandList />} />{" "}
               <Route path="/seller/brand-create" element={<BrandCreate />} />
               <Route path="/seller/brand/edit/:id" element={<BrandEdit />} />
-               <Route path="/seller/product-lists" element={<ProductList />} />
-              <Route path="/seller/Product-create" element={<ProductCreate />} />
-              <Route path="/seller/Product/edit/:id" element={<ProductEdit />} />
+              <Route path="/seller/product-lists" element={<ProductList />} />
+              <Route
+                path="/seller/Product-create"
+                element={<ProductCreate />}
+              />
+              <Route
+                path="/seller/Product/edit/:id"
+                element={<ProductEdit />}
+              />
               <Route path="/seller/order-lists" element={<ProductList />} />
               <Route path="/seller/order/edit/:id" element={<ProductEdit />} />
               <Route
@@ -141,22 +151,16 @@ const RouterConfig = () => {
             </Route>
 
             {/* customer dashboard routes */}
-            {/* <Route
-              path="/customer"
-              element={
-                <CheckPermission allowedBy={UserRoles.CUSTOMER}>
-                  <CustomerDashboardLayout />
-                </CheckPermission>
-              }
-            > */}
+
             {/* This is for testing purpose only */}
             <Route path="/customer" element={<CustomerDashboardLayout />}>
               <Route index element={<CustomerDashboard />} />
               <Route path="/customer/order-lists" element={<OrderList />} />
               <Route
-                path="/customer/order/view/:id"
-                element={<ProductEdit />}
+                path="/customer/review-list"
+                element={<ReviewsHistory/>}
               />
+              <Route path="/customer/order/:id" element={<OrderDetail />} />
               <Route
                 path="*"
                 element={

@@ -1,8 +1,10 @@
 import { useParams } from "react-router-dom"
 
-export const CategoryDetail = () => {
-  const params = useParams();
+export const OrderDetail = () => {
+ 
   return (
-   <div>Category detail of {params.slug}</div>
+    <>
+  <h1>Order Detail</h1>
+    </>
   )
 }

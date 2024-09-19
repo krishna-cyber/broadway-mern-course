@@ -13,7 +13,6 @@ const UserTable = () => {
   const deleteUser = useDeleteUser();
 
   const { data, isLoading, isError } = useFetchUsers(currentPage, 5);
-  console.log(`users data for table: `, data);
 
   const onPageChange = (page: number) => setCurrentPage(page);
 

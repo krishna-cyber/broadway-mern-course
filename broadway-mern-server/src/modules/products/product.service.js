@@ -36,7 +36,7 @@ listData = async (currentPage=1,limit=5,filter={})=>{
         try {
             const bannerDetail = await ProductModel.findOne(filter).populate('category',['name','_id']);
             if(!bannerDetail){
-                throw {statusCode:404,message:"Banner not found"};
+                throw {statusCode:404,message:"Product not found"};
             }
             return bannerDetail;
         } catch (exception) {
