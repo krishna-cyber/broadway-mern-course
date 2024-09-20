@@ -160,3 +160,7 @@ export const deleteBrand = async (data: any) => {
 export const getBrandById = async (id: string) => {
   return await httpService.getRequest(`/brand/${id}`, { auth: true });
 }
+
+export const getOrderById = async (id: string) => {
+  return await httpService.getRequest(`/order/${id}`, { auth: true });
+}

@@ -22,7 +22,7 @@ router.route('/')
     .post(loginCheck,hasPermission(['customer']), bodyValidator(orderCreateDTO),orderController.createOrder);
 
     router.route('/:id')
-    .get(orderController.viewProduct)
+    .get(loginCheck,hasPermission(['customer','admin']),orderController.overviewOrder)
     .put(loginCheck,hasPermission(['admin','seller']), setPath('banners'),bodyValidator(orderUpdateDTO),orderController.editProduct)
     .delete(loginCheck,hasPermission(['admin','seller']),orderController.deleteProduct);
 

@@ -14,6 +14,7 @@ import {
   getCategoryForTable,
   getCategoryLists,
   getLandingPageBanner,
+  getOrderById,
   getOrdersForTable,
   getProductsByName,
   getproductsForLandingPage,
@@ -139,6 +140,15 @@ export function useFetchBrandById (id: string) {
   return useQuery({
     queryKey: ["brand", { id }],
     queryFn: () => getBrandById(id),
+    
+  });
+}
+
+
+export function useFetchOrderById(id: string) {
+  return useQuery({
+    queryKey: ["order", { id }],
+    queryFn: () => getOrderById(id),
     
   });
 }

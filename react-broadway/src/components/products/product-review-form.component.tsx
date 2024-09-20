@@ -1,11 +1,12 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Button, FileInput, Label, Modal, Rating } from "flowbite-react";
-import  { useState } from "react";
-import {  useForm } from "react-hook-form";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { checkIfFilesAreCorrectType, checkIfFilesAreTooBig } from "../../utils";
 
 import { GrUpload } from "react-icons/gr";
+import { useParams } from "react-router-dom";
 
 type Inputs = {
   title: string;
@@ -42,6 +43,7 @@ const schema = yup
   .required();
 
 const ProductReviewForm = () => {
+  const params = useParams();
   const {
     register,
     handleSubmit,
@@ -66,12 +68,9 @@ const ProductReviewForm = () => {
           <h3 className="text-lg font-semibold text-slate-700 dark:text-white">
             Add a review for:
           </h3>
-          <a
-            href="#"
-            className="font-medium text-primary-700 hover:underline dark:text-primary-500"
-          >
-            Apple iMac 24" All-In-One Computer, Apple M1, 8GB RAM, 256GB SSD
-          </a>
+          <p className="font-medium text-primary-700 hover:underline dark:text-primary-500">
+            {params.productName}
+          </p>
         </Modal.Header>
         <Modal.Body>
           <form
@@ -95,28 +94,7 @@ const ProductReviewForm = () => {
                   </p>
                 </Rating>
               </div>
-              <div className="col-span-2">
-                <label
-                  htmlFor="title"
-                  className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-                >
-                  Review title
-                </label>
-                <input
-                  {...register("title")}
-                  type="text"
-                  name="title"
-                  id="title"
-                  className={
-                    errors.title
-                      ? "mb-2 block w-full rounded-lg border border-red-500 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
-                      : "mb-2 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
-                  }
-                />
-                <span className=" text-sm italic text-red-800">
-                  {errors.title?.message}
-                </span>
-              </div>
+             
               <div className="col-span-2">
                 <label
                   htmlFor="description"
@@ -204,9 +182,9 @@ const ProductReviewForm = () => {
                       terms and conditions
                     </a>
                     .<br />
-                  <span className=" text-sm italic text-red-800">
-                    {errors.reviewCheckbox?.message}
-                  </span>
+                    <span className=" text-sm italic text-red-800">
+                      {errors.reviewCheckbox?.message}
+                    </span>
                   </label>
                 </div>
               </div>

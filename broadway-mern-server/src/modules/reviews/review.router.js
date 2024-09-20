@@ -6,7 +6,7 @@ const {
 } = require("../../middlewares/uploader.middleware");
 const { bodyValidator } = require("../../middlewares/validator.middleware");
 const { reviewCreateDTO } = require("./product.request");
-const reviewController = require("./product.controller");
+const reviewController = require("./review.controller");
 
 const router = require("express").Router();
 
@@ -30,6 +30,8 @@ router
     bodyValidator(reviewCreateDTO),
     reviewController.createProduct
   );
+
+  router.get("/product/:id", reviewController.listReviewByProduct);
 
 router.delete(
   "/:id",

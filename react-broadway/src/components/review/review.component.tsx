@@ -1,7 +1,5 @@
 import { Button, Dropdown, Modal } from "flowbite-react";
-import React, { useState } from "react";
-import { HiFolderRemove } from "react-icons/hi";
-import { HiOutlineExclamationCircle } from "react-icons/hi2";
+import  { useState } from "react";
 import { FaStar } from "react-icons/fa";
 import { LuClipboardEdit } from "react-icons/lu";
 import { MdDeleteOutline } from "react-icons/md";
@@ -9,7 +7,6 @@ import { RiDeleteBinLine } from "react-icons/ri";
 
 const ReviewComponent = () => {
   const [deleteModal, setDeleteModal] = useState(false);
-  const [editModal, setEditModal] = useState(false);
   return (
     <>
       <div className="grid md:grid-cols-12 gap-4 md:gap-6 pb-4 md:pb-6">
@@ -27,8 +24,15 @@ const ReviewComponent = () => {
           <dd className=" text-gray-500 dark:text-gray-400">
             It’s fancy, amazing keyboard, matching accessories. Super fast,
             batteries last more than usual, everything runs perfect in this...
+
+            
+            <div className="flex gap-2">
+            <img className="h-20 w-20 rounded-lg object-cover" src="https://flowbite.s3.amazonaws.com/blocks/e-commerce/imac-photo-2.jpg" alt="" />
+          </div>
           </dd>
         </dl>
+    
+        
 
         <div className="md:col-span-3 content-center order-1 md:order-3 flex items-center justify-between">
           <dl>

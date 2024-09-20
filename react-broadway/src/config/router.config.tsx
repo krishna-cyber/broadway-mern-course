@@ -113,6 +113,7 @@ const RouterConfig = () => {
               <Route path="/admin/brand-lists" element={<BrandList />} />{" "}
               <Route path="/admin/brand-create" element={<BrandCreate />} />
               <Route path="/admin/brand/edit/:id" element={<BrandUpdate />} />
+              <Route path="/admin/order/:id" element={<OrderDetail />} />
               <Route
                 path="*"
                 element={<ErrorPage url="/admin" label="Back to Dashboard" />}
@@ -142,12 +143,7 @@ const RouterConfig = () => {
                 path="/seller/Product/edit/:id"
                 element={<ProductEdit />}
               />
-              <Route path="/seller/order-lists" element={<ProductList />} />
-              <Route path="/seller/order/edit/:id" element={<ProductEdit />} />
-              <Route
-                path="*"
-                element={<ErrorPage url="/seller" label="Back to Dashboard" />}
-              />
+     
             </Route>
 
             {/* customer dashboard routes */}

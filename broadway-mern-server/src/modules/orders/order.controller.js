@@ -7,9 +7,9 @@ class OrderController {
   createOrder = async (req, res, next) => {
     try {
       const data = req.body;
-     
+
       data.userId = req.authUser.id;
-    
+
       const response = await orderService.createOrder(data);
       res.json({
         result: response,
@@ -22,10 +22,11 @@ class OrderController {
     }
   };
   listForTable = async (req, res, next) => {
-    const {page,limit }= req.query;
+    const { page, limit } = req.query;
     try {
-      if(req.authUser.role === 'customer'){
-        const {data,totalPages,total,currentPage} = await orderService.listData(page,limit,{userId:req.authUser.id});
+      if (req.authUser.role === "customer") {
+        const { data, totalPages, total, currentPage } =
+          await orderService.listData(page, limit, { userId: req.authUser.id });
         return res.json({
           result: data,
           message: "List of orders",
@@ -33,12 +34,13 @@ class OrderController {
             total,
             currentPage,
             totalPages,
-            limit
+            limit,
           },
         });
       }
-      
-      const {data,totalPages,total,currentPage} = await orderService.listData(page,limit);
+
+      const { data, totalPages, total, currentPage } =
+        await orderService.listData(page, limit);
       res.json({
         result: data,
         message: "List of orders",
@@ -46,7 +48,7 @@ class OrderController {
           total,
           currentPage,
           totalPages,
-          limit
+          limit,
         },
       });
     } catch (exception) {
@@ -79,36 +81,57 @@ class OrderController {
           title: { $regex: req.query.search, $options: "i" },
         };
       }
-      const {data,totalPages} = await orderService.listData({ page, filter, pageSize: limit });
-      res.json
-      ({
+      const { data, totalPages } = await orderService.listData({
+        page,
+        filter,
+        pageSize: limit,
+      });
+      res.json({
         result: data,
         message: "List of products",
         meta: {
           page,
           pageSize: limit,
-          totalPages
+          totalPages,
         },
       });
     } catch (exception) {
       next(exception);
     }
   };
-  viewProduct = async (req, res, next) => {
+  overviewOrder = async (req, res, next) => {
+    const id = req.params.id;
     try {
-      const id = req.params.id;
       if (!id) {
         throw { statusCode: 400, message: "Id is required" };
       }
-      const productDetail = await orderService.getDetailByFilter({ _id: id });
-      if (!productDetail) {
-        throw { statusCode: 404, message: "product not found" };
+      if (req.authUser.role === "customer") {
+        const orderDetail = await orderService.getDetailByFilter({
+          _id: id,
+          userId: req.authUser.id,
+        });
+  
+        return res.json({
+          result: orderDetail,
+          message: "order detail",
+          meta: null,
+        });
+      } else if (req.authUser.role === "admin") {
+        const orderDetail = await orderService.getDetailByFilter({
+          _id: id,
+         
+        });
+        if (!orderDetail) {
+          throw { statusCode: 404, message: "order not found" };
+        }
+        res.status(200).json({
+          result: orderDetail,
+          message: "order detail",
+          meta: null,
+        });
+      }else{
+        throw { statusCode: 401, message: "Unauthorized" };
       }
-      res.status(200).json({
-        result: productDetail,
-        message: "Product detail",
-        meta: null,
-      });
     } catch (exception) {
       next(exception);
     }
@@ -145,9 +168,9 @@ class OrderController {
   };
   listForHome = async (req, res, next) => {
     try {
-      const {data,totalPages} = await orderService.listData({
+      const { data, totalPages } = await orderService.listData({
         pageSize: 10,
-        filter: { status: 'ACTIVE' },
+        filter: { status: "ACTIVE" },
       });
       res.json({
         result: data,
@@ -155,7 +178,7 @@ class OrderController {
         meta: {
           page: 1,
           pageSize: 10,
-          totalPages
+          totalPages,
         },
       });
     } catch (exception) {
