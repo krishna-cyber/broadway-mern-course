@@ -40,6 +40,7 @@ import ProductUpdate from "../pages/product/product-edit.page";
 import BrandUpdate from "../pages/brand/brand-edit.page copy";
 import { OrderDetail } from "../pages/order/order-detail.page";
 import { ReviewsHistory } from "../pages/reviews/reviews-history";
+import ProductViewLandingPage from "../components/products/product-Listing.component";
 
 const RouterConfig = () => {
   // const [loggedInUser, setLoggedInUser] = useState(null);
@@ -76,6 +77,7 @@ const RouterConfig = () => {
               <Route path="/product/:productName" element={<ProductPage />} />
               <Route path="/category/:slug" element={<CategoryDetail />} />
               <Route path="/cart" element={<CartPage />} />
+              <Route path="/products" element={<ProductViewLandingPage />} />
             </Route>
 
             {/* Admin dashboard routes */}
