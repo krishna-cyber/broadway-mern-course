@@ -2,7 +2,7 @@ const { loginCheck } = require('../../middlewares/auth.middleware');
 const { hasPermission } = require('../../middlewares/rbac.miiddleware');
 const { setPath,uploadFile } = require('../../middlewares/uploader.middleware');
 const { bodyValidator } = require('../../middlewares/validator.middleware');
-const { orderCreateDTO, orderUpdateDTO } = require('./order.request')
+const { orderCreateDTO } = require('./order.request')
 const orderController = require('./order.controller');
 
 const router = require('express').Router();
@@ -23,7 +23,7 @@ router.route('/')
 
     router.route('/:id')
     .get(loginCheck,hasPermission(['customer','admin']),orderController.overviewOrder)
-    .put(loginCheck,hasPermission(['admin','seller']), setPath('banners'),bodyValidator(orderUpdateDTO),orderController.editProduct)
+    .patch(loginCheck,hasPermission(['admin']),orderController.processOrder)
     .delete(loginCheck,hasPermission(['admin','seller']),orderController.deleteProduct);
 
 module.exports = router;

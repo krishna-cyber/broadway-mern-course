@@ -11,6 +11,7 @@ import {
   deleteProduct,
   deleteUser,
   placeOrder,
+  processOrder,
   updateBanner,
   updateBrand,
   updateCategory,
@@ -306,6 +307,26 @@ export function useDeleteCategory() {
         toast.success(data?.message);
         queryClient.invalidateQueries({
           queryKey: ["categoryListsForTable"],
+        });
+      }
+    },
+  });
+}
+
+export function useProcessOrder() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({id,data}: any) => processOrder(id,data),
+    onSettled: async (data, error, variables, context) => {
+      if (error) {
+        toast.error("Error occured processing Order");
+      } else {
+        toast.success("Order processed successfully");
+       await  queryClient.invalidateQueries({
+          queryKey: ["ordersLists"],
+        });
+       await queryClient.invalidateQueries({
+          queryKey: ["order", { id: variables?.id }],
         });
       }
     },

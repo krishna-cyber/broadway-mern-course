@@ -67,7 +67,7 @@ class OrderService {
         new: true,
       });
       if (!response) {
-        throw { statusCode: 404, message: "Banner not found" };
+        throw { statusCode: 404, message: "Order not found" };
       }
       return response;
     } catch (exception) {

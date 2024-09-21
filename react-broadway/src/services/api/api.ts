@@ -164,3 +164,8 @@ export const getBrandById = async (id: string) => {
 export const getOrderById = async (id: string) => {
   return await httpService.getRequest(`/order/${id}`, { auth: true });
 }
+
+
+export const processOrder = async (id: string,data:any) => {
+  return await httpService.patchRequest(`/order/${id}`, data, { auth: true });
+}

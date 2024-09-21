@@ -136,30 +136,24 @@ class OrderController {
       next(exception);
     }
   };
-  editProduct = async (req, res, next) => {
+  processOrder = async (req, res, next) => {
     // get product by id , validate and update product details
+    const id = req.params.id;
     try {
-      const id = req.params.id;
       if (!id) {
         throw { statusCode: 400, message: "Id is required" };
       }
       const data = req.body;
-      const image = req.file;
 
-      if (image) {
-        const imageUrl = await uploadImage(
-          `./public/uploads/product/${image.filename}`
-        );
-        data.image = imageUrl;
-        deleteFile(`./public/uploads/product/${image.filename}`);
-      }
       const response = await orderService.updateById(id, data);
       res.json({
         result: response,
-        message: "product updated successfully",
+        message: "Order updated successfully",
         meta: null,
       });
-    } catch (exception) {}
+    } catch (exception) {
+      next(exception);
+    }
   };
   deleteProduct = async (req, res, next) => {
     //delete product by id

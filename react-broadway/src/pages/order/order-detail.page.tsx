@@ -1,20 +1,33 @@
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import OrderSummary from "../../components/orders/order-summary.component";
 import { useFetchOrderById } from "../../services/queries/queries";
 import { Button } from "flowbite-react";
 import { useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
+import { useProcessOrder } from "../../services/mutations/mutations";
 
 export const OrderDetail = () => {
   const params = useParams();
-
+  const navigate = useNavigate();
+const processOrder = useProcessOrder()
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm();
-  const onSubmit = (data: any) => console.log(data);
+  const onSubmit = (data: any) => {
+    processOrder.mutate({id:params.id,data},
+      {
+        onSuccess: () => {
+          alert("Order Updated Successfully");
+          navigate(`/${loggedInUser.role}/order-lists`);
+        },
+        onError: (error) => {
+          alert("Error Updating Order");
+        },
+      }
+    )
+  }
   const { loggedInUser } = useSelector((state: any) => state.user);
   const { data, isError, isPending } = useFetchOrderById(params.id);
 
