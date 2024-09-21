@@ -29,7 +29,8 @@ class ReviewController {
       next(exception);
     }
   };
-  listForProduct = async (req, res, next) => {
+  listReviewsForProduct = async (req, res, next) => {
+
     try {
       const {currentPage,pageSize }= req.query;
       const {data,totalPages} = await reviewService.listData({
@@ -81,6 +82,25 @@ class ReviewController {
       });
     } catch (error) {
       next(error);
+    }
+  };
+  checkPermissionForReview = async (req, res, next) => {
+    const {productId} = req.query;
+    const { authUser } = req;
+    try {
+      if (!authUser) {
+        throw { statusCode: 401, message: "Unauthorized" };
+      }
+       
+      const permission = await reviewService.checkPermission(authUser);
+
+      res.json({
+        result: true,
+        message: "Permission granted",
+        meta: null,
+      });
+    } catch (exception) {
+      next(exception);
     }
   };
 }

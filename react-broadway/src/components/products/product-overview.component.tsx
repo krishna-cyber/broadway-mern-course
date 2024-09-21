@@ -3,8 +3,10 @@ import { FaCartPlus } from "react-icons/fa";
 import { HiOutlineHeart } from "react-icons/hi2";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../store/reducer/cart.reducer";
+import { useSelector } from "react-redux";
 
 const ProductOverview = ({product}:{product:any}) => {
+  const {loggedInUser} = useSelector((state: any) => state.user);
 const dispatch = useDispatch();
   const handleCartItems = () => {
     dispatch(addToCart(product));
@@ -119,7 +121,7 @@ const dispatch = useDispatch();
                     Add to favorites
                   </Button>
   
-                  <Button size={"lg"} onClick={handleCartItems} color={"blue"} role="button">
+                  <Button disabled={loggedInUser.role=="admin"} size={"lg"} onClick={handleCartItems} color={"blue"} role="button">
                     <FaCartPlus className="h-5 w-5 mr-3" />
                     Add to cart
                   </Button>

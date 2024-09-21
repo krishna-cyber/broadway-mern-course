@@ -20,6 +20,7 @@ import {
   getproductsForLandingPage,
   getProductsForTable,
   getUsersForTable,
+  orderedProductList,
 } from "../api/api";
 
 export function useProducts() {
@@ -150,5 +151,12 @@ export function useFetchOrderById(id: string) {
     queryKey: ["order", { id }],
     queryFn: () => getOrderById(id),
     
+  });
+}
+export function useFetchOrderedProducts(page: number, limit: number,id:string) {
+  return useQuery({
+    queryKey: ["orderedProducts", { page }],
+    queryFn: () => orderedProductList(id),
+    placeholderData: keepPreviousData,
   });
 }

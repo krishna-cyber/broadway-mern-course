@@ -6,7 +6,6 @@ import * as yup from "yup";
 import { checkIfFilesAreCorrectType, checkIfFilesAreTooBig } from "../../utils";
 
 import { GrUpload } from "react-icons/gr";
-import { useParams } from "react-router-dom";
 
 type Inputs = {
   title: string;
@@ -42,8 +41,8 @@ const schema = yup
   })
   .required();
 
-const ProductReviewForm = () => {
-  const params = useParams();
+const ProductReviewForm = ({product}) => {
+  const [rating,setRating] = useState(5);
   const {
     register,
     handleSubmit,
@@ -59,7 +58,7 @@ const ProductReviewForm = () => {
   }
   return (
     <>
-      <Button onClick={() => setOpenModal(true)} color={"blue"}>
+      <Button onClick={() => setOpenModal(true)} color={"blue"} size={"xs"}>
         write a review
       </Button>
 
@@ -69,7 +68,7 @@ const ProductReviewForm = () => {
             Add a review for:
           </h3>
           <p className="font-medium text-primary-700 hover:underline dark:text-primary-500">
-            {params.productName}
+          {product.title}
           </p>
         </Modal.Header>
         <Modal.Body>
@@ -81,13 +80,13 @@ const ProductReviewForm = () => {
             <div className="mb-4 grid grid-cols-2 gap-4">
               <div className="col-span-2">
                 <Rating size={"lg"}>
-                  <Rating.Star />
-                  <Rating.Star />
-                  <Rating.Star />
-                  <Rating.Star />
-                  <Rating.Star />
+                  <Rating.Star onClick={()=>{setRating(1)}} filled={rating<1?false:true} />
+                  <Rating.Star onClick={()=>{setRating(2)}} filled={rating<2?false:true} />
+                  <Rating.Star onClick={()=>{setRating(3)}} filled={rating<3?false:true} />
+                  <Rating.Star onClick={()=>{setRating(4)}} filled={rating<4?false:true} />
+                  <Rating.Star onClick={()=>{setRating(5)}} filled={rating<5?false:true} />
                   <p className="ml-2 text-sm font-medium text-gray-900 dark:text-white">
-                    5.0{" "}
+                   {rating}{" "}
                     <span className="text-gray-500 dark:text-gray-400">
                       (out of 5)
                     </span>

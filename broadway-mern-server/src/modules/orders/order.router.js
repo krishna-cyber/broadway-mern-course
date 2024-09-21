@@ -9,21 +9,16 @@ const router = require('express').Router();
 
 
 
-// public routes
-router.get('/list-home', orderController.listForHome);
 
-// count of products
-router.get('/count',orderController.countProducts);
-
-// protected routes
 
 router.route('/')
     .get(loginCheck,hasPermission(['admin','customer']),orderController.listForTable)
     .post(loginCheck,hasPermission(['customer']), bodyValidator(orderCreateDTO),orderController.createOrder);
 
+    router.get('/products/:userId',loginCheck,hasPermission(['admin','customer']),orderController.orderedUserProducts)
+
     router.route('/:id')
     .get(loginCheck,hasPermission(['customer','admin']),orderController.overviewOrder)
     .patch(loginCheck,hasPermission(['admin']),orderController.processOrder)
-    .delete(loginCheck,hasPermission(['admin','seller']),orderController.deleteProduct);
 
 module.exports = router;

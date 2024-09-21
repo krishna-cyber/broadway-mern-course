@@ -41,6 +41,7 @@ import BrandUpdate from "../pages/brand/brand-edit.page copy";
 import { OrderDetail } from "../pages/order/order-detail.page";
 import { ReviewsHistory } from "../pages/reviews/reviews-history";
 import ProductViewLandingPage from "../components/products/product-Listing.component";
+import OrderedProductList from "../pages/order/ordered-product-list.page";
 
 const RouterConfig = () => {
   // const [loggedInUser, setLoggedInUser] = useState(null);
@@ -159,6 +160,7 @@ const RouterConfig = () => {
                 element={<ReviewsHistory/>}
               />
               <Route path="/customer/order/:id" element={<OrderDetail />} />
+              <Route path="/customer/product-lists" element={<OrderedProductList />} />
               <Route
                 path="*"
                 element={

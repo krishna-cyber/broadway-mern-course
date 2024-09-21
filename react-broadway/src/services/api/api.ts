@@ -169,3 +169,7 @@ export const getOrderById = async (id: string) => {
 export const processOrder = async (id: string,data:any) => {
   return await httpService.patchRequest(`/order/${id}`, data, { auth: true });
 }
+
+export const orderedProductList = async (id: string) => {
+  return await httpService.getRequest(`/order/products/${id}`, { auth: true });
+}

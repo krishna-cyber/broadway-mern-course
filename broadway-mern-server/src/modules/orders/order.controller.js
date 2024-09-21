@@ -155,35 +155,13 @@ class OrderController {
       next(exception);
     }
   };
-  deleteProduct = async (req, res, next) => {
-    //delete product by id
-    //also delete image from cloudinary
-    //response result response meta null messge product deleted successfully
-  };
-  listForHome = async (req, res, next) => {
+
+  orderedUserProducts = async (req, res, next) => {
+    const userId = req.params.userId;
     try {
-      const { data, totalPages } = await orderService.listData({
-        pageSize: 10,
-        filter: { status: "ACTIVE" },
-      });
+      const products = await orderService.getProductsByUserId(userId);
       res.json({
-        result: data,
-        message: "List of products",
-        meta: {
-          page: 1,
-          pageSize: 10,
-          totalPages,
-        },
-      });
-    } catch (exception) {
-      next(exception);
-    }
-  };
-  countProducts = async (req, res, next) => {
-    try {
-      const count = await orderService.countProducts({});
-      res.json({
-        result: count,
+        result: products,
         message: "Total products",
         meta: null,
       });

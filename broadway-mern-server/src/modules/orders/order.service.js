@@ -1,3 +1,4 @@
+const { default: mongoose } = require("mongoose");
 const orderModel = require("./order.model");
 
 class OrderService {
@@ -37,7 +38,7 @@ class OrderService {
       const orderDetail = await orderModel.findOne(filter).populate({
         path: "items.productId",
         select: "name image title",
-        });
+      });
       if (!orderDetail) {
         throw {
           statusCode: 404,
@@ -79,6 +80,77 @@ class OrderService {
       return await orderModel.countDocuments();
     } catch (exception) {
       throw exception;
+    }
+  };
+  getProductsByUserId = async (userId) => {
+    try {
+      const products = await orderModel.aggregate([
+        {
+          $match: {
+            userId: new mongoose.Types.ObjectId(userId), // Match orders for the specific user
+          },
+        },
+        {
+          $unwind: "$items", // Unwind the items array
+        },
+        {
+          $lookup: {
+            from: "products", // Join with the products collection
+            localField: "items.productId",
+            foreignField: "_id",
+            as: "productDetails",
+          },
+        },
+        {
+          $unwind: {
+            path: "$productDetails",
+            preserveNullAndEmptyArrays: true, // Optional: Keep orders without matching products
+          },
+        },
+        {
+          $project: {
+            productId: "$productDetails._id",
+            title: "$productDetails.title",
+            image: "$productDetails.image",
+            stock: "$productDetails.stock",
+            orderedOn: "$createdAt",
+            deliveryStatus: "$orderStatus",
+          },
+        },
+        {
+          $group: {
+            _id: "$productId",
+            title: {
+              $first: "$title",
+            },
+            image: {
+              $first: "$image",
+            },
+            stock: {
+              $first: "$stock",
+            },
+            orderedOn: {
+              $first: "$orderedOn",
+            },
+            deliveryStatus: {
+              $first: "$deliveryStatus",
+            },
+            reviewed:{
+              $first:false
+            }
+          },
+        },
+        {
+          $sort: {
+            title: 1,
+          },
+        },
+      ]);
+
+      return products; // Return the array of product details
+    } catch (error) {
+      console.error("Error fetching products:", error);
+      throw error; // Handle error as needed
     }
   };
 }

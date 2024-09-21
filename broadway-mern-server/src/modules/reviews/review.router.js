@@ -5,33 +5,31 @@ const {
   uploadFile,
 } = require("../../middlewares/uploader.middleware");
 const { bodyValidator } = require("../../middlewares/validator.middleware");
-const { reviewCreateDTO } = require("./product.request");
 const reviewController = require("./review.controller");
+const { reviewCreateDTO } = require("./review.request");
 
 const router = require("express").Router();
 
 //count total reviews of a product
-router.get("/count", reviewController.countReviews);
-
-// protected routes
+router.get("/count", reviewController.countReviewsForProduct);
 
 router
   .route("/")
   .get(
     loginCheck,
     hasPermission(["admin", "seller"]),
-    reviewController.listForTable
+    reviewController.listReviewsForProduct
   )
   .post(
     loginCheck,
-    hasPermission(["admin", "seller"]),
-    setPath("products"),
+    hasPermission(["customer"]),
+    setPath("reviews"),
     uploadFile().single("image"),
     bodyValidator(reviewCreateDTO),
-    reviewController.createProduct
+    reviewController.createReview
   );
 
-  router.get("/product/:id", reviewController.listReviewByProduct);
+  router.get("/product/:id", reviewController.listReviewsForProduct);
 
 router.delete(
   "/:id",

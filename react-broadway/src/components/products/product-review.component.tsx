@@ -34,7 +34,7 @@ const ProductReview = ({productId}:{productId:string}) => {
               <p className="text-2xl font-semibold leading-none text-gray-900 dark:text-white">
                 4.65 out of 5
               </p>
-            <ProductReviewForm/>
+   
             </div>
 
             <div className="mt-6 min-w-0 flex-1 space-y-3 sm:mt-0">

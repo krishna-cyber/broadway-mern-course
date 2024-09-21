@@ -36,9 +36,9 @@ const CustomerDashboardLayout = () => {
       link: "/customer/review-list",
     },
     {
-      menu: "Wishlist",
+      menu: "Ordered Products",
       icon: IoMdHeart,
-      link: "/customer/order-lists",
+      link: "/customer/product-lists",
     },
     {
       menu: "Manage my account",
