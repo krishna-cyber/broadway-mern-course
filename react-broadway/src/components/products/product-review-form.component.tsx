@@ -1,5 +1,5 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Button, FileInput, Label, Modal, Rating } from "flowbite-react";
+import { Avatar, Button, FileInput, Label, Modal, Rating } from "flowbite-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
@@ -16,7 +16,6 @@ type Inputs = {
 
 const schema = yup
   .object({
-    title: yup.string().required("Title is required"),
     description: yup
       .string()
       .required("Description is required")
@@ -39,10 +38,11 @@ const schema = yup
         checkIfFilesAreTooBig
       ),
   })
-  .required();
+ 
 
 const ProductReviewForm = ({product}) => {
   const [rating,setRating] = useState(5);
+  const [files, setFiles] = useState<any[]>([]);
   const {
     register,
     handleSubmit,
@@ -56,6 +56,7 @@ const ProductReviewForm = ({product}) => {
   function onCloseModal() {
     setOpenModal(false);
   }
+ 
   return (
     <>
       <Button onClick={() => setOpenModal(true)} color={"blue"} size={"xs"}>
@@ -148,17 +149,24 @@ const ProductReviewForm = ({product}) => {
                     onChange={(e: any) => {
                       const image = e.target.files["0"];
                       let images = [];
-                      images.push(image);
-
+                      images.push(image)
+                      setFiles(images);
                       setValue("image", images);
                     }}
                     id="dropzone-file"
                     className="hidden"
                   />
+               
+  
+
                   <span className=" text-sm italic text-red-800">
                     {errors.image?.message}
                   </span>
                 </Label>
+                {files && files.length > 0 && (
+                  <Avatar size={"xl"} img={URL.createObjectURL(files[0])} alt="preview" />
+             
+            )}
               </div>
 
               <div className="col-span-2">
