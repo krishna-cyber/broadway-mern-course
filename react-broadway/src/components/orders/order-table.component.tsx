@@ -15,6 +15,8 @@ const OrderTable = () => {
 
   const onPageChange = (page: number) => setpage(page);
 
+  console.log(`data: `, data);
+
   if (isError) {
     console.log(`Error: `, isError);
   }
@@ -97,11 +99,11 @@ const OrderTable = () => {
                       <Table.Cell>{data.totalItems}</Table.Cell>
                       <Table.Cell>{data.totalAmount}</Table.Cell>
                       <Table.Cell className=" flex gap-3">
-                        {data.status === "Shipped" ? (
-                          <Badge color="success">Shipped</Badge>
-                        ) : data.status === "Processing" ? (
+                        {data.orderStatus === "confirmed" ? (
+                          <Badge color="success">confirmed</Badge>
+                        ) : data.orderStatus === "shipped" ? (
                           <Badge color="blue">Processing</Badge>
-                        ) : data.status === "Delivered" ? (
+                        ) : data.orderStatus === "delivered" ? (
                           <Badge color="info">Delivered</Badge>
                         ) : (
                           <Badge color="failure">Cancelled</Badge>
