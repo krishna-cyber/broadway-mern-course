@@ -19,6 +19,7 @@ import {
   getProductsByName,
   getproductsForLandingPage,
   getProductsForTable,
+  getReviewsForUser,
   getUsersForTable,
   orderedProductList,
 } from "../api/api";
@@ -157,6 +158,15 @@ export function useFetchOrderedProducts(page: number, limit: number,id:string) {
   return useQuery({
     queryKey: ["orderedProducts", { page }],
     queryFn: () => orderedProductList(id),
+    placeholderData: keepPreviousData,
+  });
+}
+
+
+export function useFetchReviewsForUser(page: number, limit: number,id:string) {
+  return useQuery({
+    queryKey: ["reviews", { page }],
+    queryFn: () => getReviewsForUser(page, limit,id),
     placeholderData: keepPreviousData,
   });
 }

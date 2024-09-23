@@ -1,7 +1,8 @@
+const { default: mongoose } = require("mongoose");
 const ReviewModel = require("./review.model")
 
 class ReviewService {
-  createBrand = async (data) => {
+  createReview = async (data) => {
     try {
       const banner = new ReviewModel(data);
       return await banner.save();
@@ -10,14 +11,14 @@ class ReviewService {
     }
   };
 
-  listData = async (currentPage,limit,filter={})=>{
+  listData = async ({page=1,pageSize=10,filter={}})=>{
     try {
         //calculate skip based on current page and limit
-  
-        const count = await ReviewModel.countDocuments(filter);
-        const skip = (currentPage - 1) * limit;
-        const data = await ReviewModel.find(filter).populate('createdBy',["_id","fullName","email","role"]).skip(skip).limit(limit).sort({_id:'desc'});
-        let totalPages = Math.ceil(count / limit);
+    const {reviewedBy}=filter;
+        const count = await ReviewModel.countDocuments({reviewedBy:new mongoose.Types.ObjectId(reviewedBy)});
+        const skip = (page - 1) * pageSize;
+        const data = await ReviewModel.find({reviewedBy:new mongoose.Types.ObjectId(reviewedBy)},"-reviewedBy").populate('reviewedFor',["_id","title"]).skip(skip).limit(pageSize).sort({_id:'desc'});
+        let totalPages = Math.ceil(count / pageSize);
         return {data,count,totalPages};
     } catch (exception) {
         throw exception;
@@ -40,9 +41,10 @@ class ReviewService {
 
   deleteById = async (id) => {
     try {
+     
       const response = await ReviewModel.findByIdAndDelete(id);
       if (!response) {
-        throw { statusCode: 404, message: "Banner not found" };
+        throw { statusCode: 404, message: "Review not found" };
       }
       return response;
     } catch (exception) {

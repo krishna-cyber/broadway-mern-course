@@ -24,18 +24,21 @@ router
     loginCheck,
     hasPermission(["customer"]),
     setPath("reviews"),
-    uploadFile().single("image"),
+    uploadFile().single("image[]"),
     bodyValidator(reviewCreateDTO),
     reviewController.createReview
   );
 
-  router.get("/product/:id", reviewController.listReviewsForProduct);
+router.get("/product/:id", reviewController.listReviewsForProduct);
 
-router.delete(
-  "/:id",
-  loginCheck,
-  hasPermission(["admin", "seller"]),
-  reviewController.deleteReview
-);
+router.get("/user/:id", reviewController.listReviewsForUser);
+
+router
+  .route("/:id")
+  .delete(
+    loginCheck,
+    hasPermission(["admin", "customer"]),
+    reviewController.deleteReview
+  );
 
 module.exports = router;

@@ -1,48 +1,46 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Avatar, Button, FileInput, Label, Modal, Rating } from "flowbite-react";
+import {
+  Avatar,
+  Button,
+  FileInput,
+  Label,
+  Modal,
+  Rating,
+} from "flowbite-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { checkIfFilesAreCorrectType, checkIfFilesAreTooBig } from "../../utils";
 
 import { GrUpload } from "react-icons/gr";
+import { useCreateReview } from "../../services/mutations/mutations";
+import { Navigate, useNavigate } from "react-router-dom";
 
 type Inputs = {
   title: string;
-  description: string;
   reviewCheckbox?: boolean | undefined;
   image?: any[] | undefined;
 };
 
-const schema = yup
-  .object({
-    description: yup
-      .string()
-      .required("Description is required")
-      .min(10, "Description must be at least 10 characters"),
-    reviewCheckbox: yup
-      .boolean()
-      .optional()
-      .oneOf([true], "You must accept the terms and conditions"),
-    image: yup
-      .array()
+const schema = yup.object({
+  text: yup
+    .string()
+    .required("Review Text is required")
+    .min(10, "Review Text must be at least 10 characters"),
 
-      .test(
-        "is-valid-type",
-        "Not a valid image type",
-        checkIfFilesAreCorrectType
-      )
-      .test(
-        "is-valid-size",
-        "Max allowed size is 100KB",
-        checkIfFilesAreTooBig
-      ),
-  })
- 
+  image: yup
+    .array()
 
-const ProductReviewForm = ({product}) => {
-  const [rating,setRating] = useState(5);
+    .test("is-valid-type", "Not a valid image type", checkIfFilesAreCorrectType)
+    .test("is-valid-size", "Max allowed size is 100KB", checkIfFilesAreTooBig),
+});
+
+const ProductReviewForm = ({ product }) => {
+  const [rating, setRating] = useState(5);
+  const [openModal, setOpenModal] = useState(false);
+  const navigate = useNavigate();
   const [files, setFiles] = useState<any[]>([]);
+  const createReview = useCreateReview();
   const {
     register,
     handleSubmit,
@@ -51,12 +49,20 @@ const ProductReviewForm = ({product}) => {
   } = useForm({
     resolver: yupResolver(schema),
   });
-  const onSubmit = (data: Inputs) => console.log(data);
-  const [openModal, setOpenModal] = useState(false);
+  const onSubmit = (data) => {
+    data.rating = rating;
+    data.reviewedFor = product._id;
+    createReview.mutate(data,{
+      onSuccess:(data, variables, context)=> {
+       setOpenModal(false);
+       
+      },
+    });
+  };
   function onCloseModal() {
     setOpenModal(false);
   }
- 
+
   return (
     <>
       <Button onClick={() => setOpenModal(true)} color={"blue"} size={"xs"}>
@@ -69,7 +75,7 @@ const ProductReviewForm = ({product}) => {
             Add a review for:
           </h3>
           <p className="font-medium text-primary-700 hover:underline dark:text-primary-500">
-          {product.title}
+            {product.title}
           </p>
         </Modal.Header>
         <Modal.Body>
@@ -81,39 +87,64 @@ const ProductReviewForm = ({product}) => {
             <div className="mb-4 grid grid-cols-2 gap-4">
               <div className="col-span-2">
                 <Rating size={"lg"}>
-                  <Rating.Star onClick={()=>{setRating(1)}} filled={rating<1?false:true} />
-                  <Rating.Star onClick={()=>{setRating(2)}} filled={rating<2?false:true} />
-                  <Rating.Star onClick={()=>{setRating(3)}} filled={rating<3?false:true} />
-                  <Rating.Star onClick={()=>{setRating(4)}} filled={rating<4?false:true} />
-                  <Rating.Star onClick={()=>{setRating(5)}} filled={rating<5?false:true} />
+                  <Rating.Star
+                    onClick={() => {
+                      setRating(1);
+                    }}
+                    filled={rating < 1 ? false : true}
+                  />
+                  <Rating.Star
+                    onClick={() => {
+                      setRating(2);
+                    }}
+                    filled={rating < 2 ? false : true}
+                  />
+                  <Rating.Star
+                    onClick={() => {
+                      setRating(3);
+                    }}
+                    filled={rating < 3 ? false : true}
+                  />
+                  <Rating.Star
+                    onClick={() => {
+                      setRating(4);
+                    }}
+                    filled={rating < 4 ? false : true}
+                  />
+                  <Rating.Star
+                    onClick={() => {
+                      setRating(5);
+                    }}
+                    filled={rating < 5 ? false : true}
+                  />
                   <p className="ml-2 text-sm font-medium text-gray-900 dark:text-white">
-                   {rating}{" "}
+                    {rating}{" "}
                     <span className="text-gray-500 dark:text-gray-400">
                       (out of 5)
                     </span>
                   </p>
                 </Rating>
               </div>
-             
+
               <div className="col-span-2">
                 <label
-                  htmlFor="description"
+                  htmlFor="text"
                   className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
                 >
                   Review description
                 </label>
                 <textarea
-                  {...register("description")}
-                  id="description"
+                  {...register("text")}
+                  id="text"
                   rows={6}
                   className={
-                    errors.description
+                    errors.text
                       ? "mb-2 block w-full rounded-lg border border-red-500 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
                       : "mb-2 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-primary-500 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-primary-500 dark:focus:ring-primary-500"
                   }
                 ></textarea>
                 <span className=" text-sm italic text-red-800">
-                  {errors.description?.message}
+                  {errors.text?.message}
                 </span>
                 <p className="ms-auto text-xs text-gray-500 dark:text-gray-400">
                   Problems with the product or delivery?{" "}
@@ -149,51 +180,25 @@ const ProductReviewForm = ({product}) => {
                     onChange={(e: any) => {
                       const image = e.target.files["0"];
                       let images = [];
-                      images.push(image)
+                      images.push(image);
                       setFiles(images);
                       setValue("image", images);
                     }}
                     id="dropzone-file"
                     className="hidden"
                   />
-               
-  
 
                   <span className=" text-sm italic text-red-800">
                     {errors.image?.message}
                   </span>
                 </Label>
                 {files && files.length > 0 && (
-                  <Avatar size={"xl"} img={URL.createObjectURL(files[0])} alt="preview" />
-             
-            )}
-              </div>
-
-              <div className="col-span-2">
-                <div className="flex items-center">
-                  <input
-                    {...register("reviewCheckbox")}
-                    type="checkbox"
-                    value=""
-                    className="h-4 w-4 rounded border-gray-300 bg-gray-100 text-primary-600 focus:ring-2 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-primary-600"
+                  <Avatar
+                    size={"xl"}
+                    img={URL.createObjectURL(files[0])}
+                    alt="preview"
                   />
-                  <label
-                    htmlFor="review-checkbox"
-                    className="ms-2 text-sm font-medium text-gray-500 dark:text-gray-400"
-                  >
-                    By publishing this review you agree with the{" "}
-                    <a
-                      href="#"
-                      className="text-primary-600 hover:underline dark:text-primary-500"
-                    >
-                      terms and conditions
-                    </a>
-                    .<br />
-                    <span className=" text-sm italic text-red-800">
-                      {errors.reviewCheckbox?.message}
-                    </span>
-                  </label>
-                </div>
+                )}
               </div>
             </div>
           </form>

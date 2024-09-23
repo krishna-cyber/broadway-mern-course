@@ -6,18 +6,22 @@ class ReviewController {
   productId;
   createReview = async (req, res, next) => {
     try {
+      
       const data = req.body;
       const image = req.file;
       //uploadimage and more
-      const imageUrl = await uploadImage(
-        `./public/uploads/products/${image.filename}`
-      );
-      data.image = imageUrl;
-      data.reviewedBy = req.authUser.id;
-        data.reviewedFor = this.productId;
-      deleteFile(`./public/uploads/products/${image.filename}`);
 
-      const response = await reviewService.createProduct(data);
+      if (image){
+
+        const imageUrl = await uploadImage(
+          `./public/uploads/${req.uploadPath}/${image.filename}`
+        );
+        data.image = imageUrl;
+        deleteFile(`./public/uploads/${req.uploadPath}/${image.filename}`);
+      }
+      data.reviewedBy = req.authUser.id;
+
+      const response = await reviewService.createReview(data);
       console.log(response);
       res.json({
         result: response,
@@ -67,9 +71,18 @@ class ReviewController {
 
 
   deleteReview = async (req, res, next) => {
-    //delete product by id
-    //also delete image from cloudinary
-    //response result response meta null messge product deleted successfully
+ try {
+  const id = req.params.id;
+  const response = await reviewService.deleteById(id);
+  res.json({
+    result: null,
+    message: "Review deleted successfully",
+    meta: null,
+  });
+  
+ } catch (error) {
+  next(error);
+ }
   };
 
   countReviewsForProduct = async (req, res, next) => {
@@ -102,6 +115,32 @@ class ReviewController {
     } catch (exception) {
       next(exception);
     }
+  };
+  listReviewsForUser = async (req, res, next) => {
+      const userId = req.params.id;
+    try {
+      const {currentPage,pageSize }= req.query;
+      console.log(currentPage,pageSize);
+      const {data,totalPages} = await reviewService.listData({
+        pageSize: pageSize,
+        page:currentPage ,
+        filter: {reviewedBy:userId},
+      });
+
+      res.json({
+        result: data,
+        message: "List of products",
+        meta: {
+          page: 1,
+          pageSize: 10,
+          totalPages
+        },
+      });
+    } catch (error) {
+      next(error);
+      
+    }
+
   };
 }
 

@@ -1,11 +1,11 @@
-import { Button, Dropdown, Modal } from "flowbite-react";
+import { Button, Dropdown, Modal, Rating } from "flowbite-react";
 import  { useState } from "react";
-import { FaStar } from "react-icons/fa";
 import { LuClipboardEdit } from "react-icons/lu";
 import { MdDeleteOutline } from "react-icons/md";
 import { RiDeleteBinLine } from "react-icons/ri";
+import { Link } from "react-router-dom";
 
-const ReviewComponent = () => {
+const ReviewComponent = ({review}) => {
   const [deleteModal, setDeleteModal] = useState(false);
   return (
     <>
@@ -13,22 +13,21 @@ const ReviewComponent = () => {
         <dl className="md:col-span-3 order-3 md:order-1">
           <dt className="sr-only">Product:</dt>
           <dd className="text-base font-semibold text-gray-900 dark:text-white">
-            <a href="#" className="hover:underline">
-              Apple iMac 27", M2 Max CPU 1TB HDD, Retina 5K{" "}
-            </a>
+            <Link to={`/product/${review.reviewedFor.title}`} className="hover:underline">
+             {review.reviewedFor.title}{" "}
+            </Link>
           </dd>
         </dl>
 
         <dl className="md:col-span-6 order-4 md:order-2">
           <dt className="sr-only">Message:</dt>
           <dd className=" text-gray-500 dark:text-gray-400">
-            It’s fancy, amazing keyboard, matching accessories. Super fast,
-            batteries last more than usual, everything runs perfect in this...
+          {review.text}
 
+            {review.image &&<div className="flex gap-2">
+            <img className="h-32 w-20 rounded-lg object-cover" src={review.image} alt="" />
+          </div> }
             
-            <div className="flex gap-2">
-            <img className="h-20 w-20 rounded-lg object-cover" src="https://flowbite.s3.amazonaws.com/blocks/e-commerce/imac-photo-2.jpg" alt="" />
-          </div>
           </dd>
         </dl>
     
@@ -37,12 +36,16 @@ const ReviewComponent = () => {
         <div className="md:col-span-3 content-center order-1 md:order-3 flex items-center justify-between">
           <dl>
             <dt className="sr-only">Stars:</dt>
-            <dd className="flex text-yellow-500 items-center space-x-1">
-              <FaStar />
-              <FaStar />
-              <FaStar />
-              <FaStar />
-              <FaStar />
+
+            <dd className="flex items-start space-x-1">
+            <Rating>
+              <Rating.Star filled={review.rating<1?false:true} />
+              <Rating.Star filled={review.rating<2?false:true} />
+              <Rating.Star filled={review.rating<3?false:true} />
+              <Rating.Star filled={review.rating<4?false:true} />
+              <Rating.Star filled={review.rating<5?false:true} />
+            </Rating>
+              
             </dd>
           </dl>
 

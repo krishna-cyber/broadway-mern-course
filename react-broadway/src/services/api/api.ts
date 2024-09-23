@@ -173,3 +173,15 @@ export const processOrder = async (id: string,data:any) => {
 export const orderedProductList = async (id: string) => {
   return await httpService.getRequest(`/order/products/${id}`, { auth: true });
 }
+
+export const createReview = async (data: any) => {
+  return await httpService.postRequest("/review", data, {
+    auth: true,
+    file: true,
+  });
+}
+
+
+export const getReviewsForUser = async (page,limit,id) => {
+  return await httpService.getRequest(`/review/user/${id}?currentPage=${page}&pageSize=${limit}`, { auth: true });
+}

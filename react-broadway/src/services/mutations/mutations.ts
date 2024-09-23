@@ -4,6 +4,7 @@ import {
   createBrand,
   createCategory,
   createProduct,
+  createReview,
   createUser,
   deleteBanner,
   deleteBrand,
@@ -328,6 +329,22 @@ export function useProcessOrder() {
        await queryClient.invalidateQueries({
           queryKey: ["order", { id: variables?.id }],
         });
+      }
+    },
+  });
+}
+
+
+export function useCreateReview() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (data) => createReview(data),
+    onSettled: (data, error, variables, context) => {
+      console.log("on settled");
+      if (error) {
+        toast.error("Something went wrong. Try again");
+      } else {
+       toast.success("Reviewed successfully");
       }
     },
   });
