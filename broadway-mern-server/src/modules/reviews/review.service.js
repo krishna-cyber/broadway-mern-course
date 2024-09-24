@@ -1,5 +1,5 @@
 const { default: mongoose } = require("mongoose");
-const ReviewModel = require("./review.model")
+const ReviewModel = require("./review.model");
 
 class ReviewService {
   createReview = async (data) => {
@@ -11,19 +11,38 @@ class ReviewService {
     }
   };
 
-  listData = async ({page=1,pageSize=10,filter={}})=>{
+  listData = async ({
+    page = 1,
+    pageSize = 10,
+    filter = {},
+    listFor = "user",
+  }) => {
     try {
-        //calculate skip based on current page and limit
-    const {reviewedBy}=filter;
-        const count = await ReviewModel.countDocuments({reviewedBy:new mongoose.Types.ObjectId(reviewedBy)});
-        const skip = (page - 1) * pageSize;
-        const data = await ReviewModel.find({reviewedBy:new mongoose.Types.ObjectId(reviewedBy)},"-reviewedBy").populate('reviewedFor',["_id","title"]).skip(skip).limit(pageSize).sort({_id:'desc'});
-        let totalPages = Math.ceil(count / pageSize);
-        return {data,count,totalPages};
+      //calculate skip based on current page and limit
+      const count = await ReviewModel.countDocuments(filter);
+      const skip = (page - 1) * pageSize;
+
+      if (listFor === "product") {
+        var data = await ReviewModel.find(filter, )
+          .populate("reviewedFor", ["_id", "title"]).populate("reviewedBy", ["_id", "fullName", "email", ])
+          .skip(skip)
+          .limit(pageSize)
+          .sort({ _id: "desc" });
+      } else {
+        var data = await ReviewModel.find(filter, "-reviewedBy")
+          .populate("reviewedFor", ["_id", "title"])
+          .skip(skip)
+          .limit(pageSize)
+          .sort({ _id: "desc" });
+      }
+
+      let totalPages = Math.ceil(count / pageSize);
+      const hasMore = skip + pageSize < count;
+      return { data, count, totalPages, hasMore };
     } catch (exception) {
-        throw exception;
+      throw exception;
     }
-}
+  };
   getDetailByFilter = async (filter) => {
     try {
       const bannerDetail = await ReviewModel.findOne(filter).populate(
@@ -41,7 +60,6 @@ class ReviewService {
 
   deleteById = async (id) => {
     try {
-     
       const response = await ReviewModel.findByIdAndDelete(id);
       if (!response) {
         throw { statusCode: 404, message: "Review not found" };
@@ -96,18 +114,14 @@ class ReviewService {
     } catch (exception) {
       throw exception;
     }
-  }
-    countReviews = async (id) => {
-        try {
-        return await ReviewModel.countDocuments({reviewedFor:id});
-        } catch (error) {
-        throw error;
-        }
-    };
-    
-
-
- 
+  };
+  countReviews = async (id) => {
+    try {
+      return await ReviewModel.countDocuments({ reviewedFor: id });
+    } catch (error) {
+      throw error;
+    }
+  };
 }
 
 const reviewService = new ReviewService();

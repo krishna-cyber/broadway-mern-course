@@ -4,9 +4,15 @@ import { LuClipboardEdit } from "react-icons/lu";
 import { MdDeleteOutline } from "react-icons/md";
 import { RiDeleteBinLine } from "react-icons/ri";
 import { Link } from "react-router-dom";
+import { useDeleteReview } from "../../services/mutations/mutations";
 
 const ReviewComponent = ({review}) => {
   const [deleteModal, setDeleteModal] = useState(false);
+  const deleteReview = useDeleteReview();
+  const handleDelete = () => {
+    setDeleteModal(false);
+    deleteReview.mutate(review._id);
+  };
   return (
     <>
       <div className="grid md:grid-cols-12 gap-4 md:gap-6 pb-4 md:pb-6">
@@ -33,11 +39,11 @@ const ReviewComponent = ({review}) => {
     
         
 
-        <div className="md:col-span-3 content-center order-1 md:order-3 flex items-center justify-between">
+        <div className="md:col-span-3 content-center order-1 md:order-3 flex items-start justify-between">
           <dl>
             <dt className="sr-only">Stars:</dt>
 
-            <dd className="flex items-start space-x-1">
+            <dd className="flex mt-2 space-x-1">
             <Rating>
               <Rating.Star filled={review.rating<1?false:true} />
               <Rating.Star filled={review.rating<2?false:true} />
@@ -91,7 +97,7 @@ const ReviewComponent = ({review}) => {
               This action cannot be undone.
             </p>
             <div className="flex justify-center gap-4">
-              <Button color="failure" onClick={() => setDeleteModal(false)}>
+              <Button color="failure" onClick={handleDelete}>
                 {"Yes, I'm sure"}
               </Button>
               <Button color="gray" onClick={() => setDeleteModal(false)}>

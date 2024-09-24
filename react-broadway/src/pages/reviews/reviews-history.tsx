@@ -13,7 +13,6 @@ export const ReviewsHistory = () => {
 
   const { data, isLoading,iserror } = useFetchReviewsForUser(currentPage, 10, loggedInUser.id);
 
-  console.log(data);
 
   const onPageChange = (page: number) => setCurrentPage(page);
 

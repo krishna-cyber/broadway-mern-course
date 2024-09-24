@@ -29,9 +29,10 @@ router
     reviewController.createReview
   );
 
-router.get("/product/:id", reviewController.listReviewsForProduct);
 
 router.get("/user/:id", reviewController.listReviewsForUser);
+
+router.get("/product/:productId", reviewController.listReviewsForProduct);
 
 router
   .route("/:id")

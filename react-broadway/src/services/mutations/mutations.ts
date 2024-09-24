@@ -10,6 +10,7 @@ import {
   deleteBrand,
   deleteCategory,
   deleteProduct,
+  deleteReview,
   deleteUser,
   placeOrder,
   processOrder,
@@ -110,7 +111,7 @@ export function useCreateCategory() {
   });
 }
 
-export function useCreateOrder () {
+export function useCreateOrder() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (data) => placeOrder(data),
@@ -244,7 +245,7 @@ export function useDeleteProduct() {
 export function useDeleteUser() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (id:string) => deleteUser(id),
+    mutationFn: (id: string) => deleteUser(id),
     onSettled: (data, error, variables, context) => {
       console.log("on settled");
       if (error) {
@@ -317,23 +318,22 @@ export function useDeleteCategory() {
 export function useProcessOrder() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({id,data}: any) => processOrder(id,data),
+    mutationFn: ({ id, data }: any) => processOrder(id, data),
     onSettled: async (data, error, variables, context) => {
       if (error) {
         toast.error("Error occured processing Order");
       } else {
         toast.success("Order processed successfully");
-       await  queryClient.invalidateQueries({
+        await queryClient.invalidateQueries({
           queryKey: ["ordersLists"],
         });
-       await queryClient.invalidateQueries({
+        await queryClient.invalidateQueries({
           queryKey: ["order", { id: variables?.id }],
         });
       }
     },
   });
 }
-
 
 export function useCreateReview() {
   const queryClient = useQueryClient();
@@ -344,7 +344,24 @@ export function useCreateReview() {
       if (error) {
         toast.error("Something went wrong. Try again");
       } else {
-       toast.success("Reviewed successfully");
+        toast.success("Reviewed successfully");
+      }
+    },
+  });
+}
+
+export function useDeleteReview() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (id: string) => deleteReview(id),
+    onSettled: (data, error, variables, context) => {
+      if (error) {
+        toast.error("Error occured deleting Review");
+      } else {
+        toast.success("Review deleted successfully");
+        queryClient.invalidateQueries({
+          queryKey: ["reviews"],
+        });
       }
     },
   });

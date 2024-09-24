@@ -21,6 +21,9 @@ export const getproductsForLandingPage = async (pageParam: number) => {
     `/product/list-home?page=${pageParam}&limit=8`
   );
 };
+export const getReviewsForProducts = async (pageParam:number,id:string) => {
+  return await httpService.getRequest(`/review/product/${id}?currentPage=${pageParam}&pageSize=${5}`, { auth: true });
+}
 
 export const getCategoryLists = async () => {
   return await httpService.getRequest("/category/list-home");
@@ -182,6 +185,11 @@ export const createReview = async (data: any) => {
 }
 
 
-export const getReviewsForUser = async (page,limit,id) => {
+export const getReviewsForUser = async (page:number,limit:number,id:string) => {
   return await httpService.getRequest(`/review/user/${id}?currentPage=${page}&pageSize=${limit}`, { auth: true });
 }
+
+export const deleteReview = async (id:string) => {
+  return await httpService.deleteRequest(`/review/${id}`, { auth: true });
+}
+

@@ -1,9 +1,10 @@
+const {  default: mongoose } = require("mongoose");
 const { uploadImage } = require("../../config/cloudinary.config");
 const { deleteFile } = require("../../utils/helper");
 const reviewService = require("./review.service");
 
 class ReviewController {
-  productId;
+ #reviewId;
   createReview = async (req, res, next) => {
     try {
       
@@ -34,17 +35,19 @@ class ReviewController {
     }
   };
   listReviewsForProduct = async (req, res, next) => {
-
+      const {productId} = req.params;
     try {
       const {currentPage,pageSize }= req.query;
-      const {data,totalPages} = await reviewService.listData({
-        pageSize: pageSize || 10,
+      const {data,totalPages,hasMore} = await reviewService.listData({
         page:currentPage ,
-        filter: {},
+        pageSize: pageSize || 10,
+        filter: {reviewedFor: new mongoose.Types.ObjectId(productId)},
+        listFor: "product"
       });
       res.json({
         result: data,
-        message: "List of products",
+        hasMore,
+        message: "List of Reviews",
         meta: {
           page: 1,
           pageSize: 10,
@@ -55,18 +58,7 @@ class ReviewController {
       next(exception);
     }
   };
-  #validateId = async (req, res, next) => {
-    try {
-      const id = req.params.id;
-      if (!id) {
-        throw { statusCode: 400, message: "Id is required" };
-      }
-      this.productId = id;
-      next();
-    } catch (exception) {
-      next(exception);
-    }
-  };
+
 
 
 
@@ -120,11 +112,10 @@ class ReviewController {
       const userId = req.params.id;
     try {
       const {currentPage,pageSize }= req.query;
-      console.log(currentPage,pageSize);
       const {data,totalPages} = await reviewService.listData({
         pageSize: pageSize,
         page:currentPage ,
-        filter: {reviewedBy:userId},
+        filter:{reviewedBy:new mongoose.Types.ObjectId(userId)}
       });
 
       res.json({

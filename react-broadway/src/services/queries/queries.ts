@@ -19,6 +19,7 @@ import {
   getProductsByName,
   getproductsForLandingPage,
   getProductsForTable,
+  getReviewsForProducts,
   getReviewsForUser,
   getUsersForTable,
   orderedProductList,
@@ -28,6 +29,29 @@ export function useProducts() {
   return useInfiniteQuery({
     queryKey: ["productListsForHome"],
     queryFn: ({pageParam=1}) => getproductsForLandingPage(pageParam),
+    initialPageParam: 1,
+
+    getNextPageParam: (lastPage, allPages, lastPageParam, allPagesParam) => {
+      return lastPage?.hasMore ? lastPageParam+1 : undefined;
+    },
+    getPreviousPageParam: (
+      firstPage,
+      allPages,
+      firstPageParam,
+      allPagesParam
+    ) => {
+      if (firstPageParam <= 1) {
+        return undefined;
+      }
+      return firstPageParam - 1;
+    },
+  });
+}
+
+export function useReviews(id:string) {
+  return useInfiniteQuery({
+    queryKey: ["reviews" ,{id}],
+    queryFn: ({pageParam=1}) => getReviewsForProducts(pageParam,id),
     initialPageParam: 1,
 
     getNextPageParam: (lastPage, allPages, lastPageParam, allPagesParam) => {
@@ -46,6 +70,9 @@ export function useProducts() {
     },
   });
 }
+
+
+
 export function useFetchProductsForTable(page: number, limit: number) {
   return useQuery({
     queryKey: ["productListsForTable", { page }],
