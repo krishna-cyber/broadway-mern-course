@@ -152,7 +152,9 @@ const RouterConfig = () => {
             {/* customer dashboard routes */}
 
             {/* This is for testing purpose only */}
-            <Route path="/customer" element={<CustomerDashboardLayout />}>
+            <Route path="/customer" element={<CheckPermission allowedBy={UserRoles.CUSTOMER}>
+                  <CustomerDashboardLayout />
+                </CheckPermission>}>
               <Route index element={<CustomerDashboard />} />
               <Route path="/customer/order-lists" element={<OrderList />} />
               <Route

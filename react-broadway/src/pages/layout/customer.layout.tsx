@@ -40,11 +40,7 @@ const CustomerDashboardLayout = () => {
       icon: IoMdHeart,
       link: "/customer/product-lists",
     },
-    {
-      menu: "Manage my account",
-      icon: HiUser,
-      link: "/customer/order-lists",
-    },
+   
   ];
 
   useEffect(()=>{

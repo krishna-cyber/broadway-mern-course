@@ -8,11 +8,21 @@ import {
 } from "react-icons/hi2";
 // import AuthContext from "../../context/auth.context";
 import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { logOutUser } from "../../store/reducer/user.reducer";
+import { useNavigate } from "react-router-dom";
 
 export const DashboardNavbar = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  // const {loggedInUser}:any = useContext(AuthContext);
   const { loggedInUser } = useSelector((state: any) => state.user);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+
+    dispatch(logOutUser("logout"));
+  }
+
   return (
     <Navbar
       fluid
@@ -64,7 +74,7 @@ export const DashboardNavbar = () => {
           <Dropdown.Item icon={HiCircleStack}>Settings</Dropdown.Item>
           <Dropdown.Item icon={HiCurrencyDollar}>Earnings</Dropdown.Item>
           <Dropdown.Divider />
-          <Dropdown.Item icon={HiLogout}>Sign out</Dropdown.Item>
+          <Dropdown.Item onClick={()=>dispatch(logOutUser('logout'))} icon={HiLogout}>Sign out</Dropdown.Item>
         </Dropdown>
       </div>
     </Navbar>

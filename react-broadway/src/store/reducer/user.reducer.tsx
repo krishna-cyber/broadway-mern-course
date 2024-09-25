@@ -28,6 +28,12 @@ export const userSlice :Slice= createSlice({
     setLoggedInUserForRedux: (state, action) => {
       console.log("Action payload: ", action.payload);
       state.loggedInUser = action.payload;
+    },
+
+    logOutUser: (state,action) => {
+      state.loggedInUser = null;
+      localStorage.removeItem("_at");
+      localStorage.removeItem("_rt");
     }
   },
   extraReducers:(builder)=>{
@@ -45,6 +51,6 @@ export const userSlice :Slice= createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export const { setLoggedInUserForRedux } = userSlice.actions
+export const { setLoggedInUserForRedux,logOutUser } = userSlice.actions
 
 export default userSlice.reducer
